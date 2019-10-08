@@ -36,7 +36,6 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> insert(@RequestBody Group group, HttpSession session) {
         return groupService.insert(group,session);
     }
@@ -47,7 +46,6 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> delete(@PathVariable Integer id) {
         return groupService.delete(id);
     }
@@ -58,7 +56,6 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> update(@RequestBody Group group) {
         return groupService.update(group);
     }
@@ -69,7 +66,6 @@ public class GroupController {
      * @return 返回存有所有群聊的通用对象
      */
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<List<Group>> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return groupService.selectAll(user.getId());
@@ -83,7 +79,6 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updateIcon/{id}", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> updateIcon(@RequestPart("icon") MultipartFile icon, @PathVariable Integer id){
         String fileName = System.currentTimeMillis()+icon.getOriginalFilename();
         try {

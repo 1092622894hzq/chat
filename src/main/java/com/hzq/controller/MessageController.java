@@ -7,10 +7,7 @@ import com.hzq.domain.User;
 import com.hzq.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
@@ -21,7 +18,7 @@ import java.util.List;
  * @Description: com.hzq.controller
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/message")
 public class MessageController {
 
@@ -29,7 +26,7 @@ public class MessageController {
     private MessageService messageService;
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseBody  //暂时认为toid由安卓安放
+    //暂时认为toid由安卓安放
     public ServerResponse<String> insert(HttpSession session, Message message) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         message.setMessageFromId(user.getId());
@@ -47,7 +44,6 @@ public class MessageController {
     }
 
     @RequestMapping("/delete")
-    @ResponseBody
     public ServerResponse<String> deleteMessageByUserId(HttpSession session, Message message) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         message.setId(user.getId());
@@ -62,13 +58,11 @@ public class MessageController {
     }
 
     @RequestMapping(value = "query", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(@RequestParam("id") Integer id, @RequestParam("friendId") Integer friendId) {
         return messageService.queryMessageByUserIdAndFriendId(id,friendId);
     }
 
     @RequestMapping(value = "/queryUnreadMessage", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<List<Message>> queryUnreadMessageByUserId(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return messageService.queryUnreadMessageByUserId(user.getId());

@@ -7,7 +7,6 @@ import com.hzq.domain.User;
 import com.hzq.service.UserService;
 import com.hzq.utils.JwtUil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -16,8 +15,8 @@ import java.util.Map;
 
 /**
  * @Auther: blue
- * @Date: 2019/9/10
- * @Description: com.hzq.controller
+ * @Date: 2019/10/1
+ * @Description: 用户主表的操作
  * @version: 1.0
  */
 @RestController

@@ -4,10 +4,8 @@ import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.domain.User;
-import com.hzq.domain.UserInfo;
 import com.hzq.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -19,7 +17,7 @@ import java.util.List;
  * @Description: com.hzq.controller
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/apply")
 public class ApplyController {
 
@@ -32,7 +30,6 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> insert(@RequestBody Apply apply) {
         if (apply.getFromId() > apply.getToId()) {
             apply.setBigIdDelete(apply.getFromId());
@@ -51,7 +48,6 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> delete(@RequestBody Apply apply, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         apply.setId(user.getId());
@@ -74,14 +70,17 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> update(@RequestBody Apply apply) {
         return applyService.update(apply);
     }
 
 
+    /**
+     * 根据用户id查询所有好友申请
+     * @param session 一次会话
+     * @return 返回通用对象
+     */
     @RequestMapping(value = "/selectAll")
-    @ResponseBody
     public ServerResponse<List<Apply>> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return applyService.selectAll(user.getId());

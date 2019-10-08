@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
  * @Description: com.hzq.controller
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/groupToUser")
 public class GroupToUserController {
 
@@ -26,7 +26,6 @@ public class GroupToUserController {
      * @return 返回通用结果
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> insert(@RequestBody GroupToUser groupToUser) {
         return groupToUserService.insert(groupToUser);
     }
@@ -38,7 +37,6 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{groupUserId}/{groupId}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> delete(@PathVariable Integer groupUserId, @PathVariable Integer groupId) {
         return groupToUserService.delete(groupUserId,groupId);
     }
@@ -49,7 +47,6 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> deleteById(@PathVariable Integer id){
         return groupToUserService.deleteById(id);
     }
@@ -60,7 +57,6 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> update(@RequestBody GroupToUser groupToUser) {
         return groupToUserService.update(groupToUser);
     }
@@ -72,7 +68,6 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/select/{groupUserId}/{groupId}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<GroupToUser> selectGroupToUser(@PathVariable Integer groupUserId, @PathVariable Integer groupId) {
         return groupToUserService.selectGroupToUser(groupUserId,groupId);
     }

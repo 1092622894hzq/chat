@@ -21,7 +21,7 @@ import java.io.File;
  * @Description: 用户个人信息控制层
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/userInfo")
 public class UserInfoController {
     @Autowired
@@ -34,7 +34,6 @@ public class UserInfoController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/insert", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> insert(@RequestBody UserInfo userInfo, HttpSession session){
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         userInfo.setUserId(user.getId());
@@ -47,7 +46,6 @@ public class UserInfoController {
      * @return 返回通用结果
      */
     @RequestMapping( value = "/delete/{userId}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> deleteUserInfoByPrimaryId(@PathVariable Integer userId) {
         return userInfoService.deleteUserInfoByPrimaryId(userId);
     }
@@ -59,7 +57,6 @@ public class UserInfoController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/update", method = RequestMethod.POST )
-    @ResponseBody
     public ServerResponse<String> update(@RequestBody UserInfo userInfo, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         userInfo.setUserId(user.getId());
@@ -83,7 +80,6 @@ public class UserInfoController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updateAvatar", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
             String fileName = System.currentTimeMillis()+avatar.getOriginalFilename();
             try {
@@ -107,7 +103,6 @@ public class UserInfoController {
      * @return 返回通用对象    -----暂未完成
      */
     @RequestMapping(value = "/findPassword/{id}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> findPasswordByUserId(@PathVariable Integer id) {
         return userInfoService.findPasswordByUserId(id);
     }

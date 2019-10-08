@@ -35,7 +35,6 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/insert", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> insert(@RequestBody Friend friend) {
         return friendService.insert(friend);
     }
@@ -46,7 +45,6 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    @ResponseBody
     public ServerResponse<String> update(@RequestBody Friend friend) {
         return friendService.update(friend);
     }
@@ -58,7 +56,6 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{friendId}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<String> delete(@PathVariable Integer friendId, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.delete(user.getId(),friendId);
@@ -70,7 +67,6 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<List<Friend>> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.selectAll(user.getId());
@@ -83,7 +79,6 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectFriend/{friendName}", method = RequestMethod.GET)
-    @ResponseBody
     public ServerResponse<Friend> selectFriendByFriendName(@PathVariable String friendName, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.selectFriendByFriendName(user.getId(),friendName);
