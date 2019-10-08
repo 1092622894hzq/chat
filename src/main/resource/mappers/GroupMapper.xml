@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.GroupDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.Group">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="group_name" jdbcType="VARCHAR" property="groupName" />
+        <result column="group_admin_id" jdbcType="INTEGER" property="groupAdminId" />
+        <result column="group_icon" jdbcType="VARCHAR" property="groupIcon"/>
+        <result column="group_notice" jdbcType="VARCHAR" property="groupNotice"/>
+        <result column="group_introduction" jdbcType="VARCHAR" property="groupIntroduction"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+<insert id="insert" parameterType="com.hzq.domain.Group"  useGeneratedKeys="true" keyProperty="id">
+    insert into `group` (
+        group_name, group_admin_id, group_notice, group_introduction
+    )
+    values (
+        #{groupName, jdbcType = VARCHAR}, #{groupAdminId, jdbcType = INTEGER},
+        #{groupNotice, jdbcType = VARCHAR}, #{groupIntroduction, jdbcType = VARCHAR}
+    )
+</insert>
+
+<delete id="delete" parameterType="java.lang.Integer">
+    delete from `group`
+    <where>
+        id = #{id, jdbcType = INTEGER}
+    </where>
+</delete>
+
+<update id="update" parameterType="com.hzq.domain.Group">
+        update `group`
+        <set>
+            <if test="groupName != null">
+                group_name = #{groupName, jdbcType = VARCHAR},
+            </if>
+            <if test="groupAdminId != null">
+                group_admin_id = #{groupAdminId, jdbcType = INTEGER},
+            </if>
+            <if test="groupIcon != null">
+                group_icon = #{groupIcon, jdbcType = VARCHAR},
+            </if>
+            <if test="groupNotice != null">
+                group_notice = #{groupNotice, jdbcType = VARCHAR},
+            </if>
+            <if test="groupIntroduction != null">
+                group_introduction = #{groupIntroduction, jdbcType = VARCHAR},
+            </if>
+        </set>
+        where id = #{id, jdbcType = INTEGER}
+</update>
+
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select g.* from `group` g left join group_to_user gtu on g.id = gtu.group_id
+    <where>
+        gtu.group_user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</select>
+
+
+
+</mapper>

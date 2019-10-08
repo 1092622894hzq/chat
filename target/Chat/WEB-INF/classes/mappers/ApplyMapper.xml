@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.ApplyDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.Apply">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="from_id" jdbcType="INTEGER" property="fromId" />
+        <result column="to_id" jdbcType="INTEGER" property="toId" />
+        <result column="apply_reason" jdbcType="VARCHAR" property="applyReason"/>
+        <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="big_id_delete" jdbcType="INTEGER" property="bigIdDelete"/>
+        <result column="small_id_delete" jdbcType="INTEGER" property="smallIdDelete"/>
+    </resultMap>
+
+
+
+
+<insert id="insert" parameterType="com.hzq.domain.Apply"  useGeneratedKeys="true" keyProperty="id">
+    insert into apply ( from_id, to_id, apply_reason, apply_status, big_id_delete,small_id_delete
+    )
+    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER}, #{applyReason, jdbcType = VARCHAR},
+            #{applyStatus, jdbcType = INTEGER}, #{bigIdDelete, jdbcType = INTEGER}, #{smallIdDelete, jdbcType = INTEGER}
+    )
+</insert>
+
+<update id="delete" parameterType="com.hzq.domain.Apply">
+    update apply
+    <set>
+        <if test="bigIdDelete != null">
+                big_id_delete = #{bigIdDelete, jdbcType = INTEGER}
+        </if>
+        <if test="smallIdDelete != null">
+                 small_id_delete = #{smallIdDelete, jdbcType = INTEGER}
+        </if>
+    </set>
+    where from_id = #{id,jdbcType = INTEGER} or to_id = #{id, jdbcType = INTEGER}
+</update>
+
+<update id="update" parameterType="com.hzq.domain.Apply">
+    update apply
+    <set>
+        apply_status = #{applyStatus, jdbcType = INTEGER}
+    </set>
+    where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER}
+</update>
+
+<select id="bothDelete" parameterType="java.lang.Integer">
+    delete from apply where big_id_delete = #{delete, jdbcType = INTEGER} and small_id_delete = #{delete, jdbcType = INTEGER}
+</select>
+
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from apply
+    <where>
+        from_id = #{id,jdbcType = INTEGER} or to_id = #{id, jdbcType = INTEGER}
+    </where>
+</select>
+
+
+
+</mapper>

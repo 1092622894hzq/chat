@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.GroupMessageToUserDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.GroupMessageToUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="group_message_id" jdbcType="INTEGER" property="groupMessageId" />
+        <result column="group_message_time" jdbcType="TIMESTAMP" property="groupMessageTime"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+<insert id="insert" parameterType="com.hzq.domain.GroupMessageToUser"  useGeneratedKeys="true" keyProperty="id">
+    insert into group_message_to_user (
+        user_id, group_message_id, group_message_time
+    )
+    values (
+        #{userId, jdbcType = INTEGER}, #{groupMessageId, jdbcType = INTEGER}, #{groupMessageTime, jdbcType = TIMESTAMP}
+    )
+</insert>
+
+
+<delete id="delete" parameterType="java.lang.Integer">
+    delete from group_message_to_user
+    <where>
+        user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</delete>
+
+<update id="update" >
+    update group
+    <set>
+        group_message_time = #{time, jdbcType = TIMESTAMP},
+    </set>
+    <where>
+        user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</update>
+
+
+
+
+
+</mapper>

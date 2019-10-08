@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.GroupMessageContentDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.GroupMessageContent">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="gm_content" jdbcType="VARCHAR" property="gmContent" />
+        <result column="gm_type" jdbcType="INTEGER" property="gmType" />
+        <result column="gm_from_id" jdbcType="INTEGER" property="gmFromId"/>
+        <result column="group_id" jdbcType="INTEGER" property="groupId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+<insert id="insert" parameterType="com.hzq.domain.GroupMessageContent"  useGeneratedKeys="true" keyProperty="id">
+    insert into group_message_content (
+        gm_content, gm_type, gm_from_id, group_id
+    )
+    values (
+        #{gmContent, jdbcType = VARCHAR}, #{gmType, jdbcType = INTEGER}, #{gmFromId, jdbcType = INTEGER},
+        #{groupId, jdbcType = INTEGER}
+    )
+</insert>
+
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from group_message_content
+    <where>
+        group_id = #{groupId, jdbcType = INTEGER}
+    </where>
+</select>
+
+<delete id="delete" parameterType="java.lang.Integer">
+    delete from group_message_content
+    <where>
+        group_id = #{groupId, jdbcType = INTEGER}
+    </where>
+</delete>
+
+<select id="selectUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select  gmc.*
+    from group_message_content gmc left join group_message_to_user gmtu
+    on gmtu.group_message_id = gmc.group_id
+    where
+    gmtu.user_id = #{userId, jdbcType = INTEGER}
+    and
+    gmtu.group_id = #{groupId, jdbcType = INTEGER}
+    and gmc.gmt_modified > gmtu.group_message_time;
+</select>
+
+<select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select  gmc.*
+    from group_message_content gmc left join group_message_to_user gmtu
+    on gmtu.group_message_id = gmc.group_id
+    where gmtu.user_id = #{userId, jdbcType = INTEGER}
+    and gmc.gmt_modified > gmtu.group_message_time;
+</select>
+
+
+
+
+</mapper>

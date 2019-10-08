@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.GroupToUserDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.GroupToUser">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="group_user_id" jdbcType="INTEGER" property="groupUserId" />
+        <result column="group_id" jdbcType="INTEGER" property="groupId" />
+        <result column="group_nickname" jdbcType="VARCHAR" property="groupNickname"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+    </resultMap>
+
+<insert id="insert" parameterType="com.hzq.domain.GroupToUser"  useGeneratedKeys="true" keyProperty="id">
+    insert into group_to_user (
+        group_user_id, group_id, group_nickname
+    )
+    values (
+        #{groupUserId, jdbcType = INTEGER}, #{groupId, jdbcType = INTEGER},#{groupNickname, jdbcType = VARCHAR}
+    )
+</insert>
+
+<delete id="delete" parameterType="java.lang.Integer">
+        delete from group_to_user
+        <where>
+            group_user_id = #{groupUserId, jdbcType = INTEGER}
+            and
+            group_id = #{groupId, jdbcType = INTEGER}
+        </where>
+</delete>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+        delete from group_to_user where id = #{id, jdbcType = INTEGER}
+</delete>
+
+
+
+<update id="update" parameterType="com.hzq.domain.GroupToUser">
+        update  group_to_user
+        set group_nickname = #{groupNickname, jdbcType = VARCHAR}
+        where id = #{id, jdbcType = INTEGER}
+</update>
+
+<select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from group_to_user
+        <where>
+            group_user_id = #{groupUserId, jdbcType = INTEGER}
+            and
+            group_id = #{groupId, jdbcType = INTEGER}
+        </where>
+</select>
+
+
+
+</mapper>

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <!-- 在applicationContext.xml加载时加载 -->
+    <!-- 配置全局属性 -->
+    <settings>
+        <!-- 使用jdbc的getGeneratedKeys获取数据库自增主键值 -->
+        <setting name="useGeneratedKeys" value="true" />
+
+        <!-- 查询结果：使用列别名替换列名 默认:true -->
+        <setting name="useColumnLabel" value="true" />
+
+        <!-- 开启驼峰命名转换:Table{create_time} -> Entity{createTime} -->
+        <!--若不配置默认为false在**Mapper.xm文件的select语句中若不是返回ResultMap而是ResultType则返回字段不会进行驼峰命名，javabean中的属性必须与其对应。
+        如果在数据库中，有一个字段为a_id，那么在javaBean中的属性也必须这样写，写成a_id，这种代码编写方式肯定不符合代码规范。
+        若开启则： 数据库返回的"order_address"命名字段映射为class的"orderAddress"字段。-->
+        <setting name="mapUnderscoreToCamelCase" value="true" />
+    </settings>
+</configuration>

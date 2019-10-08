@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.hzq.dao.FriendDao">
+    <resultMap id="BaseResultMap" type="com.hzq.domain.Friend">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="friend_avatar" jdbcType="VARCHAR" property="friendAvatar" />
+        <result column="friend_name" jdbcType="VARCHAR" property="friendName" />
+        <result column="friend_group" jdbcType="VARCHAR" property="friendGroup"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="friend_id" jdbcType="INTEGER" property="friendId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+    </resultMap>
+
+<insert id="insert" parameterType="com.hzq.domain.Friend"  useGeneratedKeys="true" keyProperty="id">
+    insert into friend (friend_avatar, friend_name, user_id, friend_id
+    )
+    values ( #{friendAvatar, jdbcType = VARCHAR}, #{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},
+            #{friendId, jdbcType = INTEGER}
+    )
+</insert>
+
+<update id="update" parameterType="com.hzq.domain.Friend">
+    update friend
+    <set>
+       <if test="friendAvatar != null">
+            friend_avatar = #{friendAvatar, jdbcType = VARCHAR},
+       </if>
+       <if test="friendName != null">
+           friend_name = #{friendName, jdbcType = VARCHAR},
+       </if>
+       <if test="friendGroup != null">
+           friend_group = #{friendGroup, jdbcType = VARCHAR},
+       </if>
+       <if test="isDelete != null">
+           is_delete = #{isDelete, jdbcType = VARCHAR}
+       </if>
+    </set>
+    <where>
+        user_id = #{userId, jdbcType = INTEGER} AND friend_id = #{friendId, jdbcType = INTEGER}
+    </where>
+</update>
+
+<delete id="delete" parameterType="java.lang.Integer">
+    delete from friend
+    <where>
+        friend_id = #{friendId, jdbcType = INTEGER}
+        and
+        user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</delete>
+
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from friend
+    <where>
+        user_id = #{userId, jdbcType = INTEGER}
+        and
+        is_delete = #{isDelete, jdbcType = INTEGER}
+    </where>
+</select>
+
+<select id="selectFriendByFriendName" resultMap="BaseResultMap">
+    select * from friend
+    <where>
+        friend_name = #{friendName, jdbcType = VARCHAR}
+        and
+        user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</select>
+
+<select id="selectFriendByFriendId" resultMap="BaseResultMap">
+    select * from friend
+    <where>
+        friend_id = #{friendId, jdbcType = INTEGER}
+        and
+        user_id = #{userId, jdbcType = INTEGER}
+    </where>
+</select>
+
+</mapper>

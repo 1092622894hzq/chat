@@ -1,0 +1,1152 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ArtifactsWorkspaceSettings">
+    <artifacts-to-build>
+      <artifact name="Chat:war" />
+    </artifacts-to-build>
+  </component>
+  <component name="BookmarkManager">
+    <bookmark url="file://$PROJECT_DIR$/src/main/resource/mappers/ApplyMapper.xml" line="20" />
+    <bookmark url="file://$PROJECT_DIR$/src/main/resource/mappers/ApplyMapper.xml" line="50" mnemonic="3" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="9289d6be-d09c-4ccc-bde5-c23b38927a37" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/hzq/controller/GreetingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/hzq/controller/GreetingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat.war" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat.war" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/SpringMVC.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/SpringMVC.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/common/Const.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/common/Const.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/ApplyController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/ApplyController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/FriendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/FriendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/GroupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/GroupController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/UserInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/controller/UserInfoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/ApplyDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/ApplyDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/FriendDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/FriendDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/UserInfoDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/dao/UserInfoDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/Friend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/Friend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/Group.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/Group.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/GroupToUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/domain/GroupToUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/interceptors/AuthInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/interceptors/AuthInterceptor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/ApplyService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/ApplyService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/FriendService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/FriendService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/GroupService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/GroupService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/ApplyServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/ApplyServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/FriendServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/FriendServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/GroupMessageToUserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/GroupMessageToUserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/GroupServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/GroupServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/UserInfoServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/UserInfoServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/Impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/UserInfoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/service/UserInfoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/webSocket/MyWebSocketConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/webSocket/MyWebSocketConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/webSocket/MyWebSocketHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/com/hzq/webSocket/MyWebSocketHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/ApplyMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/ApplyMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/FriendMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/FriendMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/GroupMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/GroupMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/UserInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/UserInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/WEB-INF/classes/mappers/UserMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/Chat/index.jsp" beforeDir="false" afterPath="$PROJECT_DIR$/target/Chat/index.jsp" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/SpringMVC.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/SpringMVC.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/common/Const.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/common/Const.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/controller/ApplyController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/controller/ApplyController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/controller/FriendController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/controller/FriendController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/controller/GroupController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/controller/GroupController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/controller/UserController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/controller/UserController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/controller/UserInfoController.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/controller/UserInfoController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/dao/ApplyDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/dao/ApplyDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/dao/FriendDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/dao/FriendDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/dao/UserInfoDao.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/dao/UserInfoDao.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/domain/Friend.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/domain/Friend.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/domain/Group.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/domain/Group.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/domain/GroupToUser.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/domain/GroupToUser.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/interceptors/AuthInterceptor.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/interceptors/AuthInterceptor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/ApplyService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/ApplyService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/FriendService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/FriendService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/GroupService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/GroupService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/ApplyServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/ApplyServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/FriendServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/FriendServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/GroupMessageToUserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/GroupMessageToUserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/GroupServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/GroupServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/UserInfoServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/UserInfoServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/UserServiceImpl.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/Impl/UserServiceImpl.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/service/UserInfoService.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/service/UserInfoService.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/webSocket/MyWebSocketConfig.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/webSocket/MyWebSocketConfig.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/com/hzq/webSocket/MyWebSocketHandler.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/com/hzq/webSocket/MyWebSocketHandler.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mappers/ApplyMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mappers/ApplyMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mappers/FriendMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mappers/FriendMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mappers/GroupMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mappers/GroupMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mappers/UserInfoMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mappers/UserInfoMapper.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/mappers/UserMapper.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/mappers/UserMapper.xml" afterDir="false" />
+    </list>
+    <ignored path="$PROJECT_DIR$/out/" />
+    <ignored path="$PROJECT_DIR$/target/" />
+    <option name="EXCLUDED_CONVERTED_TO_IGNORED" value="true" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="DatabaseView">
+    <option name="SHOW_INTERMEDIATE" value="true" />
+    <option name="GROUP_DATA_SOURCES" value="true" />
+    <option name="GROUP_SCHEMA" value="true" />
+    <option name="GROUP_CONTENTS" value="false" />
+    <option name="SORT_POSITIONED" value="false" />
+    <option name="SHOW_EMPTY_GROUPS" value="false" />
+    <option name="AUTO_SCROLL_FROM_SOURCE" value="false" />
+    <option name="HIDDEN_KINDS">
+      <set />
+    </option>
+    <expand>
+      <path>
+        <item name="Database" type="3277223f:DatabaseStructure$DbRootGroup" />
+        <item name="chat@localhost" type="feb32156:DbDataSourceImpl" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="DefaultGradleProjectSettings">
+    <option name="isMigrated" value="true" />
+  </component>
+  <component name="FileEditorManager">
+    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyHandShakeInterceptor.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="450">
+              <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="775">
+              <caret line="36" column="26" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketHandler.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="2425">
+              <caret line="117" column="1" selection-start-line="117" selection-start-column="1" selection-end-line="117" selection-end-column="1" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/common/Const.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="36" column="49" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="49" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/WebsocketServer.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="150">
+              <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/WebSocketConfig.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="900">
+              <caret line="40" column="96" selection-start-line="40" selection-start-column="96" selection-end-line="40" selection-end-column="96" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/resource/SpringMVC.xml">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="1500">
+              <caret line="60" column="52" selection-start-line="60" selection-start-column="52" selection-end-line="60" selection-end-column="52" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/GreetingController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="222">
+              <caret line="17" selection-start-line="17" selection-end-line="17" selection-end-column="15" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/webapp/index.jsp">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="950">
+              <caret line="38" column="15" selection-start-line="38" selection-start-column="15" selection-end-line="38" selection-end-column="15" />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/UserController.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="-575">
+              <caret line="25" selection-start-line="25" selection-end-line="25" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+    </leaf>
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="HTML File" />
+        <option value="Interface" />
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="IdeDocumentHistory">
+    <option name="CHANGED_PATHS">
+      <list>
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/GroupMessageContentMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/UserDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/common/GlobalExceptionHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/common/CustomGenericException.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/common/PutTokenToServerResponse.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/interceptors/TokenInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/utils/FileUtil.java" />
+        <option value="$PROJECT_DIR$/src/main/webapp/d.html" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/domain/Group.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/GroupMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/domain/GroupToUser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/GroupService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/GroupController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/GroupToUserService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupToUserDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/interceptors/AuthInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/interceptors/LoginInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/GroupToUserMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/UserInfoService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/domain/Friend.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/UserInfoDao.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/UserInfoMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/FriendDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/FriendService.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/FriendMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/FriendServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/FriendController.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/ApplyMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/UserInfoController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/ApplyController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/ApplyService.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/dao/ApplyDao.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/ApplyServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/GroupToUserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupToUserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupMessageToUserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/UserService.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/mappers/UserMapper.xml" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/UserServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/UserInfoServiceImpl.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/common/Const.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyHandShakeInterceptor.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketHandler.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/webSocket/WebSocketConfig.java" />
+        <option value="$PROJECT_DIR$/src/main/resource/SpringMVC.xml" />
+        <option value="$PROJECT_DIR$/src/main/webapp/index.jsp" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/UserController.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/hzq/controller/GreetingController.java" />
+      </list>
+    </option>
+  </component>
+  <component name="LogFilters">
+    <option name="FILTER_ERRORS" value="false" />
+    <option name="FILTER_WARNINGS" value="false" />
+    <option name="FILTER_INFO" value="true" />
+    <option name="FILTER_DEBUG" value="true" />
+    <option name="CUSTOM_FILTER" />
+  </component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="mavenHome" value="$PROJECT_DIR$/../../soft/eclipse-jee-mars-R-win32-x86_64/apache-maven-3.6.1" />
+      </MavenGeneralSettings>
+    </option>
+    <option name="importingSettings">
+      <MavenImportingSettings>
+        <option name="importAutomatically" value="true" />
+      </MavenImportingSettings>
+    </option>
+  </component>
+  <component name="ProjectFrameBounds" extendedState="7">
+    <option name="x" value="-12" />
+    <option name="y" value="-12" />
+    <option name="width" value="1815" />
+    <option name="height" value="945" />
+  </component>
+  <component name="ProjectLevelVcsManager" settingsEditedManually="true" />
+  <component name="ProjectView">
+    <navigator proportions="" version="1">
+      <foldersAlwaysOnTop value="true" />
+    </navigator>
+    <panes>
+      <pane id="Scope" />
+      <pane id="PackagesPane" />
+      <pane id="ProjectPane">
+        <subPane>
+          <expand>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="common" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="controller" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="dao" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="domain" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="interceptors" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="service" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="Impl" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
+              <item name="webSocket" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resource" type="462c0819:PsiDirectoryNode" />
+              <item name="mappers" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="Chat" type="b2602c69:ProjectViewProjectNode" />
+              <item name="Chat" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="webapp" type="462c0819:PsiDirectoryNode" />
+            </path>
+          </expand>
+          <select />
+        </subPane>
+      </pane>
+    </panes>
+  </component>
+  <component name="PropertiesComponent">
+    <property name="DatabaseDriversLRU" value="mysql" />
+    <property name="DefaultHtmlFileTemplate" value="HTML File" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="false" />
+    <property name="aspect.path.notification.shown" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/src/main/webapp/images" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.tslint" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.tslint" value="project" />
+    <property name="node.js.selected.package.eslint" value="(autodetect)" />
+    <property name="node.js.selected.package.tslint" value="(autodetect)" />
+    <property name="nodejs_interpreter_path.stuck_in_default_project" value="undefined stuck path" />
+    <property name="nodejs_npm_path_reset_for_default_project" value="true" />
+    <property name="settings.editor.selected.configurable" value="Errors" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="D:\mysoft\softdata\Chat\src\main\webapp\images" />
+      <recent name="D:\mysoft\softdata\Chat\src\main\java" />
+      <recent name="D:\mysoft\softdata\Chat\src\main\resource\mappers" />
+    </key>
+  </component>
+  <component name="RunDashboard">
+    <option name="ruleStates">
+      <list>
+        <RuleState>
+          <option name="name" value="ConfigurationTypeDashboardGroupingRule" />
+        </RuleState>
+        <RuleState>
+          <option name="name" value="StatusDashboardGroupingRule" />
+        </RuleState>
+      </list>
+    </option>
+  </component>
+  <component name="RunManager" selected="Tomcat Server.Tomcat 9.0.19">
+    <configuration name="FileUtil" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.hzq.utils.FileUtil" />
+      <module name="Chat" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.hzq.utils.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <configuration name="Tomcat 9.0.19" type="#com.intellij.j2ee.web.tomcat.TomcatRunConfigurationFactory" factoryName="Local" APPLICATION_SERVER_NAME="Tomcat 9.0.19" ALTERNATIVE_JRE_ENABLED="false" nameIsGenerated="true">
+      <option name="UPDATE_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="HOT_SWAP_CLASSES_ON_FRAME_DEACTIVATION" value="true" />
+      <option name="UPDATING_POLICY" value="hot-swap-classes" />
+      <deployment>
+        <artifact name="Chat:war">
+          <settings>
+            <option name="CONTEXT_PATH" value="/Chat_war" />
+          </settings>
+        </artifact>
+      </deployment>
+      <server-settings>
+        <option name="BASE_DIRECTORY_NAME" value="Unnamed_Chat" />
+      </server-settings>
+      <predefined_log_file enabled="true" id="Tomcat" />
+      <predefined_log_file enabled="true" id="Tomcat Catalina" />
+      <predefined_log_file id="Tomcat Manager" />
+      <predefined_log_file id="Tomcat Host Manager" />
+      <predefined_log_file id="Tomcat Localhost Access" />
+      <RunnerSettings RunnerId="Debug">
+        <option name="DEBUG_PORT" value="56937" />
+      </RunnerSettings>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Cover">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Debug">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <ConfigurationWrapper VM_VAR="JAVA_OPTS" RunnerId="Run">
+        <option name="USE_ENV_VARIABLES" value="true" />
+        <STARTUP>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </STARTUP>
+        <SHUTDOWN>
+          <option name="USE_DEFAULT" value="true" />
+          <option name="SCRIPT" value="" />
+          <option name="VM_PARAMETERS" value="" />
+          <option name="PROGRAM_PARAMETERS" value="" />
+        </SHUTDOWN>
+      </ConfigurationWrapper>
+      <method v="2">
+        <option name="Make" enabled="true" />
+        <option name="BuildArtifacts" enabled="true">
+          <artifact name="Chat:war" />
+        </option>
+      </method>
+    </configuration>
+    <list>
+      <item itemvalue="Application.FileUtil" />
+      <item itemvalue="Tomcat Server.Tomcat 9.0.19" />
+    </list>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.FileUtil" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SshConsoleOptionsProvider">
+    <option name="myEncoding" value="UTF-8" />
+  </component>
+  <component name="SvnConfiguration">
+    <configuration />
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="9289d6be-d09c-4ccc-bde5-c23b38927a37" name="Default Changelist" comment="" />
+      <created>1569599646626</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1569599646626</updated>
+      <workItem from="1569599650358" duration="2150000" />
+      <workItem from="1569640195374" duration="4253000" />
+      <workItem from="1569738585236" duration="2583000" />
+      <workItem from="1569803889032" duration="31043000" />
+      <workItem from="1569895247711" duration="11237000" />
+      <workItem from="1569976986572" duration="24634000" />
+      <workItem from="1570064250805" duration="27319000" />
+      <workItem from="1570150158469" duration="17293000" />
+      <workItem from="1570188798315" duration="10967000" />
+      <workItem from="1570235130832" duration="42321000" />
+      <workItem from="1570323820887" duration="599000" />
+      <workItem from="1570411495162" duration="13815000" />
+      <workItem from="1570517214332" duration="1352000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TimeTrackingManager">
+    <option name="totallyTimeSpent" value="228053000" />
+  </component>
+  <component name="ToolWindowManager">
+    <frame x="-7" y="-7" width="1295" height="695" extended-state="7" />
+    <editor active="true" />
+    <layout>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.23481782" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Alibaba Cloud Explorer" order="7" />
+      <window_info id="Learn" order="8" />
+      <window_info id="Web" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.053475935" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Java Enterprise" order="8" weight="0.43850267" />
+      <window_info anchor="bottom" id="Terminal" order="9" weight="0.5561497" />
+      <window_info anchor="bottom" id="Docker" order="10" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="11" side_tool="true" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="13" />
+      <window_info anchor="bottom" id="Alibaba Cloud View" order="14" />
+      <window_info anchor="bottom" id="Application Servers" order="15" weight="0.62633455" />
+      <window_info anchor="bottom" id="Messages" order="16" weight="0.21033868" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="PlantUML" order="4" />
+      <window_info anchor="right" id="Palette" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Database" order="7" visible="true" weight="0.024291499" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Alibaba Log Console" order="10" />
+      <window_info anchor="right" id="Alibaba Function Compute" order="11" />
+      <window_info anchor="right" id="Bean Validation" order="12" />
+    </layout>
+    <layout-to-restore>
+      <window_info active="true" content_ui="combo" id="Project" order="0" visible="true" weight="0.30145866" />
+      <window_info id="Structure" order="1" side_tool="true" weight="0.25" />
+      <window_info id="Designer" order="2" />
+      <window_info id="Image Layers" order="3" />
+      <window_info id="Capture Tool" order="4" />
+      <window_info id="UI Designer" order="5" />
+      <window_info id="Favorites" order="6" side_tool="true" />
+      <window_info id="Alibaba Cloud Explorer" order="7" />
+      <window_info id="Learn" order="8" />
+      <window_info id="Web" order="9" side_tool="true" />
+      <window_info anchor="bottom" id="Message" order="0" />
+      <window_info anchor="bottom" id="Find" order="1" />
+      <window_info anchor="bottom" id="Run" order="2" weight="0.3985765" />
+      <window_info anchor="bottom" id="Debug" order="3" weight="0.4" />
+      <window_info anchor="bottom" id="Cvs" order="4" weight="0.25" />
+      <window_info anchor="bottom" id="Inspection" order="5" weight="0.4" />
+      <window_info anchor="bottom" id="TODO" order="6" />
+      <window_info anchor="bottom" id="Spring" order="7" />
+      <window_info anchor="bottom" id="Terminal" order="8" />
+      <window_info anchor="bottom" id="Docker" order="9" show_stripe_button="false" />
+      <window_info anchor="bottom" id="Event Log" order="10" side_tool="true" />
+      <window_info anchor="bottom" id="Java Enterprise" order="11" />
+      <window_info anchor="bottom" id="Database Changes" order="12" />
+      <window_info anchor="bottom" id="Version Control" order="13" />
+      <window_info anchor="bottom" id="Alibaba Cloud View" order="14" />
+      <window_info anchor="bottom" id="Application Servers" order="15" weight="0.62633455" />
+      <window_info anchor="bottom" id="Messages" order="16" weight="0.053380784" />
+      <window_info anchor="right" id="Commander" internal_type="SLIDING" order="0" type="SLIDING" weight="0.4" />
+      <window_info anchor="right" id="Ant Build" order="1" weight="0.25" />
+      <window_info anchor="right" content_ui="combo" id="Hierarchy" order="2" weight="0.25" />
+      <window_info anchor="right" id="Maven" order="3" />
+      <window_info anchor="right" id="PlantUML" order="4" />
+      <window_info anchor="right" id="Palette" order="5" />
+      <window_info anchor="right" id="Capture Analysis" order="6" />
+      <window_info anchor="right" id="Database" order="7" />
+      <window_info anchor="right" id="Palette&#9;" order="8" />
+      <window_info anchor="right" id="Theme Preview" order="9" />
+      <window_info anchor="right" id="Alibaba Log Console" order="10" />
+      <window_info anchor="right" id="Alibaba Function Compute" order="11" />
+    </layout-to-restore>
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="1" />
+  </component>
+  <component name="editorHistoryManager">
+    <entry file="jar://$MAVEN_REPOSITORY$/javax/servlet/javax.servlet-api/3.1.0/javax.servlet-api-3.1.0.jar!/javax/servlet/http/HttpServlet.class">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <folding>
+            <element signature="e#0#9302#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/domain/Group.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="290">
+          <caret line="60" column="42" selection-start-line="60" selection-start-column="42" selection-end-line="60" selection-end-column="42" />
+          <folding>
+            <element signature="e#1075#1076#0" expanded="true" />
+            <element signature="e#1109#1110#0" expanded="true" />
+            <element signature="e#1163#1164#0" expanded="true" />
+            <element signature="e#1209#1210#0" expanded="true" />
+            <element signature="e#1298#1299#0" expanded="true" />
+            <element signature="e#1364#1365#0" expanded="true" />
+            <element signature="e#1422#1423#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/MessageDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="13" column="17" selection-start-line="13" selection-start-column="17" selection-end-line="13" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupMessageToUserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="193">
+          <caret line="17" column="64" selection-start-line="17" selection-start-column="64" selection-end-line="17" selection-end-column="64" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupMessageContentDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="287">
+          <caret line="49" column="54" selection-start-line="49" selection-start-column="54" selection-end-line="49" selection-end-column="54" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="181">
+          <caret line="74" column="29" lean-forward="true" selection-start-line="74" selection-start-column="29" selection-end-line="74" selection-end-column="29" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="156">
+          <caret line="37" column="18" lean-forward="true" selection-start-line="37" selection-start-column="18" selection-end-line="37" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/GroupService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="275">
+          <caret line="42" column="27" selection-start-line="42" selection-start-column="27" selection-end-line="42" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/GroupToUserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="34" column="18" selection-start-line="34" selection-start-column="8" selection-end-line="34" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/domain/GroupToUser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="13" column="9" selection-start-line="12" selection-end-line="13" selection-end-column="28" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/interceptors/TokenInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="21" column="59" selection-start-line="21" selection-start-column="30" selection-end-line="21" selection-end-column="59" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/interceptors/AuthInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="106">
+          <caret line="17" column="62" lean-forward="true" selection-start-line="17" selection-start-column="29" selection-end-line="17" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/interceptors/LoginInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="175">
+          <caret line="16" column="20" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="29" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/GroupToUserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-94">
+          <caret line="31" column="21" selection-start-line="31" selection-start-column="21" selection-end-line="31" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/GroupController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="291">
+          <caret line="29" column="27" selection-start-line="29" selection-start-column="27" selection-end-line="29" selection-end-column="27" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/domain/Friend.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1241">
+          <caret line="85" column="34" selection-start-line="85" selection-start-column="34" selection-end-line="85" selection-end-column="34" />
+          <folding>
+            <element signature="e#1790#1791#0" expanded="true" />
+            <element signature="e#1839#1840#0" expanded="true" />
+            <element signature="e#1879#1880#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/GroupMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-50">
+          <caret line="27" column="22" lean-forward="true" selection-start-line="27" selection-start-column="22" selection-end-line="27" selection-end-column="22" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/UserInfoDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="424">
+          <caret line="48" column="26" selection-start-line="48" selection-start-column="13" selection-end-line="48" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/UserInfoMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="199">
+          <caret line="65" lean-forward="true" selection-start-line="65" selection-end-line="65" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/FriendService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="191">
+          <caret line="35" column="66" lean-forward="true" selection-start-line="35" selection-start-column="50" selection-end-line="35" selection-end-column="66" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupMessageContentServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="166">
+          <caret line="18" column="13" selection-start-line="18" selection-start-column="13" selection-end-line="18" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/FriendDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-90">
+          <caret line="34" column="21" lean-forward="true" selection-start-line="34" selection-start-column="21" selection-end-line="34" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/FriendServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="399">
+          <caret line="69" column="32" selection-start-line="69" selection-start-column="32" selection-end-line="69" selection-end-column="32" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/FriendController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="318">
+          <caret line="90" lean-forward="true" selection-start-line="90" selection-end-line="90" />
+          <folding>
+            <element signature="e#1011#1012#0" expanded="true" />
+            <element signature="e#1062#1063#0" expanded="true" />
+            <element signature="e#1354#1355#0" expanded="true" />
+            <element signature="e#1405#1406#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/UserInfoService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1050">
+          <caret line="43" column="7" selection-start-line="43" selection-start-column="7" selection-end-line="43" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/ApplyController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1675">
+          <caret line="80" selection-start-line="80" selection-end-line="80" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/ApplyService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="400">
+          <caret line="20" column="47" selection-start-line="20" selection-start-column="47" selection-end-line="20" selection-end-column="47" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/ApplyDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="375">
+          <caret line="19" column="21" selection-start-line="19" selection-start-column="21" selection-end-line="19" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/ApplyMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1100">
+          <caret line="44" column="7" selection-start-line="44" selection-start-column="7" selection-end-line="44" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/FriendMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="350">
+          <caret line="14" column="31" selection-start-line="14" selection-start-column="31" selection-end-line="14" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/ApplyServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="686">
+          <caret line="43" column="13" lean-forward="true" selection-start-line="43" selection-start-column="13" selection-end-line="43" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/GroupToUserMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="817">
+          <caret line="51" column="9" lean-forward="true" selection-start-line="51" selection-start-column="9" selection-end-line="51" selection-end-column="9" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/mappers/UserMapper.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="200">
+          <caret line="41" column="27" selection-start-line="41" selection-start-column="27" selection-end-line="41" selection-end-column="27" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/dao/UserDao.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="260">
+          <caret line="33" column="15" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/UserService.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="361">
+          <caret line="58" column="21" selection-start-line="58" selection-start-column="21" selection-end-line="58" selection-end-column="21" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupMessageToUserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-275">
+          <caret line="1" selection-start-line="1" selection-end-line="1" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/UserInfoController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1028">
+          <caret line="51" column="45" selection-start-line="51" selection-start-column="45" selection-end-line="51" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/GroupToUserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="525">
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/UserInfoServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-314">
+          <caret line="19" selection-start-line="19" selection-end-line="19" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/GroupToUserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="297">
+          <caret line="48" column="21" selection-start-line="48" selection-start-column="21" selection-end-line="48" selection-end-column="21" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#1504#1505#0" expanded="true" />
+            <element signature="e#1560#1561#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/service/Impl/UserServiceImpl.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="184">
+          <caret line="146" column="13" lean-forward="true" selection-start-line="146" selection-start-column="13" selection-end-line="146" selection-end-column="13" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="method#register#0;class#UserServiceImpl#0" />
+            <element signature="method#login#0;class#UserServiceImpl#0" />
+            <element signature="method#updatePassword#0;class#UserServiceImpl#0" />
+            <element signature="method#updateStatus#0;class#UserServiceImpl#0" />
+            <element signature="method#deleteUserByPrimaryId#0;class#UserServiceImpl#0" />
+            <element signature="method#checkValid#0;class#UserServiceImpl#0" />
+            <element signature="method#MessageSubgroup#0;class#UserServiceImpl#0" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyHandShakeInterceptor.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="450">
+          <caret line="27" column="44" selection-start-line="27" selection-start-column="44" selection-end-line="27" selection-end-column="44" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="775">
+          <caret line="36" column="26" selection-start-line="36" selection-start-column="26" selection-end-line="36" selection-end-column="26" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/MyWebSocketHandler.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="2425">
+          <caret line="117" column="1" selection-start-line="117" selection-start-column="1" selection-end-line="117" selection-end-column="1" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/common/Const.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="36" column="49" selection-start-line="36" selection-start-column="31" selection-end-line="36" selection-end-column="49" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/WebsocketServer.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="150">
+          <caret line="12" column="13" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/webSocket/WebSocketConfig.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="900">
+          <caret line="40" column="96" selection-start-line="40" selection-start-column="96" selection-end-line="40" selection-end-column="96" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resource/SpringMVC.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1500">
+          <caret line="60" column="52" selection-start-line="60" selection-start-column="52" selection-end-line="60" selection-end-column="52" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/webapp/index.jsp">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="950">
+          <caret line="38" column="15" selection-start-line="38" selection-start-column="15" selection-end-line="38" selection-end-column="15" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/UserController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-575">
+          <caret line="25" selection-start-line="25" selection-end-line="25" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/hzq/controller/GreetingController.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="222">
+          <caret line="17" selection-start-line="17" selection-end-line="17" selection-end-column="15" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+  </component>
+  <component name="masterDetails">
+    <states>
+      <state key="ProjectJDKs.UI">
+        <settings>
+          <last-edited>1.8</last-edited>
+          <splitter-proportions>
+            <option name="proportions">
+              <list>
+                <option value="0.2" />
+              </list>
+            </option>
+          </splitter-proportions>
+        </settings>
+      </state>
+    </states>
+  </component>
+</project>

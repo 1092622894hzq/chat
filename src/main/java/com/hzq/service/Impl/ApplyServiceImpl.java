@@ -1,0 +1,60 @@
+package com.hzq.service.Impl;
+
+import com.hzq.common.Const;
+import com.hzq.common.ServerResponse;
+import com.hzq.dao.ApplyDao;
+import com.hzq.dao.UserInfoDao;
+import com.hzq.domain.Apply;
+import com.hzq.domain.UserInfo;
+import com.hzq.service.ApplyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
+
+/**
+ * @Auther: blue
+ * @Date: 2019/10/2
+ * @Description: com.hzq.service.Impl
+ * @version: 1.0
+ */
+@Service("applyService")
+public class ApplyServiceImpl implements ApplyService {
+
+    @Autowired
+    private ApplyDao applyDao;
+
+    @Override
+    public ServerResponse<String> insert(Apply apply) {
+        if (applyDao.insert(apply) == 0) {
+            return ServerResponse.createByErrorMessage("插入申请失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> delete(Apply apply) {
+        if (applyDao.delete(apply) == 0) {
+            return ServerResponse.createByErrorMessage("删除申请失败");
+        }
+        applyDao.bothDelete(Const.DELETE);
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> update(Apply apply) {
+        if (applyDao.update(apply) == 0) {
+            return ServerResponse.createByErrorMessage("更新申请失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<List<Apply>> selectAll(Integer id) {
+        List<Apply> applies = applyDao.selectAll(id);
+        if ( applies == null) {
+            return ServerResponse.createByErrorMessage("查询不到好友申请");
+        }
+        return ServerResponse.createBySuccess(applies);
+    }
+}
