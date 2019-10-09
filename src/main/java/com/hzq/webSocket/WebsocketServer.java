@@ -29,9 +29,9 @@ public class WebsocketServer {
     @OnMessage
     public void onMessage(Session session,String msg) throws IOException {
 //        for(WebsocketServer server:Users.user.values()){
-//            server.session.getBasicRemote().sendText(msg);
+//            server.session.getBasicRemote().sendText(Content);
 //        }
-        System.out.println("msg:"+":"+msg);
+        System.out.println("Content:"+":"+msg);
     }
 
     @OnClose

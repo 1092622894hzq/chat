@@ -22,11 +22,18 @@ public interface ApplyDao {
     int insert(Apply apply);
 
     /**
-     * 修改删除标志
+     * 删除
      * @param apply 修改的申请
      * @return 返回修改次数
      */
     int delete(Apply apply);
+
+    /**
+     * 根据用户id删除所有好友申请
+     * @param useId 用户id
+     * @return 返回修改次数
+     */
+    int deleteById(Integer useId);
 
     /**
      * 更新申请状态
@@ -35,18 +42,12 @@ public interface ApplyDao {
      */
     int update(Apply apply);
 
-    /**
-     * 删除申请信息
-     * @param delete 删除的状态
-     * @return 返回修改次数
-     */
-    int bothDelete(Integer delete);
 
     /**
      * 根据用户id查询所有用户
-     * @param id 用户id
+     * @param userId 用户id
      * @return 返回申请集合
      */
-    List<Apply> selectAll(@Param("id") Integer id);
+    List<Apply> selectAll(@Param("userId") Integer userId);
 
 }

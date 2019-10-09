@@ -1,6 +1,8 @@
 package com.hzq.webSocket;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.messaging.simp.config.ChannelRegistration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;
 import org.springframework.web.socket.config.annotation.AbstractWebSocketMessageBrokerConfigurer;
 import org.springframework.web.socket.config.annotation.EnableWebSocketMessageBroker;
@@ -16,7 +18,10 @@ import org.springframework.web.socket.config.annotation.StompEndpointRegistry;
 @EnableWebSocketMessageBroker
 public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
 
-
+    @Override
+    public void configureClientInboundChannel(ChannelRegistration registration) {
+        registration.setInterceptors(getMyChannelInterceptor());
+    }
 
     /**
      * 将"/hello"路径注册为STOMP端点，这个路径与发送和接收消息的目的路径有所不同，
@@ -37,9 +42,17 @@ public class WebSocketConfig extends AbstractWebSocketMessageBrokerConfigurer {
     @Override
     public void configureMessageBroker(MessageBrokerRegistry registry) {
         //应用程序以/app为前缀，代理目的地以/topic、/user为前缀
-        registry.enableSimpleBroker("/topic", "/user");//这句话表示在topic和user这两个域上可以向客户端发消息。
-        registry.setApplicationDestinationPrefixes("/app");//这句话表示客户单向服务器端发送时的主题上面需要加"/app"作为前缀。
-        registry.setUserDestinationPrefix("/user"); //这句话表示给指定用户发送一对一的主题前缀是"/user"。
+        //这句话表示在topic和user这两个域上可以向客户端发消息。
+        registry.enableSimpleBroker("/topic", "/user");
+        //这句话表示客户单向服务器端发送时的主题上面需要加"/app"作为前缀。
+        registry.setApplicationDestinationPrefixes("/app");
+        //这句话表示给指定用户发送一对一的主题前缀是"/user"。
+        registry.setUserDestinationPrefix("/user");
+    }
+
+    @Bean
+    public MyChannelInterceptor getMyChannelInterceptor() {
+        return new MyChannelInterceptor();
     }
 
 }

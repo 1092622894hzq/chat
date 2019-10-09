@@ -16,7 +16,7 @@ public interface MessageService {
 
     ServerResponse<String> insert(Message message);
 
-    ServerResponse<String> deleteMessageByUserId(Message message);
+    ServerResponse<String> deleteMessageById(Integer id);
 
     ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId);
 

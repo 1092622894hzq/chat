@@ -1,11 +1,11 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.Const;
+
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.ApplyDao;
-import com.hzq.dao.UserInfoDao;
+
 import com.hzq.domain.Apply;
-import com.hzq.domain.UserInfo;
+
 import com.hzq.service.ApplyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -29,6 +29,14 @@ public class ApplyServiceImpl implements ApplyService {
         if (applyDao.insert(apply) == 0) {
             return ServerResponse.createByErrorMessage("插入申请失败");
         }
+        if (apply.getFromId().intValue() ==  apply.getUserId().intValue()){
+            apply.setUserId(apply.getToId());
+        } else {
+            apply.setUserId(apply.getFromId());
+        }
+        if (applyDao.insert(apply) == 0) {
+            return ServerResponse.createByErrorMessage("插入申请失败");
+        }
         return ServerResponse.createBySuccess();
     }
 
@@ -37,12 +45,26 @@ public class ApplyServiceImpl implements ApplyService {
         if (applyDao.delete(apply) == 0) {
             return ServerResponse.createByErrorMessage("删除申请失败");
         }
-        applyDao.bothDelete(Const.DELETE);
         return ServerResponse.createBySuccess();
     }
 
     @Override
+    public ServerResponse<String> deleteById(Integer userId) {
+        if (applyDao.deleteById(userId) == 0) {
+            return ServerResponse.createBySuccessMessage("没有申请可修改");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+
+    @Override
     public ServerResponse<String> update(Apply apply) {
+        if (applyDao.update(apply) == 0) {
+            return ServerResponse.createByErrorMessage("更新申请失败");
+        }
+        Integer fromId = apply.getFromId();
+        apply.setFromId(apply.getToId());
+        apply.setToId(fromId);
         if (applyDao.update(apply) == 0) {
             return ServerResponse.createByErrorMessage("更新申请失败");
         }

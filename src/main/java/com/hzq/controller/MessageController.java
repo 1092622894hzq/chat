@@ -26,35 +26,19 @@ public class MessageController {
     private MessageService messageService;
 
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    //暂时认为toid由安卓安放
     public ServerResponse<String> insert(HttpSession session, Message message) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         message.setMessageFromId(user.getId());
         message.setMessageStatus(Const.MARK_AS_READ);
         message.setMessageType(Const.TEXT);
         message.setMessageGroup(Const.DEFAULT_GROUP);
-        if (message.getMessageToId() != null && message.getMessageToId() > user.getId()) {
-            message.setBigIdDelete(message.getMessageToId());
-            message.setSmallIdDelete(user.getId());
-        } else {
-            message.setBigIdDelete(user.getId());
-            message.setSmallIdDelete(message.getMessageToId());
-        }
+        message.setUserId(user.getId());
         return messageService.insert(message);
     }
 
-    @RequestMapping("/delete")
-    public ServerResponse<String> deleteMessageByUserId(HttpSession session, Message message) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        message.setId(user.getId());
-        if (message.getMessageToId() != null && message.getMessageToId() > user.getId()) {
-            message.setBigIdDelete(message.getMessageToId());
-            message.setSmallIdDelete(user.getId());
-        } else {
-            message.setBigIdDelete(user.getId());
-            message.setSmallIdDelete(message.getMessageToId());
-        }
-        return messageService.deleteMessageByUserId(message);
+    @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteMessageById(@PathVariable("id") Integer id) {
+        return messageService.deleteMessageById(id);
     }
 
     @RequestMapping(value = "query", method = RequestMethod.POST)

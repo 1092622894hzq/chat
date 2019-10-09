@@ -27,12 +27,20 @@ public class MessageServiceImpl implements MessageService {
         if (messageDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("插入消息失败");
         }
+        if (message.getMessageFromId().intValue() == message.getUserId().intValue()) {
+            message.setUserId(message.getMessageToId());
+        } else {
+            message.setUserId(message.getMessageFromId());
+        }
+        if (messageDao.insert(message) == 0) {
+            return ServerResponse.createByErrorMessage("插入消息失败");
+        }
         return ServerResponse.createBySuccess();
     }
 
     @Override
-    public ServerResponse<String> deleteMessageByUserId(Message message) {
-        if (messageDao.deleteMessageByUserId(message) == 0) {
+    public ServerResponse<String> deleteMessageById(Integer id) {
+        if (messageDao.deleteMessageById(id) == 0) {
             return ServerResponse.createByErrorMessage("删除聊天记录失败");
         }
         return ServerResponse.createBySuccess();
@@ -55,7 +63,7 @@ public class MessageServiceImpl implements MessageService {
         if (messages.size() == 1) {
             messageDao.updateOneMessage(messages.get(0).getId(),Const.MARK_AS_READ);
         } else {
-            messageDao.update(messages.get(messages.size()-1).getId(),messages.get(0).getId(),Const.MARK_AS_READ);
+          //.....
         }
         return ServerResponse.createBySuccess(messages);
     }

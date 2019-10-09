@@ -13,35 +13,24 @@
         <result column="message_to_id" jdbcType="INTEGER" property="messageToId"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="big_id_delete" jdbcType="INTEGER" property="bigIdDelete"/>
-        <result column="small_id_delete" jdbcType="INTEGER" property="smallIdDelete"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
 <insert id="insert" parameterType="com.hzq.domain.Message"  useGeneratedKeys="true" keyProperty="id">
     insert into message (
     message_content, message_status, message_group, message_type, message_from_id,
-    message_to_id, big_id_delete, small_id_delete
+    message_to_id, user_id
     )
     values ( #{messageContent, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER}, #{messageGroup, jdbcType = VARCHAR},
             #{messageType, jdbcType = INTEGER}, #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER },
-             #{bigIdDelete, jdbcType = INTEGER}, #{smallIdDelete, jdbcType = INTEGER}
+             #{userId, jdbcType = INTEGER}
     )
 </insert>
 
-<update id="deleteMessageByUserId" parameterType="com.hzq.domain.Message">
-    update message
-    <set>
-        <choose>
-            <when test="bigIdDelete != null">
-                big_id_delete = -1,
-            </when>
-            <when test="smallIdDelete != null">
-                small_id_delere = -1,
-            </when>
-        </choose>
-    </set>
-    where message_from_id = #{id, jdbcType = INTEGER} or message_to_id = #{id, jdbcType = INTEGER}
-</update>
+<delete id="deleteMessageById" parameterType="java.lang.Integer">
+    delete from message
+    where id = #{id, jdbcType = INTEGER}
+</delete>
 
 <select id="queryMessageByUserIdAndFriendId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from message where (
@@ -57,25 +46,13 @@
      message_from_id = #{friendId, jdbcType = INTEGER}
      )
      )
-     and (
-     big_id_delete = #{userId, jdbcType = INTEGER}
-     or
-     small_id_delere = #{userId, jdbcType = INTEGER}
-     )
+
 
 </select>
 
 <select id="queryUnreadMessageByUserId" resultMap="BaseResultMap">
-    select * from message where (
-    message_from_id = #{userId, jdbcType =INTEGER}
-    or
-    message_to_id = #{userId, jdbcType = INTEGER}
-    )
-    and (
-     big_id_delete = #{userId, jdbcType = INTEGER}
-     or
-     small_id_delete = #{userId, jdbcType = INTEGER}
-     )
+    select * from message where
+    user_id = #{userId, jdbcType = INTEGER}
     and  message_status = #{messageStatus, jdbcType = INTEGER}
 </select>
 
@@ -87,6 +64,7 @@
 <update id="update" parameterType="java.lang.Integer">
     update message set message_status = #{read, jdbcType = INTEGER}
     where (id between #{smallId, jdbcType = INTEGER} and  #{bigId, jdbcType = INTEGER})
+    and 
 </update>
 
 </mapper>

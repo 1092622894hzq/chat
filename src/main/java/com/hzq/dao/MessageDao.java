@@ -22,10 +22,10 @@ public interface MessageDao {
 
     /**
      * 根据消息删除消息
-     * @param message 消息
+     * @param id 消息id
      * @return 返回修改次数
      */
-    int deleteMessageByUserId(@Param("message") Message message);
+    int deleteMessageById(@Param("id") Integer id);
 
     /**
      * 根据用户id和好友id查询聊天记录

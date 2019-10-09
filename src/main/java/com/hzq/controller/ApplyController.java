@@ -5,6 +5,7 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.domain.User;
 import com.hzq.service.ApplyService;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -30,14 +31,9 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody Apply apply) {
-        if (apply.getFromId() > apply.getToId()) {
-            apply.setBigIdDelete(apply.getFromId());
-            apply.setSmallIdDelete(apply.getToId());
-        } else {
-            apply.setBigIdDelete(apply.getToId());
-            apply.setSmallIdDelete(apply.getFromId());
-        }
+    public ServerResponse<String> insert(@RequestBody Apply apply, HttpSession session) {
+        User user = (User)session.getAttribute(Const.CURRENT_USER);
+        apply.setUserId(user.getId());
         return applyService.insert(apply);
     }
 
@@ -50,18 +46,18 @@ public class ApplyController {
     @RequestMapping(value = "/delete", method = RequestMethod.POST)
     public ServerResponse<String> delete(@RequestBody Apply apply, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
-        apply.setId(user.getId());
-        if (apply.getFromId().equals(user.getId()) && user.getId() > apply.getToId()) {
-            apply.setBigIdDelete(Const.DELETE);
-        } else {
-            apply.setSmallIdDelete(Const.DELETE);
-        }
-        if (apply.getToId().equals(user.getId()) && user.getId() > apply.getFromId()) {
-            apply.setSmallIdDelete(Const.DELETE);
-        } else {
-            apply.setSmallIdDelete(Const.DELETE);
-        }
+        apply.setUserId(user.getId());
         return applyService.delete(apply);
+    }
+
+    /**
+     * 根据用户id删除所有好友申请
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/delete/{userId}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteById(@PathVariable Integer userId) {
+        return applyService.deleteById(userId);
     }
 
     /**

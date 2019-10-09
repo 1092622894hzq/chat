@@ -16,8 +16,7 @@ public class Apply {
     private Integer applyStatus;
     private Timestamp gmtCreate;
     private Timestamp gmtModified;
-    private Integer bigIdDelete;
-    private Integer smallIdDelete;
+    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -75,19 +74,11 @@ public class Apply {
         this.gmtModified = gmtModified;
     }
 
-    public Integer getBigIdDelete() {
-        return bigIdDelete;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setBigIdDelete(Integer bigIdDelete) {
-        this.bigIdDelete = bigIdDelete;
-    }
-
-    public Integer getSmallIdDelete() {
-        return smallIdDelete;
-    }
-
-    public void setSmallIdDelete(Integer smallIdDelete) {
-        this.smallIdDelete = smallIdDelete;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
     }
 }

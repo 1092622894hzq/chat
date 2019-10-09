@@ -134,13 +134,20 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("删除用户失败");
         }
         //1.删除用户信息
+        if (userInfoDao.deleteUserInfoByPrimaryId(id) == 0) {
+            return ServerResponse.createByErrorMessage("删除用户个人失败");
+        }
         //2.删除用户和私人聊天的记录
         //3.从群聊中移除用户
         //4.删除好友申请记录
+        applyDao.deleteById(id);
         //5.从群聊消息和群用户的关联中移除用户
         //6.用户为群主的直接删除群聊
         //7.删除所有好友
-
+        if (friendDao.deleteById(id) == 0) {
+            return ServerResponse.createByErrorMessage("删除用户好友失败");
+        }
+        //通知好友被删除了
         return ServerResponse.createBySuccess();
     }
 

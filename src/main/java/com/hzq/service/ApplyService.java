@@ -14,12 +14,39 @@ import java.util.List;
  */
 public interface ApplyService {
 
+    /**
+     * 添加好友申请
+     * @param apply 好友申请信息
+     * @return 返回通用对象
+     */
     ServerResponse<String> insert(Apply apply);
 
+    /**
+     * 根据用户id和好友id删除好友申请
+     * @param apply 好友申请信息
+     * @return 返回通用对象
+     */
     ServerResponse<String> delete(Apply apply);
 
+    /**
+     * 根据用户id删除所有好友申请
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> deleteById(Integer userId);
+
+    /**
+     * 根据用户id和好友id更新申请状态
+     * @param apply 申请信息
+     * @return 返回通用对象
+     */
     ServerResponse<String> update(Apply apply);
 
-    ServerResponse<List<Apply>> selectAll(Integer id);
+    /**
+     * 根据用户id查询所有好友申请
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
+    ServerResponse<List<Apply>> selectAll(Integer userId);
 
 }

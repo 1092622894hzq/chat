@@ -37,6 +37,13 @@ public interface FriendDao {
     int delete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 
     /**
+     * 根据用户id删除所有好友
+     * @param userId 用户id
+     * @return 返回修改次数
+     */
+    int deleteById(@Param("userId") Integer userId);
+
+    /**
      * 查询所有好友
      * @param userId 用户主表id
      * @param isDelete 判断是否被好友删除了
