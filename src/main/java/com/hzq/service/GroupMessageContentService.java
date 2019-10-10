@@ -4,6 +4,7 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.GroupMessageContent;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -41,5 +42,12 @@ public interface GroupMessageContentService {
      * @return 返回通用对象
      */
     ServerResponse<List<GroupMessageContent>> selectUnread(Integer userId,Integer groupId);
+
+    /**
+     * 获取所有群未读的群聊消息
+     * @param userId 用户id
+     * @return 返回群聊消息的map通用对象
+     */
+    ServerResponse<Map<Integer,List<GroupMessageContent>>> selectAllUnread(Integer userId);
 
 }

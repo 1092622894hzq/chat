@@ -4,19 +4,27 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hzq.common.Const;
 import com.hzq.common.CustomGenericException;
-import com.hzq.domain.Message;
-import com.hzq.service.MessageService;
-import com.hzq.service.UserService;
+import com.hzq.common.ResponseCode;
+import com.hzq.common.ServerResponse;
+import com.hzq.domain.*;
+import com.hzq.service.*;
+import com.hzq.utils.FileUtil;
+import com.hzq.vo.GroupMessageAndGroupToUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -33,6 +41,12 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
 
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private GroupMessageContentService groupMessageContentService;
+    @Autowired
+    private GroupToUserService groupToUserService;
+    @Autowired
+    private GroupMessageToUserService groupMessageToUserService;
     //日志打印
     private static Logger LOGGER;
     //存储用户的连接
@@ -51,7 +65,6 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
     }
 
 
-
     //接收到WebSocket消息后的处理方法
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
@@ -59,18 +72,17 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
         if(webSocketMessage.getPayloadLength()==0)
             return ;
 
-        //得到Socket通道中的数据并转化为Message对象
-        Message msg=new Gson().fromJson(webSocketMessage.getPayload().toString(),Message.class);
+        //得到Socket通道中的数据并转化为Content对象
+        Content msg = new Gson().fromJson(webSocketMessage.getPayload().toString(), Content.class);
 
-        Timestamp now = new Timestamp(System.currentTimeMillis());
-        msg.setGmtCreate(now);
-        msg.setGmtModified(now);
-        msg.setMessageGroup(Const.DEFAULT_GROUP);
-          //将信息保存至数据库*/
-        messageService.insert(msg);
+        if (msg.getGroupId() == null) {
+            handlerGroupMessage(msg);
+        } else {
+            handlerUserMessage(msg);
+        }
 
         //发送Socket信息
-        sendMessageToUser(msg.getMessageToId(), new TextMessage(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(msg)));
+      //  sendMessageToUser(msg.getMessageToId(), new TextMessage(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(msg)));
     }
 
     //WebSocket传输发生错误时的处理方法
@@ -106,13 +118,64 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
         return false;
     }
 
+
+    public void handlerGroupMessage(Content content) {
+        GroupMessageContent message = new GroupMessageContent();
+        try {
+            message.setGroupId(content.getGroupId());
+            message.setGmFromId(content.getFromId());
+            message.setGmContent(content.getMessage());
+            message.setGmType(content.getType());
+        } catch (Exception e) {
+            throw new CustomGenericException(ResponseCode.MESSAGE_FORMAT_ERROR.getCode(),ResponseCode.MESSAGE_FORMAT_ERROR.getDesc());
+        }
+        groupMessageContentService.insert(message);
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        ServerResponse<List<GroupMessageAndGroupToUser>> list = groupToUserService.select(content.getGroupId());
+        try {
+            for (GroupMessageAndGroupToUser g : list.getData()) {
+                if (USER_SESSION_MAP.get(g.getUserId()) != null) {
+                    sendMessageToUser(g.getUserId(),new TextMessage(new GsonBuilder().setDateFormat(Const.STANDARD_FORMAT).create().toJson(message)));
+                    groupMessageToUserService.update(g.getUserId(),g.getGroupMessageId(),time);
+                }
+            }
+        }catch (IOException e) {
+            throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
+        }
+    }
+
+    public void handlerUserMessage(Content content) {
+        Integer userId = content.getToId();
+        Message message = new Message();
+        try{
+            message.setMessageContent(content.getMessage());
+            message.setMessageToId(content.getToId());
+            message.setMessageFromId(content.getFromId());
+            message.setUserId(content.getToId()); //先帮接收者插入信息
+            message.setMessageType(content.getType());
+        } catch (Exception e) {
+            throw new CustomGenericException(ResponseCode.MESSAGE_FORMAT_ERROR.getCode(),ResponseCode.MESSAGE_FORMAT_ERROR.getDesc());
+        }
+        if (USER_SESSION_MAP.get(userId) == null) {
+            message.setMessageStatus(Const.MARK_AS_UNREAD);
+        } else {
+            message.setMessageStatus(Const.MARK_AS_READ);
+            try {
+                sendMessageToUser(userId,new TextMessage(new GsonBuilder().setDateFormat(Const.STANDARD_FORMAT).create().toJson(message)));
+            } catch (IOException e) {
+                throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
+            }
+        }
+        messageService.insert(message);
+    }
+
     //发送信息的实现 私发
     public void sendMessageToUser(Integer uid, TextMessage message) throws IOException {
         WebSocketSession session = USER_SESSION_MAP.get(uid);
         if (session != null && session.isOpen()) {
             session.sendMessage(message);
         } else {
-            throw new CustomGenericException(40,"用户的session发生错误");
+            throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
         }
     }
 }

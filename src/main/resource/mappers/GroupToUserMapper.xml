@@ -12,6 +12,11 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
 
+    <resultMap id="ResultMap" type="com.hzq.vo.GroupMessageAndGroupToUser">
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="group_message_id" jdbcType = "INTEGER" property="groupMessageId"/>
+    </resultMap>
+
 <insert id="insert" parameterType="com.hzq.domain.GroupToUser"  useGeneratedKeys="true" keyProperty="id">
     insert into group_to_user (
         group_user_id, group_id, group_nickname
@@ -44,13 +49,32 @@
 
 <select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select * from group_to_user
-        <where>
-            group_user_id = #{groupUserId, jdbcType = INTEGER}
-            and
-            group_id = #{groupId, jdbcType = INTEGER}
-        </where>
+        where group_user_id = #{groupUserId, jdbcType = INTEGER}
+        and  group_id = #{groupId, jdbcType = INTEGER}
+</select>
+
+<select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select * from group_to_user
+        where group_id = #{groupId, jdbcType = INTEGER}
+</select>
+
+<select id="select" parameterType="java.lang.Integer" resultMap="ResultMap" >
+        select  gtu.user_id, gmtu.group_message_id from group_to_user gtu left join group_message_to_user gmtu
+        on gtu.group_user_id = gmtu.user_id
+        where gmtu.group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
 
 
+
+
 </mapper>
+
+
+
+
+
+
+
+
+

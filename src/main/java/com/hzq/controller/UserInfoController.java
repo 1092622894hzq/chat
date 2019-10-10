@@ -1,19 +1,14 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.User;
 import com.hzq.domain.UserInfo;
 import com.hzq.service.UserInfoService;
-import com.hzq.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 
 /**
  * @Auther: blue
@@ -72,30 +67,6 @@ public class UserInfoController {
     public ServerResponse<UserInfo> queryUserByName(@PathVariable String username) {
         return userInfoService.queryUserByName(username);
     }
-
-    /**
-     * 处理上传头像
-     * @param session 一次会话
-     * @param avatar 头像图片
-     * @return 返回通用对象
-     */
-    @RequestMapping( value = "/updateAvatar", method = RequestMethod.POST)
-    public ServerResponse<String> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
-            String fileName = System.currentTimeMillis()+avatar.getOriginalFilename();
-            try {
-                File dir = new File(Const.AVATAR_PATH,fileName);
-                FileUtil.ByteToPhoto(avatar.getBytes(),dir);
-            } catch (Exception e) {
-                throw new CustomGenericException(40, "上传文件出错了");
-            }
-            User user = (User) session.getAttribute(Const.CURRENT_USER);
-            UserInfo userInfo = new UserInfo();
-            userInfo.setUserId(user.getId());
-            userInfo.setAvatar(fileName);
-            ServerResponse<String> response = userInfoService.update(userInfo);
-            response.setData(fileName);
-            return response;
-        }
 
     /**
      * 找回密码

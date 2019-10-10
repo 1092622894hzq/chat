@@ -1,19 +1,15 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Group;
 import com.hzq.domain.User;
 import com.hzq.service.GroupService;
-import com.hzq.utils.FileUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
-import java.io.File;
 import java.util.List;
 
 /**
@@ -72,26 +68,6 @@ public class GroupController {
     }
 
 
-    /**
-     * 处理上传头像
-     * @param id 群id
-     * @param icon 头像图片
-     * @return 返回通用对象
-     */
-    @RequestMapping( value = "/updateIcon/{id}", method = RequestMethod.POST)
-    public ServerResponse<String> updateIcon(@RequestPart("icon") MultipartFile icon, @PathVariable Integer id){
-        String fileName = System.currentTimeMillis()+icon.getOriginalFilename();
-        try {
-            File dir = new File(Const.AVATAR_PATH,fileName);
-            FileUtil.ByteToPhoto(icon.getBytes(),dir);
-        } catch (Exception e) {
-            throw new CustomGenericException(40, "上传文件出错了");
-        }
-        Group group = new Group();
-        group.setGroupIcon(fileName);
-        group.setId(id);
-        return groupService.update(group);
-    }
 
 
 }

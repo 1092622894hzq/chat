@@ -28,11 +28,13 @@
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings', function(msg){
+                stompClient.subscribe('/topic/+'+userId, function(msg){
                     alert(msg);
                     alert(JSON.parse(msg.body));
                     showGreeting(JSON.parse(msg.body));
                 });
+
+                stompClient.subscribe("/topic/+"+ userId+"+");
 
                 stompClient.subscribe('/user/' + userId + '/message' ,function(msg){
                     alert(JSON.parse(msg.body));
@@ -43,9 +45,10 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            var payload = JSON.stringify({ 'message': name , 'toId' : name , 'fromId' : name});
-            stompClient.send("/app/hello", {atytopic:"greetings"}, payload );
-            stompClient.send('/user/message', {atytopic:"greetings"}, payload);
+            var payload = JSON.stringify({ 'message': name , 'toId' : name , 'fromId' : name , 'groupId' : name});
+           // stompClient.send("/app/hello", {atytopic:"greetings"}, payload );
+            stompClient.send('/app/groupTalk',{atytopic:"greetings"}, payload );
+            //stompClient.send('/user/message', {atytopic:"greetings"}, payload);
         }
 
         function connectAny() {

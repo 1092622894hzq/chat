@@ -5,6 +5,8 @@ import com.hzq.domain.Result;
 import com.hzq.domain.User;
 
 import java.sql.SQLTransactionRollbackException;
+import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -60,6 +62,15 @@ public interface UserService {
      * @return 返回通用对象
      */
     ServerResponse<String> checkValid(String str, String type);
+
+    /**
+     * 将申请消息，群聊消息，私聊消息分组
+     * @param messages 消息集合
+     * @param t 消息类型
+     * @param <T> 泛型参数
+     * @return 返回分好组的map集合
+     */
+    <T> Map<Integer, List<T>> MessageSubgroup(List<T> messages, T t);
 
 }
 

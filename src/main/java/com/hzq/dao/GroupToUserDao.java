@@ -2,7 +2,10 @@ package com.hzq.dao;
 
 
 import com.hzq.domain.GroupToUser;
+import com.hzq.vo.GroupMessageAndGroupToUser;
 import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 /**
  * @Auther: blue
@@ -35,6 +38,13 @@ public interface GroupToUserDao {
     int deleteById(@Param("id") Integer id);
 
     /**
+     * 根据用户id删除用户和群的关系
+     * @param userId 用户id
+     * @return 返回修改次数
+     */
+    int deleteByUserId(@Param("userId") Integer userId);
+
+    /**
      * 更新用户在群聊中的信息
      * @param groupToUser 用户在群聊中的信息
      * @return 返回修改次数
@@ -48,5 +58,19 @@ public interface GroupToUserDao {
      * @return 返回用户在群内显示的信息
      */
     GroupToUser selectGroupToUser(@Param("groupUserId") Integer groupUserId, @Param("groupId") Integer groupId);
+
+    /**
+     *  根据群id查询所有群用户
+     * @param groupId 群id
+     * @return 返回所有群用户的集合
+     */
+    List<GroupToUser> selectByGroupId(@Param("groupId") Integer groupId);
+
+    /**
+     * 根据用户id查询群消息表和群用户表的部分信息
+     * @param groupId 用户id
+     * @return 返回通用对象集合
+     */
+    List<GroupMessageAndGroupToUser> select(@Param("groupId") Integer groupId);
 
 }

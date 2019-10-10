@@ -12,7 +12,7 @@ public class GroupMessageToUser {
     private Integer id;
     private Integer userId;
     private Integer groupMessageId;
-    private Integer groupMessageCount;
+    private Timestamp groupMessageTime;
     private Timestamp gmtCreate;
     private Timestamp gmtModified;
 
@@ -40,12 +40,12 @@ public class GroupMessageToUser {
         this.groupMessageId = groupMessageId;
     }
 
-    public Integer getGroupMessageCount() {
-        return groupMessageCount;
+    public Timestamp getGroupMessageTime() {
+        return groupMessageTime;
     }
 
-    public void setGroupMessageCount(Integer groupMessageCount) {
-        this.groupMessageCount = groupMessageCount;
+    public void setGroupMessageTime(Timestamp groupMessageTime) {
+        this.groupMessageTime = groupMessageTime;
     }
 
     public Timestamp getGmtCreate() {

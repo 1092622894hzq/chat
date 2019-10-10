@@ -30,25 +30,48 @@ public class ChatController {
      * @param headers  {simpMessageType=MESSAGE, stompCommand=SEND, nativeHeaders={destination=[/app/hello], content-length=[18], atytopic=[greetings]}, DestinationVariableMethodArgumentResolver.templateVariables={}, simpSessionAttributes={}, lookupDestination=/hello, simpSessionId=deovbx2n, simpDestination=/app/hello, id=cc6b83a1-54a9-b025-d6c1-9c49e81951bd, timestamp=1570536487294}
      */
     @MessageMapping("/hello")
-    @SendTo("/topic/greetings")
-    public String greeting(Content msg, @Header("atytopic") String topic, @Headers Map<String, Object> headers) {
+   // @SendTo("/topic/greetings")
+    public void greeting(Content msg, @Header("atytopic") String topic, @Headers Map<String, Object> headers) {
         System.out.println("connected successfully....");
         System.out.println("Content: "+msg.getMessage());
         System.out.println(topic);
         System.out.println(headers);
         Timestamp time = new Timestamp((Long) headers.get("timestamp"));
         System.out.println("time:"+time+"---"+headers.get("timestamp"));
-        return msg.toJson();
+        //
       //  webSocketService.sendChatMessage(m);
     }
- 
+
+    @MessageMapping("/groupTalk")
+    public void sendFromGroup(Content msg, @Headers Map<String,Object> headers) {
+        Integer fromId = msg.getFromId();
+        String message = msg.getMessage();
+        Timestamp time = new Timestamp((Long) headers.get("timestamp"));
+        System.out.println("--"+message+"--"+time+"--"+fromId);
+        sendTogroup(fromId,msg.toJson());
+    }
+
+    @SendTo("/topic/{groupId}")
+    public String sendTogroup(@DestinationVariable Integer groupId, String msg) {
+        return msg;
+    }
+
+
+
+
+
+
+
+
+
+
     /**
      * 这里用的是@SendToUser，这就是发送给单一客户端的标志。本例中，
      * 客户端接收一对一消息的主题应该是“/user/” + 用户Id + “/message” ,这里的用户id可以是一个普通的字符串，只要每个用户端都使用自己的id并且服务端知道每个用户的id就行。
      * @return 返回通用对象
      */
     @MessageMapping("/message")
-    @SendToUser("/{userId}/message")
+  //  @SendToUser("/{userId}/message")
     public String handleSubscribe(Content msg) {
         System.out.println("this is the @SubscribeMapping('/marco')");
      //   simpMessageSendingOperations.convertAndSendToUser();
@@ -76,7 +99,7 @@ public class ChatController {
 
 
     @MessageExceptionHandler
-    @SendToUser("/queue/errors")
+  //  @SendToUser("/queue/errors")
     public ServerResponse<String> handleException(CustomGenericException e) {
         // ...
         return ServerResponse.createByErrorMessage("发生错误: "+e.getErrMsg());

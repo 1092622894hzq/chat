@@ -2,6 +2,9 @@ package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.GroupToUser;
+import com.hzq.vo.GroupMessageAndGroupToUser;
+
+import java.util.List;
 
 /**
  * @Auther: blue
@@ -47,5 +50,19 @@ public interface GroupToUserService {
      * @return 返回包含用户在群信息的通用对象
      */
     ServerResponse<GroupToUser> selectGroupToUser(Integer groupUserId, Integer groupId);
+
+    /**
+     * 根据群id找出所有群用户
+     * @param groupId 群id
+     * @return 返回所有群用户的集合
+     */
+    ServerResponse<List<GroupToUser>> selectByGroupId(Integer groupId);
+
+    /**
+     * 根据用户id查询群消息表和群用户表的部分信息
+     * @param groupId 用户id
+     * @return 返回通用对象集合
+     */
+    ServerResponse<List<GroupMessageAndGroupToUser>> select(Integer groupId);
 
 }

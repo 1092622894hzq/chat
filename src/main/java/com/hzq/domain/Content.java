@@ -6,6 +6,8 @@ public class Content {
 
   private String message;
 
+  private Integer type;
+
   private Integer toId;
 
   private Integer fromId;
@@ -18,6 +20,14 @@ public class Content {
 
   public void setMessage(String message) {
     this.message = message;
+  }
+
+  public Integer getType() {
+    return type;
+  }
+
+  public void setType(Integer type) {
+    this.type = type;
   }
 
   public Integer getToId() {

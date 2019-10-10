@@ -5,6 +5,7 @@ import com.hzq.domain.Message;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -20,5 +21,11 @@ public interface MessageService {
 
     ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId);
 
-    ServerResponse<List<Message>> queryUnreadMessageByUserId(Integer id);
+
+    /**
+     * 根据用户id查询所有私聊未读消息
+     * @param userId 用户主表id
+     * @return 返回未读消息集合
+     */
+    ServerResponse<Map<Integer,List<Message>>> queryUnreadMessageByUserId(@Param("userId") Integer userId);
 }

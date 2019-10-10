@@ -5,6 +5,7 @@ import com.hzq.domain.Apply;
 import com.hzq.domain.UserInfo;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -47,6 +48,6 @@ public interface ApplyService {
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<List<Apply>> selectAll(Integer userId);
+    ServerResponse<Map<Integer,List<Apply>>> selectAll(Integer userId);
 
 }

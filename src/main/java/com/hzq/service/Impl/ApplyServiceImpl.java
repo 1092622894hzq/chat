@@ -7,10 +7,12 @@ import com.hzq.dao.ApplyDao;
 import com.hzq.domain.Apply;
 
 import com.hzq.service.ApplyService;
+import com.hzq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -23,6 +25,8 @@ public class ApplyServiceImpl implements ApplyService {
 
     @Autowired
     private ApplyDao applyDao;
+    @Autowired
+    private UserService userService;
 
     @Override
     public ServerResponse<String> insert(Apply apply) {
@@ -72,11 +76,12 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public ServerResponse<List<Apply>> selectAll(Integer id) {
+    public ServerResponse<Map<Integer,List<Apply>>> selectAll(Integer id) {
         List<Apply> applies = applyDao.selectAll(id);
         if ( applies == null) {
             return ServerResponse.createByErrorMessage("查询不到好友申请");
         }
-        return ServerResponse.createBySuccess(applies);
+        Map<Integer,List<Apply>> map = userService.MessageSubgroup(applies,new Apply());
+        return ServerResponse.createBySuccess(map);
     }
 }

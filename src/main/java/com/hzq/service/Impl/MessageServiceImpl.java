@@ -5,10 +5,12 @@ import com.hzq.common.ServerResponse;
 import com.hzq.dao.MessageDao;
 import com.hzq.domain.Message;
 import com.hzq.service.MessageService;
+import com.hzq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -21,17 +23,16 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageDao messageDao;
+    @Autowired
+    private UserService userService;
 
     @Override
-    public ServerResponse<String> insert(Message message) {
+    public ServerResponse<String> insert(Message message) {  //默认每次先插入的是接收者的信息
         if (messageDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("插入消息失败");
         }
-        if (message.getMessageFromId().intValue() == message.getUserId().intValue()) {
-            message.setUserId(message.getMessageToId());
-        } else {
-            message.setUserId(message.getMessageFromId());
-        }
+        message.setMessageStatus(Const.MARK_AS_READ);
+        message.setUserId(message.getMessageFromId());
         if (messageDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("插入消息失败");
         }
@@ -55,16 +56,19 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ServerResponse<List<Message>> queryUnreadMessageByUserId(Integer id) {
-        List<Message> messages =  messageDao.queryUnreadMessageByUserId(id, Const.MARK_AS_UNREAD);
+    public ServerResponse<Map<Integer, List<Message>>> queryUnreadMessageByUserId(Integer userId) {
+        List<Message> messages =  messageDao.queryUnreadMessageByUserId(userId, Const.MARK_AS_UNREAD);
         if (messages == null) {
             return ServerResponse.createByErrorMessage("没有找到未读的消息");
         }
+        Map<Integer, List<Message>>  map = userService.MessageSubgroup(messages,new Message());
         if (messages.size() == 1) {
             messageDao.updateOneMessage(messages.get(0).getId(),Const.MARK_AS_READ);
         } else {
-          //.....
+            messageDao.update(messages.get(messages.size()-1).getId(),messages.get(0).getId(),Const.MARK_AS_READ,userId);
         }
-        return ServerResponse.createBySuccess(messages);
+        return ServerResponse.createBySuccess(map);
     }
+
+
 }

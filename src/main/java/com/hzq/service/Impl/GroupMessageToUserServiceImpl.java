@@ -30,9 +30,10 @@ public class GroupMessageToUserServiceImpl implements GroupMessageToUserService 
         return ServerResponse.createBySuccess();
     }
 
+
     @Override
-    public ServerResponse<String> update(Integer id, Timestamp time) {
-        if (messageToUserDao.update(id,time) == 0) {
+    public ServerResponse<String> update(Integer userId, Integer groupMessageId, Timestamp time) {
+        if (messageToUserDao.update(userId,groupMessageId,time) == 0) {
             return ServerResponse.createByErrorMessage("更新群聊消息失败");
         }
         return ServerResponse.createBySuccess();
@@ -42,6 +43,14 @@ public class GroupMessageToUserServiceImpl implements GroupMessageToUserService 
     public ServerResponse<String> delete(Integer userId) {
         if (messageToUserDao.delete(userId) == 0) {
             return ServerResponse.createByErrorMessage("删除群用户与群消息的关联失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> deleteByGroupMessageAndUserId(Integer userId, Integer groupMessageId, Timestamp time) {
+        if (messageToUserDao.update(userId,groupMessageId,time) == 0) {
+            return ServerResponse.createByErrorMessage("删除群消息失败");
         }
         return ServerResponse.createBySuccess();
     }

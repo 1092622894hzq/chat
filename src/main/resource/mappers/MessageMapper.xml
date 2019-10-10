@@ -32,6 +32,17 @@
     where id = #{id, jdbcType = INTEGER}
 </delete>
 
+<delete id="deleteAllByUserId" parameterType="java.lang.Integer">
+    delete from message where user_id = #{userId, jdbcType = INTEGER}
+</delete>
+
+<delete id="deleteMessageByUserIdAndFriendId" parameterType="java.lang.Integer">
+    delete from message
+    where user_id = #{userId, jdbcType = INTEGER}
+    and ( message_from_id = #{friendId, jdbcType = INTEGER} or message_to_id = #{friend, jdbcType = INTEGER})
+</delete>
+
+
 <select id="queryMessageByUserIdAndFriendId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from message where (
      (
@@ -64,7 +75,7 @@
 <update id="update" parameterType="java.lang.Integer">
     update message set message_status = #{read, jdbcType = INTEGER}
     where (id between #{smallId, jdbcType = INTEGER} and  #{bigId, jdbcType = INTEGER})
-    and 
+    and user_id = #{userId, jdbcType = INTEGER}
 </update>
 
 </mapper>

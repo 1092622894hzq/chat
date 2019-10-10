@@ -4,6 +4,9 @@ import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.*;
 import com.hzq.domain.*;
+import com.hzq.service.ApplyService;
+import com.hzq.service.GroupMessageContentService;
+import com.hzq.service.MessageService;
 import com.hzq.service.UserService;
 import com.hzq.utils.MD5Util;
 import org.apache.commons.lang3.StringUtils;
@@ -31,13 +34,19 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private FriendDao friendDao;
     @Autowired
+    private ApplyService applyService;
+    @Autowired
     private ApplyDao applyDao;
     @Autowired
     private GroupDao groupDao;
     @Autowired
+    private MessageService messageService;
+    @Autowired
     private MessageDao messageDao;
     @Autowired
-    private GroupMessageContentDao groupMessageContentDao;
+    private GroupMessageContentService groupMessageContentService;
+    @Autowired
+    private GroupToUserDao groupToUserDao;
 
     @Override
     public ServerResponse<String> register(User user) {
@@ -96,18 +105,14 @@ public class UserServiceImpl implements UserService {
         result.setFriends(friends);
         List<Group> groups = groupDao.selectAll(user.getId());
         result.setGroups(groups);
-        List<Apply> applies = applyDao.selectAll(user.getId());
-        Map<Integer, List<Apply>> applyMap = MessageSubgroup(applies,new Apply());
+        Map<Integer, List<Apply>> applyMap = applyService.selectAll(user.getId()).getData();
         result.setApplyMap(applyMap);
-        List<Message> messages = messageDao.queryUnreadMessageByUserId(user.getId(),Const.MARK_AS_UNREAD);
-        Map<Integer, List<Message>> messageMap = MessageSubgroup(messages,new Message());
+        Map<Integer, List<Message>> messageMap = messageService.queryUnreadMessageByUserId(user.getId()).getData();
         result.setMessageMap(messageMap);
-        List<GroupMessageContent> groupContents = groupMessageContentDao.selectAllUnread(user.getId());
-        Map<Integer, List<GroupMessageContent>> groupContentMap = MessageSubgroup(groupContents,new GroupMessageContent());
+        Map<Integer, List<GroupMessageContent>> groupContentMap = groupMessageContentService.selectAllUnread(user.getId()).getData();
         result.setGroupContentMap(groupContentMap);
         return ServerResponse.createBySuccess("成功",result);
     }
-
 
     @Override
     public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
@@ -138,12 +143,13 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("删除用户个人失败");
         }
         //2.删除用户和私人聊天的记录
-        //3.从群聊中移除用户
+        messageDao.deleteAllByUserId(id);
+        //3.从群聊消息和群用户的关联中移除用户
+        groupToUserDao.deleteByUserId(id);
         //4.删除好友申请记录
         applyDao.deleteById(id);
-        //5.从群聊消息和群用户的关联中移除用户
-        //6.用户为群主的直接删除群聊
-        //7.删除所有好友
+        //5.用户为群主的直接删除群聊
+        //6.删除所有好友
         if (friendDao.deleteById(id) == 0) {
             return ServerResponse.createByErrorMessage("删除用户好友失败");
         }
@@ -167,14 +173,8 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createBySuccess();
     }
 
-    /**
-     * 将申请消息，群聊消息，私聊消息分组
-     * @param messages 消息集合
-     * @param t 消息类型
-     * @param <T> 泛型参数
-     * @return 返回分好组的map集合
-     */
-    private <T> Map<Integer,List<T>> MessageSubgroup(List<T> messages, T t) {
+    @Override
+    public  <T> Map<Integer,List<T>> MessageSubgroup(List<T> messages, T t) {
         List<T> listContent = null;
         Integer key = null;
         Map<Integer,List<T>> map = new HashMap<>();
