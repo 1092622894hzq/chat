@@ -61,6 +61,10 @@
     </bean>
 
 
+<!--    <bean  name="template" class="org.springframework.messaging.simp.SimpMessagingTemplate">-->
+<!--        <constructor-arg ref="brokerChannel"/>-->
+<!--    </bean>-->
+
     <!--配置Spring框架声明式事务管理-->
     <!--配置事务管理器-->
     <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">

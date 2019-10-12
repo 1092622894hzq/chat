@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -47,7 +48,7 @@ public class MessageController {
     }
 
     @RequestMapping(value = "/queryUnreadMessage", method = RequestMethod.GET)
-    public ServerResponse<List<Message>> queryUnreadMessageByUserId(HttpSession session) {
+    public ServerResponse<Map<Integer,List<Message>>> queryUnreadMessageByUserId(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return messageService.queryUnreadMessageByUserId(user.getId());
     }

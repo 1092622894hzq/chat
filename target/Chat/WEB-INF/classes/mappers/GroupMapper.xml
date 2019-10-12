@@ -60,6 +60,8 @@
     </where>
 </select>
 
-
+<select id="selectGroup" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+    select * from `group` where id = #{id, jdbcType = INTEGER}
+</select>
 
 </mapper>

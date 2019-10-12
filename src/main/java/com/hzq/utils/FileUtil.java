@@ -1,5 +1,7 @@
 package com.hzq.utils;
 
+import com.hzq.enums.FileTypeEnum;
+
 import java.io.*;
 import java.util.Objects;
 
@@ -18,9 +20,6 @@ public class FileUtil {
      */
     public static void ByteToPhoto(byte[] buff,File file){
         OutputStream os = null;
-//        //1 .创建源
-//        File file = new File(path);
-//        CheckPath(file);
         try {
             //2. 选择流,并且
             os = new FileOutputStream(file,true);
@@ -104,10 +103,53 @@ public class FileUtil {
      * @param file 文件
      */
     public static void CheckPath(File file) {
-        if (!file.exists() && !file.mkdirs()) {
+        boolean result = file.mkdirs();
+        if (!file.exists() && !result) {
             CheckPath(file);
         }
     }
+
+    /** 获取文件头信息，该方法可以获取所有文件的类型
+     * 可以将byte（8位）转换成int（32位），然后利用Integer.toHexString(int)来转换成16进制字符串。
+     * 原理：把一个byte转换成两个用16进制字符，即把高4位和低4位转换成相应的16进制字符，并组合这两个16进制字符串，
+     * 从而得到byte的16进制字符串。同理，相反的转换也是将两个16进制字符转换成一个byte。
+     * 与运算的作用
+     * 1.byte的大小为8bits而int的大小为32bits
+     * 2.java的二进制采用的是补码形式
+     * 所以与负数&的时候负数会自动给补码补位1，这样就会有误差
+     * 而0xff默认是整形，所以，一个byte跟0xff相与会先将那个byte转化成整形运算，这样，结果中的高的24个比特就总会被清0，于是结果总是我们想要的。
+     * @param is 输入流
+     * @return 返回枚举
+     */
+    @SuppressWarnings("all")
+    public static FileTypeEnum getFileType(InputStream is) throws IOException {
+        byte[] src = new byte[28];
+        is.read(src, 0, 28);
+        StringBuilder stringBuilder = new StringBuilder("");
+        for (int i = 0; i < src.length; i++) {
+            int v = src[i] & 0xFF; //与运算，oxFF=1111 1111
+            String hv = Integer.toHexString(v).toUpperCase();
+            if (hv.length() < 2) {
+                stringBuilder.append(0);
+            }
+            stringBuilder.append(hv);
+        }
+        FileTypeEnum[] fileTypes = FileTypeEnum.values();
+        for (FileTypeEnum fileType : fileTypes) {
+            if (stringBuilder.toString().startsWith(fileType.getValue())) {
+                return fileType;
+            }
+        }
+        return null;
+    }
+
+    public static boolean isPhoto(FileTypeEnum type) {
+        if (type == FileTypeEnum.JPEG || type == FileTypeEnum.GIF) {
+            return true;
+        }
+        return type == FileTypeEnum.PNG;
+    }
+
 
     public static void main(String[] args) {
         File file = new File ("D:\\images", "1fdgasdg3.png");

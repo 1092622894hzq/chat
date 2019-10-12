@@ -1,8 +1,9 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
-import com.hzq.common.ResponseCode;
+import com.hzq.enums.FileTypeEnum;
+import com.hzq.execption.CustomGenericException;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Group;
 import com.hzq.domain.User;
@@ -10,16 +11,16 @@ import com.hzq.domain.UserInfo;
 import com.hzq.service.GroupService;
 import com.hzq.service.UserInfoService;
 import com.hzq.utils.FileUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestPart;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.util.Objects;
 
 /**
  * @Auther: blue
@@ -27,7 +28,7 @@ import java.io.File;
  * @Description: 专门处理文件
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/file")
 public class FileHandlerController {
 
@@ -35,6 +36,8 @@ public class FileHandlerController {
     private UserInfoService userInfoService;
     @Autowired
     private GroupService groupService;
+    //日志打印
+    private static Logger LOGGER = LoggerFactory.getLogger(ChatController.class);
 
     /**
      * 处理上传头像
@@ -46,11 +49,29 @@ public class FileHandlerController {
     public ServerResponse<String> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         String fileName = System.currentTimeMillis()+avatar.getOriginalFilename();
+        //输入文件类型
         try {
+            FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(avatar.getInputStream()));
+            LOGGER.debug(fileTypeEnum.getExt());
+            if (!FileUtil.isPhoto(fileTypeEnum)) {
+                throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getCode(),ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getDesc());
+            }
+            File f = new File(Const.File_PATH+"//"+user.getId());
+            if (!f.exists()) {
+                FileUtil.CheckPath(f);
+            }
             File dir = new File(Const.File_PATH+"//"+user.getId(),fileName);
             FileUtil.ByteToPhoto(avatar.getBytes(),dir);
+            UserInfo userInfo = userInfoService.queryUserByName(user.getUsername()).getData();
+            String avatarName = userInfo.getAvatar();
+            if (!avatarName.equals(Const.DEFAUL_AVATAR)) {
+                File deleteFile = new File(Const.File_PATH+"//"+user.getId(),avatarName);
+                if (!deleteFile.delete()) {
+                    LOGGER.debug("存储用户头像的时候，删除之前头像出现了错误");
+                }
+            }
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCode.UPLOAD_FILE_ERROR.getCode(),ResponseCode.UPLOAD_FILE_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
@@ -69,19 +90,35 @@ public class FileHandlerController {
     @RequestMapping( value = "/updateIcon/{id}", method = RequestMethod.POST)
     public ServerResponse<String> updateIcon(@RequestPart("icon") MultipartFile icon, @PathVariable Integer id){
         String fileName = System.currentTimeMillis()+icon.getOriginalFilename();
+        //输入文件类型
         try {
+            FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(icon.getInputStream()));
+            LOGGER.debug(fileTypeEnum.getExt());
+            if (!FileUtil.isPhoto(fileTypeEnum)) {
+                throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getCode(),ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getDesc());
+            }
+            File f = new File(Const.File_PATH+"//"+id);
+            if (!f.exists()) {
+                FileUtil.CheckPath(f);
+            }
             File dir = new File(Const.File_PATH+"//"+id,fileName);
             FileUtil.ByteToPhoto(icon.getBytes(),dir);
+            Group group = groupService.select(id).getData();
+            String groupIcon = group.getGroupIcon();
+            if (!groupIcon.equals(Const.DEFAUL_AVATAR)) {
+                File deleteFile = new File(Const.File_PATH+"//"+id,groupIcon);
+                if (!deleteFile.delete()) {
+                    LOGGER.debug("存储群头像的时候，删除之前头像出现了错误");
+                }
+            }
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCode.UPLOAD_FILE_ERROR.getCode(),ResponseCode.UPLOAD_FILE_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
         }
         Group group = new Group();
         group.setGroupIcon(fileName);
         group.setId(id);
         return groupService.update(group);
     }
-
-
 
     /**
      * 专门处理发送消息中的文件处理
@@ -95,9 +132,28 @@ public class FileHandlerController {
             File dir = new File(Const.File_PATH+"//"+userId,file.getOriginalFilename());
             FileUtil.ByteToPhoto(file.getBytes(),dir);
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCode.UPLOAD_FILE_ERROR.getCode(),ResponseCode.UPLOAD_FILE_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
         }
     }
 
+    /**
+     * 根据路径删除文件
+     * @param path 文件路径
+     */
+    @RequestMapping("/deleteFile")
+    public void deleteFile(@RequestBody String path) {
+        try {
+            File dir = new File(path);
+            if (!dir.exists()) {
+                LOGGER.debug("文件不存在");
+                throw new CustomGenericException(ResponseCodeEnum.DELETE_FILE_ERROR.getCode(), ResponseCodeEnum.DELETE_FILE_ERROR.getDesc());
+            }
+            if (!dir.delete()) {
+                LOGGER.debug("删除文件出错");
+            }
+        } catch (Exception e) {
+        throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
+    }
+    }
 
 }

@@ -41,7 +41,12 @@ public interface GroupDao {
      */
     List<Group> selectAll(@Param("userId") Integer userId);
 
-    Group selectGroupById(@Param("id") Integer id);
+    /**
+     * 根据群id查询群信息
+     * @param id 群id
+     * @return 返回群信息
+     */
+    Group selectGroup(@Param("id") Integer id);
 
 
 }

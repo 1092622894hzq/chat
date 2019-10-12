@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @Auther: blue
@@ -77,7 +78,7 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectAll")
-    public ServerResponse<List<Apply>> selectAll(HttpSession session) {
+    public ServerResponse<Map<Integer,List<Apply>>> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return applyService.selectAll(user.getId());
     }

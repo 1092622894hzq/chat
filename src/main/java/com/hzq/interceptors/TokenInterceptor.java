@@ -1,8 +1,8 @@
 package com.hzq.interceptors;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
-import com.hzq.common.ResponseCode;
+import com.hzq.execption.CustomGenericException;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.utils.JwtUil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -35,7 +35,7 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("accessToken");
         LOGGER.debug("token: "+token);
         if (null != token && !JwtUil.verify(token)) {
-            throw new CustomGenericException(ResponseCode.NO_AUTHOR.getCode(),"用户的token无效");
+            throw new CustomGenericException(ResponseCodeEnum.NO_AUTHOR.getCode(),"用户的token无效");
         }
         return true;
     }

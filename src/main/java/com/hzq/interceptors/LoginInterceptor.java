@@ -1,7 +1,7 @@
 package com.hzq.interceptors;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
+import com.hzq.execption.CustomGenericException;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 

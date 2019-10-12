@@ -1,5 +1,7 @@
-package com.hzq.common;
+package com.hzq.interceptors;
 
+import com.hzq.common.Const;
+import com.hzq.common.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.core.MethodParameter;
@@ -20,9 +22,9 @@ import javax.servlet.http.HttpServletRequest;
  * @version: 1.0
  */
 @ControllerAdvice
-public class PutTokenToServerResponse implements ResponseBodyAdvice<ServerResponse> {
+public class PutTokenToServerResponseInterceptor implements ResponseBodyAdvice<ServerResponse> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PutTokenToServerResponse.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(PutTokenToServerResponseInterceptor.class);
 
     //这里是一个前置拦截匹配操作,其实就是告诉你满足为true的才会执行下面的beforeBodyRead方法,这里可以定义自己业务相关的拦截匹配
     @Override

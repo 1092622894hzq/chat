@@ -22,30 +22,58 @@
 
         //this line.
         function connect() {
-            var userid = document.getElementById('name').value;
-            var socket = new SockJS("localhost:8080/Chat_war/hello");
+            var userId = 3;
+            var socket = new SockJS('http://'+window.location.host+'/Chat_war/hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/greetings', function(greeting){
-                    showGreeting(JSON.parse(greeting.body).content);
+                stompClient.subscribe('/user/+'+userId, function(msg){
+                    alert(msg);
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                stompClient.subscribe("/topic/group/"+userId, function (msg) {
+                    alert(msg);
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                 stompClient.subscribe("/user/"+userId+"/errors", function (msg) {
+                    alert(msg);
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
                 });
 
-                stompClient.subscribe('/user/' + userid + '/message',function(greeting){
-                    alert(JSON.parse(greeting.body).content);
-                    showGreeting(JSON.parse(greeting.body).content);
+
+
+                stompClient.subscribe("/user/"+userId+"/queue/position-updates", function (msg) {
+                    alert(msg+"---");
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                // stompClient.subscribe("/topic/group", function (msg) {
+                //     alert(msg);
+                //     alert(JSON.parse(msg.body));
+                //     showGreeting(JSON.parse(msg.body));
+                // });
+
+                stompClient.subscribe('/topic/groupTalk/1' ,function(msg){
+                    alert(JSON.parse(msg.body));
+                //    showGreeting(JSON.parse(msg.body));
                 });
             });
         }
 
         function sendName() {
             var name = document.getElementById('name').value;
-            stompClient.send("/app/hello", {atytopic:"greetings"}, JSON.stringify({ 'name': name }));
+            var payload = JSON.stringify({ 'gmFromId': name , 'groupId' : name , 'gmType' : name , 'gmContent' : name});
+           // stompClient.send("/app/hello", {atytopic:"greetings"}, payload );
+            stompClient.send('/app/group',{atytopic:"greetings"}, payload );
+            //stompClient.send('/user/message', {atytopic:"greetings"}, payload);
         }
 
         function connectAny() {
-            var socket = new SockJS("http://localhost:8080/springmvc/hello");
+            var socket = new SockJS('http://'+window.location.host+'/Chat_war/hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
@@ -80,13 +108,13 @@
     Javascript and reload this page!</h2></noscript>
 <div>
     <div>
-        <button id="connect" οnclick="connect();">Connect</button>
-        <button id="connectAny" οnclick="connectAny();">ConnectAny</button>
-        <button id="disconnect" disabled="disabled" οnclick="disconnect();">Disconnect</button>
+        <button id="connect" onclick="connect();">Connect</button>
+        <button id="connectAny" onclick="connectAny();">ConnectAny</button>
+        <button id="disconnect" disabled="disabled" onclick="disconnect();">Disconnect</button>
     </div>
     <div id="conversationDiv">
         <label>What is your name?</label><input type="text" id="name" />
-        <button id="sendName" οnclick="sendName();">Send</button>
+        <button id="sendName" onclick="sendName();">Send</button>
         <p id="response"></p>
     </div>
 </div>

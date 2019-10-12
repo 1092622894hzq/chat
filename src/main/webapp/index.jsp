@@ -22,21 +22,42 @@
 
         //this line.
         function connect() {
-            var userId = document.getElementById('name').value;
+            var userId = 3;
             var socket = new SockJS('http://'+window.location.host+'/Chat_war/hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
-                stompClient.subscribe('/topic/+'+userId, function(msg){
+                stompClient.subscribe('/user/+'+userId, function(msg){
+                    alert(msg);
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                stompClient.subscribe("/topic/group/"+userId, function (msg) {
+                    alert(msg);
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                 stompClient.subscribe("/user/"+userId+"/errors", function (msg) {
                     alert(msg);
                     alert(JSON.parse(msg.body));
                     showGreeting(JSON.parse(msg.body));
                 });
 
-                stompClient.subscribe("/topic/+"+ userId+"+");
 
-                stompClient.subscribe('/user/' + userId + '/message' ,function(msg){
+
+                stompClient.subscribe("/user/"+userId+"/queue/position-updates", function (msg) {
+                    alert(msg+"---");
+                    alert(JSON.parse(msg.body));
+                    showGreeting(JSON.parse(msg.body));
+                });
+                // stompClient.subscribe("/topic/group", function (msg) {
+                //     alert(msg);
+                //     alert(JSON.parse(msg.body));
+                //     showGreeting(JSON.parse(msg.body));
+                // });
+
+                stompClient.subscribe('/topic/groupTalk/1' ,function(msg){
                     alert(JSON.parse(msg.body));
                 //    showGreeting(JSON.parse(msg.body));
                 });
@@ -45,9 +66,9 @@
 
         function sendName() {
             var name = document.getElementById('name').value;
-            var payload = JSON.stringify({ 'message': name , 'toId' : name , 'fromId' : name , 'groupId' : name});
+            var payload = JSON.stringify({ 'gmFromId': name , 'groupId' : name , 'gmType' : name , 'gmContent' : name});
            // stompClient.send("/app/hello", {atytopic:"greetings"}, payload );
-            stompClient.send('/app/groupTalk',{atytopic:"greetings"}, payload );
+            stompClient.send('/app/group',{atytopic:"greetings"}, payload );
             //stompClient.send('/user/message', {atytopic:"greetings"}, payload);
         }
 

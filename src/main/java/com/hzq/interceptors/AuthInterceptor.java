@@ -1,8 +1,8 @@
 package com.hzq.interceptors;
 
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
-import com.hzq.common.ResponseCode;
+import com.hzq.execption.CustomGenericException;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -69,7 +69,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			//其他需要登录后才能进行访问的url
 			User user = (User)request.getSession().getAttribute(Const.CURRENT_USER);
 			if (null == user) {
-				throw new CustomGenericException(ResponseCode.NO_AUTHOR.getCode(), "该用户尚未登录");
+				throw new CustomGenericException(ResponseCodeEnum.NO_AUTHOR.getCode(), "该用户尚未登录");
 			}
 			return true;
 	}

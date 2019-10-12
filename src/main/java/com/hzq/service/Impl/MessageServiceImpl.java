@@ -58,7 +58,7 @@ public class MessageServiceImpl implements MessageService {
     @Override
     public ServerResponse<Map<Integer, List<Message>>> queryUnreadMessageByUserId(Integer userId) {
         List<Message> messages =  messageDao.queryUnreadMessageByUserId(userId, Const.MARK_AS_UNREAD);
-        if (messages == null) {
+        if (messages == null || messages.isEmpty()) {
             return ServerResponse.createByErrorMessage("没有找到未读的消息");
         }
         Map<Integer, List<Message>>  map = userService.MessageSubgroup(messages,new Message());

@@ -3,27 +3,21 @@ package com.hzq.webSocket;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hzq.common.Const;
-import com.hzq.common.CustomGenericException;
-import com.hzq.common.ResponseCode;
+import com.hzq.execption.CustomGenericException;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.*;
 import com.hzq.service.*;
-import com.hzq.utils.FileUtil;
 import com.hzq.vo.GroupMessageAndGroupToUser;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestPart;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
-import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -127,7 +121,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
             message.setGmContent(content.getMessage());
             message.setGmType(content.getType());
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCode.MESSAGE_FORMAT_ERROR.getCode(),ResponseCode.MESSAGE_FORMAT_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getCode(), ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getDesc());
         }
         groupMessageContentService.insert(message);
         Timestamp time = new Timestamp(System.currentTimeMillis());
@@ -140,7 +134,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
                 }
             }
         }catch (IOException e) {
-            throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
         }
     }
 
@@ -154,7 +148,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
             message.setUserId(content.getToId()); //先帮接收者插入信息
             message.setMessageType(content.getType());
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCode.MESSAGE_FORMAT_ERROR.getCode(),ResponseCode.MESSAGE_FORMAT_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getCode(), ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getDesc());
         }
         if (USER_SESSION_MAP.get(userId) == null) {
             message.setMessageStatus(Const.MARK_AS_UNREAD);
@@ -163,7 +157,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
             try {
                 sendMessageToUser(userId,new TextMessage(new GsonBuilder().setDateFormat(Const.STANDARD_FORMAT).create().toJson(message)));
             } catch (IOException e) {
-                throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
+                throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
             }
         }
         messageService.insert(message);
@@ -175,7 +169,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
         if (session != null && session.isOpen()) {
             session.sendMessage(message);
         } else {
-            throw new CustomGenericException(ResponseCode.SEND_MESSAGE_ERROR.getCode(),ResponseCode.SEND_MESSAGE_ERROR.getDesc());
+            throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
         }
     }
 }

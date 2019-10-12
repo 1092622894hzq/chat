@@ -1,4 +1,4 @@
-package com.hzq.common;
+package com.hzq.execption;
 
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;

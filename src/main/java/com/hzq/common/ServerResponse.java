@@ -2,6 +2,7 @@ package com.hzq.common;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.hzq.enums.ResponseCodeEnum;
 
 import java.io.Serializable;
 
@@ -40,7 +41,7 @@ public class ServerResponse<T> implements Serializable {
 
    @JsonIgnore//使之不在json序列化结果当中
     public boolean isSuccess(){
-        return this.status == ResponseCode.SUCCESS.getCode();
+        return this.status == ResponseCodeEnum.SUCCESS.getCode();
     }
 
     public int getStatus(){
@@ -66,29 +67,29 @@ public class ServerResponse<T> implements Serializable {
 
 
     public static <T> ServerResponse<T> createBySuccess(){
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode());
+        return new ServerResponse<>(ResponseCodeEnum.SUCCESS.getCode());
     }
 
     public static <T> ServerResponse<T> createBySuccessMessage(String msg){
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(),msg);
+        return new ServerResponse<>(ResponseCodeEnum.SUCCESS.getCode(),msg);
     }
 
     public static <T> ServerResponse<T> createBySuccess(T data){
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(),data);
+        return new ServerResponse<>(ResponseCodeEnum.SUCCESS.getCode(),data);
     }
 
     public static <T> ServerResponse<T> createBySuccess(String msg,T data){
-        return new ServerResponse<>(ResponseCode.SUCCESS.getCode(),msg,data);
+        return new ServerResponse<>(ResponseCodeEnum.SUCCESS.getCode(),msg,data);
     }
 
 
     public static <T> ServerResponse<T> createByError(){
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(),ResponseCode.ERROR.getDesc());
+        return new ServerResponse<>(ResponseCodeEnum.ERROR.getCode(), ResponseCodeEnum.ERROR.getDesc());
     }
 
 
     public static <T> ServerResponse<T> createByErrorMessage(String errorMessage){
-        return new ServerResponse<>(ResponseCode.ERROR.getCode(),errorMessage);
+        return new ServerResponse<>(ResponseCodeEnum.ERROR.getCode(),errorMessage);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(Integer errorCode,String errorMessage){

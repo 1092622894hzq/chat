@@ -1,5 +1,6 @@
-package com.hzq.common;
+package com.hzq.execption;
 
+import com.hzq.common.ServerResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;

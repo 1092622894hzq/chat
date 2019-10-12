@@ -25,15 +25,13 @@ public class Const {
     public static final Integer DELETE = -1; //删除
     public static final Integer DEFAULT_GROUP = 0; //默认分组
     public static final Integer ZERO = 0; //置零
-    public static final String File_PATH = "D:\\images";
-
-    public static final String USERNAME = "username";
-    public static final String PASSWORD = "password";
-    public static final String NEW_PASSWORD = "newPassword";
-    public static final String OLD_PASSWORD = "oldPassword";
-
-    public static final Integer IS_FRIEND = 0;
-
-    public static final String CURRENT_CONNECT_ID = "uid";
+    public static final String File_PATH = "D:\\images";  //文件路径
+    public static final String USERNAME = "username"; //账号
+    public static final String PASSWORD = "password"; //密码
+    public static final String NEW_PASSWORD = "newPassword"; //旧密码
+    public static final String OLD_PASSWORD = "oldPassword"; //新密码
+    public static final Integer IS_FRIEND = 0; //是否朋友
+    public static final String DEFAUL_AVATAR = "default.png"; //默认头像
+    public static final String CURRENT_CONNECT_ID = "uid"; //当前用户id
 
 }

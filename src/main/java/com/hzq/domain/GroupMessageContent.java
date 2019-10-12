@@ -1,6 +1,8 @@
 package com.hzq.domain;
 
 
+import com.google.gson.Gson;
+
 import java.sql.Timestamp;
 
 /**
@@ -73,6 +75,7 @@ public class GroupMessageContent {
     public void setGroupId(Integer groupId) {
         this.groupId = groupId;
     }
+
 }
 
 
