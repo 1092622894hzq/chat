@@ -1,7 +1,6 @@
 package com.hzq.dao;
 
 import com.hzq.domain.Apply;
-import com.hzq.domain.UserInfo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -23,17 +22,17 @@ public interface ApplyDao {
 
     /**
      * 删除
-     * @param apply 修改的申请
+     * @param id 修改的申请
      * @return 返回修改次数
      */
-    int delete(Apply apply);
+    int deleteById(@Param("id") Integer id);
 
     /**
      * 根据用户id删除所有好友申请
      * @param useId 用户id
      * @return 返回修改次数
      */
-    int deleteById(Integer useId);
+    int deleteByUserId(@Param("userId") Integer useId);
 
     /**
      * 更新申请状态

@@ -1,5 +1,6 @@
 package com.hzq.execption;
 
+import com.hzq.enums.ResponseCodeEnum;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 
@@ -9,10 +10,12 @@ import org.springframework.web.bind.annotation.ControllerAdvice;
  * @Description: com.hzq.domain
  * @version: 1.0
  */
-@Component
 @ControllerAdvice
+@Component
 public class CustomGenericException extends RuntimeException  {
+    //异常数字
     private Integer errCode;
+    //异常信息
     private String errMsg;
 
     public Integer getErrCode() {
@@ -31,12 +34,25 @@ public class CustomGenericException extends RuntimeException  {
         this.errMsg = errMsg;
     }
 
-    public CustomGenericException(Integer errCode, String errMsg) {
+    private CustomGenericException() {
+    }
+
+    private CustomGenericException(Integer errCode, String errMsg) {
         this.errCode = errCode;
         this.errMsg = errMsg;
     }
 
-    public CustomGenericException(){
-
+     private CustomGenericException(ResponseCodeEnum responseCodeEnum) {
+        this.errCode = responseCodeEnum.getCode();
+        this.errMsg = responseCodeEnum.getDesc();
     }
+
+    public static CustomGenericException CreateException(Integer errCode, String errMsg) {
+        return new CustomGenericException(errCode,errMsg);
+    }
+
+    public static CustomGenericException CreateException(ResponseCodeEnum responseCodeEnum) {
+        return new CustomGenericException(responseCodeEnum);
+    }
+
 }

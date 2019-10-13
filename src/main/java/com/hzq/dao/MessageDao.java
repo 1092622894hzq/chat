@@ -18,7 +18,7 @@ public interface MessageDao {
      * @param message 消息
      * @return 返回修改次数
      */
-    int insert(@Param("message") Message message);
+    int insert(Message message);
 
     /**
      * 根据消息删除消息

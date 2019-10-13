@@ -25,10 +25,7 @@
 </insert>
 
 <delete id="delete" parameterType="java.lang.Integer">
-    delete from `group`
-    <where>
-        id = #{id, jdbcType = INTEGER}
-    </where>
+    delete from `group` where id = #{id, jdbcType = INTEGER}
 </delete>
 
 <update id="update" parameterType="com.hzq.domain.Group">

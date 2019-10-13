@@ -2,7 +2,6 @@ package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
-import com.hzq.domain.UserInfo;
 
 import java.util.List;
 import java.util.Map;
@@ -23,18 +22,18 @@ public interface ApplyService {
     ServerResponse<String> insert(Apply apply);
 
     /**
-     * 根据用户id和好友id删除好友申请
-     * @param apply 好友申请信息
+     * 根据数据的id
+     * @param id 数据的id
      * @return 返回通用对象
      */
-    ServerResponse<String> delete(Apply apply);
+    ServerResponse<String> deleteById(Integer id);
 
     /**
      * 根据用户id删除所有好友申请
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<String> deleteById(Integer userId);
+    ServerResponse<String> deleteByUserId(Integer userId);
 
     /**
      * 根据用户id和好友id更新申请状态

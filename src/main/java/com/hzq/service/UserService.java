@@ -72,6 +72,15 @@ public interface UserService {
      */
     <T> Map<Integer, List<T>> MessageSubgroup(List<T> messages, T t);
 
+    /**
+     * 根据用户名和用户id刷新token
+     * @param user 用户主表的信息
+     * @param username 用户名
+     * @param id 用户id
+     * @return 返回通用结果
+     */
+    ServerResponse<String> refreshToken(User user,String username, Integer id);
+
 }
 
 

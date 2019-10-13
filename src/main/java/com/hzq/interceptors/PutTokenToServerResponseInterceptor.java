@@ -50,6 +50,7 @@ public class PutTokenToServerResponseInterceptor implements ResponseBodyAdvice<S
         if (accessToken != null) {
             serverResponse.setAccessToken(accessToken);
         }
+        LOGGER.debug("accessToken: "+accessToken);
         return serverResponse;
     }
 }

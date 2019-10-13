@@ -78,11 +78,8 @@ public class UserController {
     @RequestMapping(value = "/logout/{id}", method = RequestMethod.GET)
     public ServerResponse<String> logout(@PathVariable Integer id, HttpSession session){
         ServerResponse<String> response = userService.updateStatus(Const.OFFLINE,id);
-        if (response.isSuccess()) {
-            session.removeAttribute(Const.CURRENT_USER);
-            return response;
-        }
-        return ServerResponse.createByErrorMessage("下线失败");
+        session.removeAttribute(Const.CURRENT_USER);
+        return response;
     }
 
     /**
@@ -95,13 +92,7 @@ public class UserController {
     @RequestMapping(value = "/refreshToken/{username}/{id}", method = RequestMethod.GET)
     public ServerResponse<String> refreshToken(@PathVariable String username, @PathVariable Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user.getId().equals(id) && user.getUsername().equals(username)) {
-            String accessToken = JwtUil.sign(username, id);
-            ServerResponse<String> response = ServerResponse.createBySuccess();
-            response.setAccessToken(accessToken);
-            return response;
-        }
-        return ServerResponse.createByErrorMessage("刷新token失败");
+        return userService.refreshToken(user,username,id);
     }
 
 }

@@ -2,7 +2,6 @@ package com.hzq.interceptors;
 
 import com.hzq.common.Const;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
@@ -27,18 +26,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 		this.exceptUrls = exceptUrls;
 	}
 
-	/**
-	       * preHandle方法是进行处理器拦截用的，顾名思义，该方法将在Controller处理之前进行调用，
-	       * SpringMVC中的Interceptor拦截器是链式的，可以同时存在多个Interceptor，
-	       * 然后SpringMVC会根据声明的前后顺序一个接一个的执行，
-	       * 而且所有的Interceptor中的preHandle方法都会在Controller方法调用之前调用。
-	       * SpringMVC的这种Interceptor链式结构也是可以进行中断的，
-	       * 这种中断方式是令preHandle的返回值为false，当preHandle的返回值为false的时候整个请求就结束了。
-	       */
-		//执行action之前来执行
 		@Override
 		@ExceptionHandler(CustomGenericException.class)
-		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 			LOGGER.debug("到达权限拦截器");
 			String requestUri = request.getRequestURI();  //得到项目名开始的路径 /test/test.jsp
 			if(requestUri.startsWith(request.getContextPath())){ //项目名 /test
@@ -69,7 +59,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			//其他需要登录后才能进行访问的url
 			User user = (User)request.getSession().getAttribute(Const.CURRENT_USER);
 			if (null == user) {
-				throw new CustomGenericException(ResponseCodeEnum.NO_AUTHOR.getCode(), "该用户尚未登录");
+				throw CustomGenericException.CreateException(-20, "该用户尚未登录");
 			}
 			return true;
 	}
@@ -85,7 +75,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 	       * 然后要在Interceptor之前调用的内容都写在调用invoke之前，要在Interceptor之后调用的内容都写在调用invoke方法之后。
 	       */
      @Override
-     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView) throws Exception {
+     public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler, ModelAndView modelAndView){
 		    }
 
 	/**

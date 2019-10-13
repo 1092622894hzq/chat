@@ -25,12 +25,11 @@
     )
 </insert>
 
-<delete id="delete" parameterType="com.hzq.domain.Apply">
-    delete from apply where
-    from_id = #{id,jdbcType = INTEGER} and to_id = #{id, jdbcType = INTEGER} and user_id = #{userId, jdbcType = INTEGER}
+<delete id="deleteById" parameterType="java.lang.Integer">
+    delete from apply where id = #{id, jdbcType = INTEGER}
 </delete>
 
-<delete id="deleteById" parameterType="java.lang.Integer">
+<delete id="deleteByUserId" parameterType="java.lang.Integer">
     delete from apply where user_id = #{userId, jdbcType = INTEGER}
 </delete>
 
@@ -41,8 +40,7 @@
 </update>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from apply
-    where user_id = #{userId, jdbcType = INTEGER}
+    select * from apply where user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 

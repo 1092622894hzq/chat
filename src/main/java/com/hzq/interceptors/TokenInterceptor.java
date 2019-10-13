@@ -2,7 +2,6 @@ package com.hzq.interceptors;
 
 import com.hzq.common.Const;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.utils.JwtUil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +23,6 @@ public class TokenInterceptor implements HandlerInterceptor {
     private static final Logger LOGGER = LoggerFactory.getLogger(TokenInterceptor.class);
 
     @Override
-    @ExceptionHandler(CustomGenericException.class)
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         LOGGER.debug("到达token拦截器");
         //判断是否刷新token
@@ -34,8 +32,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         response.setCharacterEncoding("utf-8");
         String token = request.getHeader("accessToken");
         LOGGER.debug("token: "+token);
-        if (null != token && !JwtUil.verify(token)) {
-            throw new CustomGenericException(ResponseCodeEnum.NO_AUTHOR.getCode(),"用户的token无效");
+        if (null == token || !JwtUil.verify(token)) {
+            throw  CustomGenericException.CreateException(-20,"用户的token无效");
         }
         return true;
     }
@@ -46,7 +44,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     }
 
     @Override
-    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e) throws Exception {
+    public void afterCompletion(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o, Exception e){
 
     }
 }

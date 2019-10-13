@@ -23,29 +23,6 @@ public class UserInfoController {
     private UserInfoService userInfoService;
 
     /**
-     * 插入用户个人信息
-     * @param session 一次会话
-     * @param userInfo 个人信息
-     * @return 返回通用对象
-     */
-    @RequestMapping( value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody UserInfo userInfo, HttpSession session){
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        userInfo.setUserId(user.getId());
-        return userInfoService.insert(userInfo);
-    }
-
-    /**
-     * 删除用户信息
-     * @param userId 用户userId
-     * @return 返回通用结果
-     */
-    @RequestMapping( value = "/delete/{userId}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteUserInfoByPrimaryId(@PathVariable Integer userId) {
-        return userInfoService.deleteUserInfoByPrimaryId(userId);
-    }
-
-    /**
      * 更新用户个人信息
      * @param session 一次会话
      * @param userInfo 用户要修改的信息
@@ -78,4 +55,27 @@ public class UserInfoController {
         return userInfoService.findPasswordByUserId(id);
     }
 
+
+//    /**
+//     * 插入用户个人信息-----基本不会用，因为用户个人信息默认设定。
+//     * @param session 一次会话
+//     * @param userInfo 个人信息
+//     * @return 返回通用对象
+//     */
+//    @RequestMapping( value = "/insert", method = RequestMethod.POST)
+//    public ServerResponse<String> insert(@RequestBody UserInfo userInfo, HttpSession session){
+//        User user = (User)session.getAttribute(Const.CURRENT_USER);
+//        userInfo.setUserId(user.getId());
+//        return userInfoService.insert(userInfo);
+//    }
+//
+//    /**
+//     * 删除用户信息 ---- 基本不会使用，由后台自动处理
+//     * @param userId 用户userId
+//     * @return 返回通用结果
+//     */
+//    @RequestMapping( value = "/delete/{userId}", method = RequestMethod.GET)
+//    public ServerResponse<String> deleteUserInfoByPrimaryId(@PathVariable Integer userId) {
+//        return userInfoService.deleteUserInfoByPrimaryId(userId);
+//    }
 }

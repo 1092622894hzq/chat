@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
@@ -20,9 +21,15 @@ public class GlobalExceptionHandler {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(GlobalExceptionHandler.class);
 
+    /**
+     * 处理自定以的异常
+     * @param exception 异常
+     * @return 返回通用结果
+     */
     @ExceptionHandler(CustomGenericException.class)
     @ResponseBody
     public ServerResponse<String> allExceptionHandler(CustomGenericException exception){
+        LOGGER.error(exception.getErrMsg(),exception);
         return ServerResponse.createByErrorCodeMessage(exception.getErrCode(), exception.getErrMsg());
     }
 

@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hzq.common.Const;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.*;
 import com.hzq.service.*;
@@ -53,7 +52,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
 
     //WebSocket连接建立后的回调方法
     @Override
-    public void afterConnectionEstablished(WebSocketSession webSocketSession) throws Exception {
+    public void afterConnectionEstablished(WebSocketSession webSocketSession){
         int uid = (Integer) webSocketSession.getAttributes().get(Const.CURRENT_CONNECT_ID);
         USER_SESSION_MAP.putIfAbsent(uid, webSocketSession);
     }
@@ -61,7 +60,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
 
     //接收到WebSocket消息后的处理方法
     @Override
-    public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) throws Exception {
+    public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) {
 
         if(webSocketMessage.getPayloadLength()==0)
             return ;
@@ -96,7 +95,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
 
     //WebSocket连接关闭后的回调方法
     @Override
-    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
+    public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
         LOGGER.debug("用户： " + session.getRemoteAddress() + " is leaving, because:" + closeStatus);
         for (Map.Entry<Integer, WebSocketSession> entry : USER_SESSION_MAP.entrySet()) {
             if (entry.getValue().equals(session)) {
@@ -113,63 +112,49 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
     }
 
 
-    public void handlerGroupMessage(Content content) {
+    private void handlerGroupMessage(Content content) {
         GroupMessageContent message = new GroupMessageContent();
-        try {
             message.setGroupId(content.getGroupId());
             message.setGmFromId(content.getFromId());
             message.setGmContent(content.getMessage());
             message.setGmType(content.getType());
-        } catch (Exception e) {
-            throw new CustomGenericException(ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getCode(), ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getDesc());
-        }
         groupMessageContentService.insert(message);
         Timestamp time = new Timestamp(System.currentTimeMillis());
         ServerResponse<List<GroupMessageAndGroupToUser>> list = groupToUserService.select(content.getGroupId());
-        try {
-            for (GroupMessageAndGroupToUser g : list.getData()) {
-                if (USER_SESSION_MAP.get(g.getUserId()) != null) {
-                    sendMessageToUser(g.getUserId(),new TextMessage(new GsonBuilder().setDateFormat(Const.STANDARD_FORMAT).create().toJson(message)));
-                    groupMessageToUserService.update(g.getUserId(),g.getGroupMessageId(),time);
-                }
+        for (GroupMessageAndGroupToUser g : list.getData()) {
+            if (USER_SESSION_MAP.get(g.getUserId()) != null) {
+                sendMessageToUser(g.getUserId(),new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message)));
+                groupMessageToUserService.update(g.getUserId(),g.getGroupMessageId(),time);
             }
-        }catch (IOException e) {
-            throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
         }
     }
 
-    public void handlerUserMessage(Content content) {
+    private void handlerUserMessage(Content content) {
         Integer userId = content.getToId();
         Message message = new Message();
-        try{
-            message.setMessageContent(content.getMessage());
-            message.setMessageToId(content.getToId());
-            message.setMessageFromId(content.getFromId());
-            message.setUserId(content.getToId()); //先帮接收者插入信息
-            message.setMessageType(content.getType());
-        } catch (Exception e) {
-            throw new CustomGenericException(ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getCode(), ResponseCodeEnum.MESSAGE_FORMAT_ERROR.getDesc());
-        }
+        message.setMessageContent(content.getMessage());
+        message.setMessageToId(content.getToId());
+        message.setMessageFromId(content.getFromId());
+        message.setUserId(content.getToId()); //先帮接收者插入信息
+        message.setMessageType(content.getType());
         if (USER_SESSION_MAP.get(userId) == null) {
             message.setMessageStatus(Const.MARK_AS_UNREAD);
         } else {
             message.setMessageStatus(Const.MARK_AS_READ);
-            try {
-                sendMessageToUser(userId,new TextMessage(new GsonBuilder().setDateFormat(Const.STANDARD_FORMAT).create().toJson(message)));
-            } catch (IOException e) {
-                throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
-            }
+            sendMessageToUser(userId,new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message)));
         }
         messageService.insert(message);
     }
 
     //发送信息的实现 私发
-    public void sendMessageToUser(Integer uid, TextMessage message) throws IOException {
+    private void sendMessageToUser(Integer uid, TextMessage message){
         WebSocketSession session = USER_SESSION_MAP.get(uid);
-        if (session != null && session.isOpen()) {
-            session.sendMessage(message);
-        } else {
-            throw new CustomGenericException(ResponseCodeEnum.SEND_MESSAGE_ERROR.getCode(), ResponseCodeEnum.SEND_MESSAGE_ERROR.getDesc());
+        try {
+            if (session != null && session.isOpen()) {
+                session.sendMessage(message);
+            }
+        } catch (IOException e) {
+            throw CustomGenericException.CreateException(40,"发送消息出错");
         }
     }
 }

@@ -5,7 +5,6 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.domain.User;
 import com.hzq.service.ApplyService;
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,15 +39,12 @@ public class ApplyController {
 
     /**
      * 根据用户id和申请好友的id删除申请
-     * @param apply 申请信息
-     * @param session 一次会话
+     * @param id 该数据的id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/delete", method = RequestMethod.POST)
-    public ServerResponse<String> delete(@RequestBody Apply apply, HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        apply.setUserId(user.getId());
-        return applyService.delete(apply);
+    @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteById(@PathVariable Integer id) {
+        return applyService.deleteById(id);
     }
 
     /**
@@ -56,9 +52,9 @@ public class ApplyController {
      * @param userId 用户id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/delete/{userId}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteById(@PathVariable Integer userId) {
-        return applyService.deleteById(userId);
+    @RequestMapping(value = "/deleteByUserId/{userId}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteByUserId(@PathVariable Integer userId) {
+        return applyService.deleteByUserId(userId);
     }
 
     /**
@@ -74,13 +70,12 @@ public class ApplyController {
 
     /**
      * 根据用户id查询所有好友申请
-     * @param session 一次会话
+     * @param userId 用户id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/selectAll")
-    public ServerResponse<Map<Integer,List<Apply>>> selectAll(HttpSession session) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        return applyService.selectAll(user.getId());
+    @RequestMapping(value = "/selectAll/{userId}", method = RequestMethod.GET)
+    public ServerResponse<Map<Integer,List<Apply>>> selectAll(@PathVariable Integer userId) {
+        return applyService.selectAll(userId);
     }
 
 }

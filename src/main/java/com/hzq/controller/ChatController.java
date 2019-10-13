@@ -37,9 +37,10 @@ public class ChatController {
     private WebSocketService webSocketService;
     //日志打印
     private static Logger LOGGER = LoggerFactory.getLogger(ChatController.class);
-
+    //json转换
     private static Gson gson = new Gson();
-    public <T>String toJson(T obj){
+
+    private <T>String toJson(T obj){
         return gson.toJson(obj);
     }
 
@@ -58,12 +59,13 @@ public class ChatController {
     //处理私聊消息
     @MessageMapping("/friend")
     public void sendToOther(@Payload Message message) {
+        LOGGER.debug(message.getMessageContent());
         Integer toId = message.getMessageToId();
         ServerResponse response = messageService.insert(message);
         if (!response.isSuccess()) {
             LOGGER.debug(response.getMsg());
         }
-        template.convertAndSendToUser("user",toId.toString(),toJson(message));
+        template.convertAndSendToUser(toId.toString(),"queue/result",toJson(message));
     }
 
     //处理异常消息

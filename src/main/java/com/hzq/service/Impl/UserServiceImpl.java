@@ -4,10 +4,12 @@ import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.*;
 import com.hzq.domain.*;
+import com.hzq.execption.CustomGenericException;
 import com.hzq.service.ApplyService;
 import com.hzq.service.GroupMessageContentService;
 import com.hzq.service.MessageService;
 import com.hzq.service.UserService;
+import com.hzq.utils.JwtUil;
 import com.hzq.utils.MD5Util;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,23 +64,15 @@ public class UserServiceImpl implements UserService {
         userInfo.setNickname(user.getUsername());
         userInfo.setUserId(user.getId());
         if (userInfoDao.insert(userInfo) == 0) {
-            ServerResponse<String> response = deleteUserByPrimaryId(user.getId());
-            if (response.isSuccess())
-                return ServerResponse.createByErrorMessage("插入个人信息出错");
-            else
-                return ServerResponse.createByErrorMessage("插入用户个人信息失败并且尝试删除该失败用户同时也失败");
+            throw CustomGenericException.CreateException(40,"注册时插入个人信息出错");
         }
         Friend friend = new Friend();
-        friend.setFriendAvatar("default.png");
+        friend.setFriendAvatar(Const.DEFAULT_AVATAR);
         friend.setFriendId(Const.AUTHORITY);
         friend.setUserId(user.getId());
         friend.setFriendName(Const.AUTHORITY_NAME);
         if (friendDao.insert(friend) == 0) {
-            ServerResponse<String> response = deleteUserByPrimaryId(user.getId());
-            if (response.isSuccess())
-                return ServerResponse.createByErrorMessage("插入个人信息出错");
-            else
-                return ServerResponse.createByErrorMessage("插入朋友失败并且尝试删除该用户也失败");
+            throw CustomGenericException.CreateException(40,"注册时插入好友个人信息出错");
         }
         return ServerResponse.createBySuccessMessage("注册成功");
     }
@@ -90,11 +84,11 @@ public class UserServiceImpl implements UserService {
         }
         User user = userDao.selectLogin(username);
         boolean isTrue = MD5Util.verify(password,user.getPassword());
-        if (!isTrue){
+        if (!isTrue) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
-        if (userDao.updateStatus(Const.ONLINE,user.getId()) > 0) {
-            System.out.println("成功修改登录状态");
+        if (userDao.updateStatus(Const.ONLINE,user.getId()) == 0) {
+            throw CustomGenericException.CreateException(40,"修改用户登录状态失败");
         }
         user.setPassword(StringUtils.EMPTY);
         Result result = new Result();
@@ -122,13 +116,13 @@ public class UserServiceImpl implements UserService {
         if (isTrue && userDao.updatePassword(newPassword,id) > 0) {
             return ServerResponse.createBySuccess();
         }
-        return ServerResponse.createByErrorMessage("修改失败");
+        throw CustomGenericException.CreateException(40,"更改密码时发生错误,很可能密码错误");
     }
 
     @Override
     public ServerResponse<String> updateStatus(Integer status, Integer id) {
         if (userDao.updateStatus(status,id) == 0) {
-            return ServerResponse.createByErrorMessage("修改用户状态失败");
+            throw CustomGenericException.CreateException(40,"更新用户登录状态失败");
         }
         return ServerResponse.createBySuccess();
     }
@@ -136,11 +130,11 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<String> deleteUserByPrimaryId(Integer id) {
         if (userDao.deleteUserByPrimaryId(id) == 0) {
-            return ServerResponse.createByErrorMessage("删除用户失败");
+            throw CustomGenericException.CreateException(40,"删除用户失败");
         }
         //1.删除用户信息
         if (userInfoDao.deleteUserInfoByPrimaryId(id) == 0) {
-            return ServerResponse.createByErrorMessage("删除用户个人失败");
+            throw CustomGenericException.CreateException(40,"删除用户个人信息失败");
         }
         //2.删除用户和私人聊天的记录
         messageDao.deleteAllByUserId(id);
@@ -150,9 +144,7 @@ public class UserServiceImpl implements UserService {
         applyDao.deleteById(id);
         //5.用户为群主的直接删除群聊
         //6.删除所有好友
-        if (friendDao.deleteById(id) == 0) {
-            return ServerResponse.createByErrorMessage("删除用户好友失败");
-        }
+        friendDao.deleteById(id);
         //通知好友被删除了
         return ServerResponse.createBySuccess();
     }
@@ -169,7 +161,6 @@ public class UserServiceImpl implements UserService {
         } else {
             return ServerResponse.createByErrorMessage("输入参数错误");
         }
-
         return ServerResponse.createBySuccess();
     }
 
@@ -198,6 +189,17 @@ public class UserServiceImpl implements UserService {
             return map;
         }
         return null;
+    }
+
+    @Override
+    public ServerResponse<String> refreshToken(User user, String username, Integer id) {
+        if (user.getId().equals(id) && user.getUsername().equals(username)) {
+            String accessToken = JwtUil.sign(username, id);
+            ServerResponse<String> response = ServerResponse.createBySuccess();
+            response.setAccessToken(accessToken);
+            return response;
+        }
+        return ServerResponse.createByErrorMessage("刷新token失败");
     }
 }
 

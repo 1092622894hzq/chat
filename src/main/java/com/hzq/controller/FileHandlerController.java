@@ -3,7 +3,6 @@ package com.hzq.controller;
 import com.hzq.common.Const;
 import com.hzq.enums.FileTypeEnum;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Group;
 import com.hzq.domain.User;
@@ -49,12 +48,12 @@ public class FileHandlerController {
     public ServerResponse<String> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         String fileName = System.currentTimeMillis()+avatar.getOriginalFilename();
-        //输入文件类型
         try {
+            //输入文件类型
             FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(avatar.getInputStream()));
             LOGGER.debug(fileTypeEnum.getExt());
             if (!FileUtil.isPhoto(fileTypeEnum)) {
-                throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getCode(),ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getDesc());
+                throw CustomGenericException.CreateException(40,"上传文件失败");
             }
             File f = new File(Const.File_PATH+"//"+user.getId());
             if (!f.exists()) {
@@ -64,14 +63,14 @@ public class FileHandlerController {
             FileUtil.ByteToPhoto(avatar.getBytes(),dir);
             UserInfo userInfo = userInfoService.queryUserByName(user.getUsername()).getData();
             String avatarName = userInfo.getAvatar();
-            if (!avatarName.equals(Const.DEFAUL_AVATAR)) {
+            if (!avatarName.equals(Const.DEFAULT_AVATAR)) {
                 File deleteFile = new File(Const.File_PATH+"//"+user.getId(),avatarName);
                 if (!deleteFile.delete()) {
                     LOGGER.debug("存储用户头像的时候，删除之前头像出现了错误");
                 }
             }
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
+            throw CustomGenericException.CreateException(40,"上传文件失败");
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
@@ -95,7 +94,7 @@ public class FileHandlerController {
             FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(icon.getInputStream()));
             LOGGER.debug(fileTypeEnum.getExt());
             if (!FileUtil.isPhoto(fileTypeEnum)) {
-                throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getCode(),ResponseCodeEnum.UPLOAD_FILE_TYPE_ERROR.getDesc());
+                throw CustomGenericException.CreateException(40,"上传文件失败");
             }
             File f = new File(Const.File_PATH+"//"+id);
             if (!f.exists()) {
@@ -105,14 +104,14 @@ public class FileHandlerController {
             FileUtil.ByteToPhoto(icon.getBytes(),dir);
             Group group = groupService.select(id).getData();
             String groupIcon = group.getGroupIcon();
-            if (!groupIcon.equals(Const.DEFAUL_AVATAR)) {
+            if (!groupIcon.equals(Const.DEFAULT_AVATAR)) {
                 File deleteFile = new File(Const.File_PATH+"//"+id,groupIcon);
                 if (!deleteFile.delete()) {
                     LOGGER.debug("存储群头像的时候，删除之前头像出现了错误");
                 }
             }
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
+            throw CustomGenericException.CreateException(40,"上传文件失败");
         }
         Group group = new Group();
         group.setGroupIcon(fileName);
@@ -132,7 +131,7 @@ public class FileHandlerController {
             File dir = new File(Const.File_PATH+"//"+userId,file.getOriginalFilename());
             FileUtil.ByteToPhoto(file.getBytes(),dir);
         } catch (Exception e) {
-            throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
+            throw CustomGenericException.CreateException(40,"上传文件失败");
         }
     }
 
@@ -146,13 +145,13 @@ public class FileHandlerController {
             File dir = new File(path);
             if (!dir.exists()) {
                 LOGGER.debug("文件不存在");
-                throw new CustomGenericException(ResponseCodeEnum.DELETE_FILE_ERROR.getCode(), ResponseCodeEnum.DELETE_FILE_ERROR.getDesc());
+                throw CustomGenericException.CreateException(40,"上传文件失败");
             }
             if (!dir.delete()) {
                 LOGGER.debug("删除文件出错");
             }
         } catch (Exception e) {
-        throw new CustomGenericException(ResponseCodeEnum.UPLOAD_FILE_ERROR.getCode(), ResponseCodeEnum.UPLOAD_FILE_ERROR.getDesc());
+            throw CustomGenericException.CreateException(40,"上传文件失败");
     }
     }
 
