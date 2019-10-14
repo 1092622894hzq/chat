@@ -68,10 +68,11 @@ public class ChatController {
         template.convertAndSendToUser(toId.toString(),"queue/result",toJson(message));
     }
 
-    //处理异常消息
     @MessageExceptionHandler
     @SendToUser("/errors")
     public ServerResponse<String> handleException(CustomGenericException e) {
+        e.printStackTrace();
+        LOGGER.debug(e.getErrMsg());
         return ServerResponse.createByErrorMessage("发生错误: "+e.getErrMsg());
     }
 

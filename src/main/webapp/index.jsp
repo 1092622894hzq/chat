@@ -23,7 +23,7 @@
         //this line.
         function connect() {
             var userId = 3;
-            var socket = new SockJS('http://'+window.location.host+'/Chat_war/hello');
+            var socket = new SockJS('http://'+window.location.host+'/chat_war/hello');
             stompClient = Stomp.over(socket);
             stompClient.connect({}, function(frame) {
                 setConnected(true);
@@ -81,7 +81,7 @@
             //     );
             var payload = JSON.stringify(
                 {
-                    'messageContent': name ,
+                    'messageContent': "3" ,
                     'messageStatus' : name ,
                     'messageGroup' : name ,
                     'messageType' : name,

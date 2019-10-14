@@ -25,7 +25,7 @@ public class TokenInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) {
         LOGGER.debug("到达token拦截器");
-        //判断是否刷新token
+        //判断是否刷新token,是的话直接放行
         if (request.getAttribute(Const.REFRESH_TOKEN) != null) {
             return true;
         }
@@ -33,7 +33,8 @@ public class TokenInterceptor implements HandlerInterceptor {
         String token = request.getHeader("accessToken");
         LOGGER.debug("token: "+token);
         if (null == token || !JwtUil.verify(token)) {
-            throw  CustomGenericException.CreateException(-20,"用户的token无效");
+            LOGGER.debug("发现token不正确");
+            throw  CustomGenericException.CreateException(20,"用户的token无效");
         }
         return true;
     }

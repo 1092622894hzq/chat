@@ -18,6 +18,7 @@ public class ServerResponse<T> implements Serializable {
     private int status;
     private String msg;
     private String accessToken;
+    private String sessionId;
     private T data;
 
     private ServerResponse(int status){
@@ -55,6 +56,15 @@ public class ServerResponse<T> implements Serializable {
     }
     public void setData(T data) {
         this.data = data;
+    }
+
+
+    public String getSessionId() {
+        return sessionId;
+    }
+
+    public void setSessionId(String sessionId) {
+        this.sessionId = sessionId;
     }
 
     public void setAccessToken(String accessToken){

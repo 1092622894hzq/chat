@@ -9,6 +9,7 @@ import com.hzq.utils.JwtUil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
 
@@ -43,14 +44,16 @@ public class UserController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/login", method = RequestMethod.POST)
-    public ServerResponse<Result> login(@RequestBody Map<String,String> map, HttpSession session){
+    public ServerResponse<Result> login(@RequestBody Map<String,String> map, HttpSession session, HttpServletResponse resp){
         String username = map.get(Const.USERNAME);
         String password = map.get(Const.PASSWORD);
         ServerResponse<Result> response = userService.login(username,password);
         if (response.isSuccess()) {
             String accessToken = JwtUil.sign(username, response.getData().getUser().getId());
             session.setAttribute(Const.CURRENT_USER,response.getData().getUser());
+            resp.setHeader("Access-Control-Allow-Origin","*");
             response.setAccessToken(accessToken);
+            response.setSessionId("JSESSIONID="+session.getId());
             return response;
             }
         return response;
@@ -79,6 +82,7 @@ public class UserController {
     public ServerResponse<String> logout(@PathVariable Integer id, HttpSession session){
         ServerResponse<String> response = userService.updateStatus(Const.OFFLINE,id);
         session.removeAttribute(Const.CURRENT_USER);
+        session.invalidate();
         return response;
     }
 

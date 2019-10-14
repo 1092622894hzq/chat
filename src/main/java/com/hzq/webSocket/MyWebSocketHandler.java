@@ -29,7 +29,6 @@ import java.util.concurrent.ConcurrentHashMap;
  * 看自己需要进行继承），该类主要是用来处理消息的接收和发送
  * @version: 1.0
  */
-@Component
 public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebSocketHandler {
 
     @Autowired
@@ -61,24 +60,15 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
     //接收到WebSocket消息后的处理方法
     @Override
     public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) {
-
         if(webSocketMessage.getPayloadLength()==0)
             return ;
-
-        //得到Socket通道中的数据并转化为Content对象
         Content msg = new Gson().fromJson(webSocketMessage.getPayload().toString(), Content.class);
-
-        if (msg.getGroupId() == null) {
+        if (msg.getGroupId() == null)
             handlerGroupMessage(msg);
-        } else {
+        else
             handlerUserMessage(msg);
-        }
-
-        //发送Socket信息
-      //  sendMessageToUser(msg.getMessageToId(), new TextMessage(new GsonBuilder().setDateFormat("yyyy-MM-dd HH:mm:ss").create().toJson(msg)));
     }
 
-    //WebSocket传输发生错误时的处理方法
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
        LOGGER.debug("连接发生错误");
@@ -100,7 +90,7 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
         for (Map.Entry<Integer, WebSocketSession> entry : USER_SESSION_MAP.entrySet()) {
             if (entry.getValue().equals(session)) {
                 USER_SESSION_MAP.remove(entry.getKey(), session);
-                System.out.println("WebSocket in staticMap:" + session.getAttributes().get(Const.CURRENT_CONNECT_ID) + "removed");
+                LOGGER.debug("WebSocket in staticMap:" + session.getAttributes().get(Const.CURRENT_CONNECT_ID) + "removed");
             }
         }
     }
@@ -150,9 +140,8 @@ public class MyWebSocketHandler extends AbstractWebSocketHandler implements WebS
     private void sendMessageToUser(Integer uid, TextMessage message){
         WebSocketSession session = USER_SESSION_MAP.get(uid);
         try {
-            if (session != null && session.isOpen()) {
+            if (session != null && session.isOpen())
                 session.sendMessage(message);
-            }
         } catch (IOException e) {
             throw CustomGenericException.CreateException(40,"发送消息出错");
         }

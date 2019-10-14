@@ -1,6 +1,5 @@
 package com.hzq.common;
 
-import org.apache.commons.lang3.StringUtils;
 
 /**
  * @Auther: blue
@@ -52,7 +51,7 @@ public class Const {
     /*
     表示文件存储的路径
      */
-    public static final String File_PATH = "D:\\images";
+    public static final String File_PATH = "C:\\images";
     /*
     表示还是好友
      */

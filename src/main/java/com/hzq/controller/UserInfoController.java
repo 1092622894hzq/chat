@@ -5,9 +5,12 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.User;
 import com.hzq.domain.UserInfo;
 import com.hzq.service.UserInfoService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 /**
@@ -19,12 +22,12 @@ import javax.servlet.http.HttpSession;
 @RestController
 @RequestMapping("/userInfo")
 public class UserInfoController {
+
     @Autowired
     private UserInfoService userInfoService;
 
     /**
      * 更新用户个人信息
-     * @param session 一次会话
      * @param userInfo 用户要修改的信息
      * @return 返回通用对象
      */
@@ -68,9 +71,9 @@ public class UserInfoController {
 //        userInfo.setUserId(user.getId());
 //        return userInfoService.insert(userInfo);
 //    }
-//
+
 //    /**
-//     * 删除用户信息 ---- 基本不会使用，由后台自动处理
+//     * 删除用户信息 -----基本不会用，默认处理
 //     * @param userId 用户userId
 //     * @return 返回通用结果
 //     */
@@ -78,4 +81,5 @@ public class UserInfoController {
 //    public ServerResponse<String> deleteUserInfoByPrimaryId(@PathVariable Integer userId) {
 //        return userInfoService.deleteUserInfoByPrimaryId(userId);
 //    }
+
 }

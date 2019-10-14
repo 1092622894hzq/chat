@@ -1,4 +1,4 @@
-package com.hzq.webSocket;
+package com.hzq.webSocket.annotion;
 
 import org.springframework.stereotype.Component;
 
@@ -8,6 +8,9 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.Map;
 
+/**
+ * 基于注解的webSocket
+ */
 @ServerEndpoint(value = "/chat")
 @Component
 public class WebsocketServer {

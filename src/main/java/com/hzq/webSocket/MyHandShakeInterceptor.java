@@ -2,6 +2,8 @@ package com.hzq.webSocket;
 
 import com.hzq.common.Const;
 import com.hzq.domain.User;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
@@ -19,17 +21,19 @@ import java.util.Map;
  */
 public class MyHandShakeInterceptor implements HandshakeInterceptor {
 
+    private static final Logger LOGGER = LoggerFactory.getLogger(MyHandShakeInterceptor.class);
+
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
             ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
             HttpSession session = servletRequest.getServletRequest().getSession(false);
             // 标记用户
             User user = (User) session.getAttribute(Const.CURRENT_USER);
-            System.out.println("Websocket:用户[ID:" + user.getId() + "]已经建立连接");
+            LOGGER.debug("Websocket:用户[ID:" + user.getId() + "]已经建立连接");
             map.put(Const.CURRENT_CONNECT_ID, user.getId());
         return true;
     }
 
     public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
-        System.out.println("握手后");
+       LOGGER.debug("握手完成后");
     }
 }

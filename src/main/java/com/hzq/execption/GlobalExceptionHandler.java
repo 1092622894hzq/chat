@@ -23,14 +23,15 @@ public class GlobalExceptionHandler {
 
     /**
      * 处理自定以的异常
-     * @param exception 异常
+     * @param e 异常
      * @return 返回通用结果
      */
     @ExceptionHandler(CustomGenericException.class)
     @ResponseBody
-    public ServerResponse<String> allExceptionHandler(CustomGenericException exception){
-        LOGGER.error(exception.getErrMsg(),exception);
-        return ServerResponse.createByErrorCodeMessage(exception.getErrCode(), exception.getErrMsg());
+    public ServerResponse<String> allExceptionHandler(CustomGenericException e){
+        e.printStackTrace();
+        LOGGER.error(e.getErrMsg(),e);
+        return ServerResponse.createByErrorCodeMessage(e.getErrCode(), e.getErrMsg());
     }
 
     /**
@@ -41,6 +42,7 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ServerResponse<String> handleException(Exception e){
+        e.printStackTrace();
         LOGGER.error(e.getMessage(), e);
         return ServerResponse.createByErrorMessage("操作错误");
     }

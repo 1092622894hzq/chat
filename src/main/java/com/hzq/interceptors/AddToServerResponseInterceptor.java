@@ -10,10 +10,12 @@ import org.springframework.http.converter.HttpMessageConverter;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
+import org.springframework.http.server.ServletServerHttpResponse;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @Auther: blue
@@ -22,11 +24,10 @@ import javax.servlet.http.HttpServletRequest;
  * @version: 1.0
  */
 @ControllerAdvice
-public class PutTokenToServerResponseInterceptor implements ResponseBodyAdvice<ServerResponse> {
+public class AddToServerResponseInterceptor implements ResponseBodyAdvice<ServerResponse> {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(PutTokenToServerResponseInterceptor.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(AddToServerResponseInterceptor.class);
 
-    //这里是一个前置拦截匹配操作,其实就是告诉你满足为true的才会执行下面的beforeBodyRead方法,这里可以定义自己业务相关的拦截匹配
     @Override
     public boolean supports(MethodParameter methodParameter, Class<? extends HttpMessageConverter<?>> aClass) {
         return true;
@@ -44,13 +45,17 @@ public class PutTokenToServerResponseInterceptor implements ResponseBodyAdvice<S
      */
     @Override
     public ServerResponse beforeBodyWrite(ServerResponse serverResponse, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
-        LOGGER.debug("进入返回值对象处理器中");
+        LOGGER.debug("进入返回值对象处理器中，将token和sessionId返回给安卓");
         HttpServletRequest request = ((ServletServerHttpRequest)serverHttpRequest).getServletRequest();
+        HttpServletResponse response =((ServletServerHttpResponse)serverHttpResponse).getServletResponse();
+        //设置允许跨域访问
+        response.setHeader("Access-Control-Allow-Origin","*");
         String accessToken = request.getHeader(Const.ACCESS_TOKEN);
+        String sessionId = request.getSession().getId();
         if (accessToken != null) {
             serverResponse.setAccessToken(accessToken);
+            serverResponse.setSessionId("JSESSIONID="+sessionId);
         }
-        LOGGER.debug("accessToken: "+accessToken);
         return serverResponse;
     }
 }
