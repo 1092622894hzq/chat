@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.utils
+ * @Description: 生成token和解密token工具类
  * @version: 1.0
  */
 public class JwtUil {
@@ -32,8 +32,6 @@ public class JwtUil {
      */
     public static String sign(String username, Integer id) {
         try {
-        //过期时间
-        Date date = new Date(System.currentTimeMillis() + EXPIRE_TIME);
         //私钥机加密算法
         Algorithm algorithm = Algorithm.HMAC256(TOKEN_SECRET);
         //设置头部信息
@@ -45,7 +43,6 @@ public class JwtUil {
                 .withHeader(header)
                 .withClaim("username", username)
                 .withClaim("id", id)
-                .withExpiresAt(date)
                 .sign(algorithm);
 
         } catch (UnsupportedEncodingException e) {

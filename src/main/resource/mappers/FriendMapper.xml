@@ -5,7 +5,6 @@
 <mapper namespace="com.hzq.dao.FriendDao">
     <resultMap id="BaseResultMap" type="com.hzq.domain.Friend">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="friend_avatar" jdbcType="VARCHAR" property="friendAvatar" />
         <result column="friend_name" jdbcType="VARCHAR" property="friendName" />
         <result column="friend_group" jdbcType="VARCHAR" property="friendGroup"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
@@ -16,19 +15,15 @@
     </resultMap>
 
 <insert id="insert" parameterType="com.hzq.domain.Friend"  useGeneratedKeys="true" keyProperty="id">
-    insert into friend (friend_avatar, friend_name, user_id, friend_id
+    insert into friend (friend_name, user_id, friend_id
     )
-    values ( #{friendAvatar, jdbcType = VARCHAR}, #{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},
-            #{friendId, jdbcType = INTEGER}
+    values (#{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},#{friendId, jdbcType = INTEGER}
     )
 </insert>
 
 <update id="update" parameterType="com.hzq.domain.Friend">
     update friend
     <set>
-       <if test="friendAvatar != null">
-            friend_avatar = #{friendAvatar, jdbcType = VARCHAR},
-       </if>
        <if test="friendName != null">
            friend_name = #{friendName, jdbcType = VARCHAR},
        </if>

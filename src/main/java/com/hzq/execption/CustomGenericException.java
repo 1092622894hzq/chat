@@ -2,15 +2,13 @@ package com.hzq.execption;
 
 import com.hzq.enums.ResponseCodeEnum;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.ControllerAdvice;
 
 /**
  * @Auther: blue
- * @Date: 2019/9/13
- * @Description: com.hzq.domain
+ * @Date: 2019/9/30
+ * @Description: 自定义统一异常类
  * @version: 1.0
  */
-@ControllerAdvice
 @Component
 public class CustomGenericException extends RuntimeException  {
     //异常数字

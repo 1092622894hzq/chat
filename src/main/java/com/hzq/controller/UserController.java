@@ -4,6 +4,7 @@ import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Result;
 import com.hzq.domain.User;
+import com.hzq.execption.CustomGenericException;
 import com.hzq.service.UserService;
 import com.hzq.utils.JwtUil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -95,8 +96,7 @@ public class UserController {
      */
     @RequestMapping(value = "/refreshToken/{username}/{id}", method = RequestMethod.GET)
     public ServerResponse<String> refreshToken(@PathVariable String username, @PathVariable Integer id, HttpSession session) {
-        User user = (User) session.getAttribute(Const.CURRENT_USER);
-        return userService.refreshToken(user,username,id);
+        return userService.refreshToken(username,id,session);
     }
 
 }

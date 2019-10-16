@@ -1,4 +1,4 @@
-package email;
+package com.hzq.email;
 
 import javax.activation.CommandMap;
 import javax.activation.MailcapCommandMap;

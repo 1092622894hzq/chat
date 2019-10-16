@@ -22,7 +22,7 @@ public interface ApplyService {
     ServerResponse<String> insert(Apply apply);
 
     /**
-     * 根据数据的id
+     * 根据申请的id删除申请
      * @param id 数据的id
      * @return 返回通用对象
      */
@@ -36,7 +36,7 @@ public interface ApplyService {
     ServerResponse<String> deleteByUserId(Integer userId);
 
     /**
-     * 根据用户id和好友id更新申请状态
+     * 根据申请人id和被申请人id来更新申请状态
      * @param apply 申请信息
      * @return 返回通用对象
      */

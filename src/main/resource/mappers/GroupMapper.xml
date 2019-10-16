@@ -52,9 +52,7 @@
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select g.* from `group` g left join group_to_user gtu on g.id = gtu.group_id
-    <where>
-        gtu.group_user_id = #{userId, jdbcType = INTEGER}
-    </where>
+    where gtu.user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 <select id="selectGroup" parameterType="java.lang.Integer" resultMap="BaseResultMap">

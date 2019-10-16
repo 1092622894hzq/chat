@@ -1,4 +1,4 @@
-package email;
+package com.hzq.email;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;

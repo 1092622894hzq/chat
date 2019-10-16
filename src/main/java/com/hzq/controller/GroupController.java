@@ -18,7 +18,7 @@ import java.util.List;
  * @Description: com.hzq.controller
  * @version: 1.0
  */
-@Controller
+@RestController
 @RequestMapping("/group")
 public class GroupController {
 

@@ -18,10 +18,13 @@
 
 
 <insert id="insert" parameterType="com.hzq.domain.Apply"  useGeneratedKeys="true" keyProperty="id">
-    insert into apply ( from_id, to_id, apply_reason, user_id
-    )
-    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER}, #{applyReason, jdbcType = VARCHAR},
-            #{userId, jdbcType = INTEGER}
+    insert into apply ( from_id, to_id, apply_reason, user_id )
+    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER},
+            #{applyReason, jdbcType = VARCHAR},#{fromId, jdbcType = INTEGER}
+    );
+    insert into apply ( from_id, to_id, apply_reason, user_id )
+    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER},
+            #{applyReason, jdbcType = VARCHAR},#{toId, jdbcType = INTEGER}
     )
 </insert>
 

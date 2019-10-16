@@ -23,21 +23,13 @@ import java.util.List;
  * @version: 1.0
  */
 @RequestMapping("/friend")
-@Controller
+@RestController
 public class FriendController {
 
     @Autowired
     private FriendService friendService;
 
-    /**
-     * 添加好友
-     * @param friend 好友信息  用户id和好友id必须有
-     * @return 返回通用对象
-     */
-    @RequestMapping( value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody Friend friend) {
-        return friendService.insert(friend);
-    }
+
 
     /**
      * 更新好友信息
@@ -84,4 +76,14 @@ public class FriendController {
         return friendService.selectFriendByFriendName(user.getId(),friendName);
     }
 
+
+//    /**
+//     * 添加好友 ---通常后台自动添加，不用曝露该接口
+//     * @param friend 好友信息  用户id和好友id必须有
+//     * @return 返回通用对象
+//     */
+//    @RequestMapping( value = "/insert", method = RequestMethod.POST)
+//    public ServerResponse<String> insert(@RequestBody Friend friend) {
+//        return friendService.insert(friend);
+//    }
 }

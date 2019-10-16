@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * @Auther: blue
  * @Date: 2019/10/4
- * @Description: com.hzq.utils
+ * @Description: 产生随机数的工具类
  * @version: 1.0
  */
 public class RandomUtil {

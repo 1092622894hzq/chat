@@ -6,10 +6,11 @@ import com.hzq.dao.FriendDao;
 import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.Friend;
 import com.hzq.domain.UserInfo;
+import com.hzq.enums.ResponseCodeEnum;
+import com.hzq.execption.CustomGenericException;
 import com.hzq.service.FriendService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import sun.dc.pr.PRError;
 
 import java.util.List;
 
@@ -32,25 +33,23 @@ public class FriendServiceImpl implements FriendService {
             return ServerResponse.createByErrorMessage("已经添加好友，无须再次添加");
         }
         if (friendDao.insert(friend) == 0) {
-            return ServerResponse.createByErrorMessage("添加好友失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"添加好友失败");
         }
-        Integer friendId = friend.getFriendId();
-        Integer userId = friend.getUserId();
-        UserInfo userInfo = userInfoDao.queryUserById(userId);
-        friend.setUserId(friendId);
-        friend.setFriendId(userId);
-        friend.setFriendAvatar(userInfo.getAvatar());
+        UserInfo userInfo = userInfoDao.queryUserById(friend.getUserId());
+        friend.setUserId(friend.getFriendId());
+        friend.setFriendId(friend.getUserId());
         friend.setFriendName(userInfo.getNickname());
         if (friendDao.insert(friend) == 0) {
-            return ServerResponse.createByErrorMessage("添加好友失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"添加好友失败");
         }
+        //告诉安卓，好友添加成功
         return ServerResponse.createBySuccess();
     }
 
     @Override
     public ServerResponse<String> update(Friend friend) {
         if (friendDao.update(friend) == 0) {
-            return ServerResponse.createByErrorMessage("更新好友信息失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新好友信息失败");
         }
         return ServerResponse.createBySuccess();
     }
@@ -58,14 +57,14 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public ServerResponse<String> delete(Integer id, Integer friendId) {
         if (friendDao.delete(id,friendId) == 0) {
-            return ServerResponse.createByErrorMessage("删除好友失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"删除好友失败");
         }
         Friend friend = new Friend();
         friend.setFriendId(id);
         friend.setUserId(friendId);
         friend.setIsDelete(id);
         if (friendDao.update(friend) == 0) {
-            return ServerResponse.createByErrorMessage("修改好友被删除信息失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"修改好友被删除信息失败");
         }
         return ServerResponse.createBySuccess();
     }

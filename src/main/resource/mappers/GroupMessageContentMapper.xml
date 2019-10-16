@@ -25,34 +25,28 @@
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select * from group_message_content
-    <where>
-        group_id = #{groupId, jdbcType = INTEGER}
-    </where>
+    where group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
 <delete id="delete" parameterType="java.lang.Integer">
     delete from group_message_content
-    <where>
-        group_id = #{groupId, jdbcType = INTEGER}
-    </where>
+    where group_id = #{groupId, jdbcType = INTEGER}
 </delete>
 
 <select id="selectUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select  gmc.*
-    from group_message_content gmc left join group_message_to_user gmtu
-    on (gmtu.group_message_id = gmc.group_id  and gmc.gmt_modified > gmtu.group_message_time)
-    where
-    gmtu.user_id = #{userId, jdbcType = INTEGER}
-    and
-    gmtu.group_id = #{groupId, jdbcType = INTEGER}
+    from group_message_content gmc left join group_to_user gtu
+    on (gtu.group_id = gmc.group_id  and gmc.id > gtu.group_message_id)
+    where gtu.user_id = #{userId, jdbcType = INTEGER}
+    and gtu.group_id = #{groupId, jdbcType = INTEGER}
 
 </select>
 
 <select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select  gmc.*
-    from group_message_content gmc left join group_message_to_user gmtu
-    on (gmtu.group_message_id = gmc.group_id and gmc.gmt_modified > gmtu.group_message_time)
-    where gmtu.user_id = #{userId, jdbcType = INTEGER}
+    from group_message_content gmc left join group_to_user gtu
+    on (gtu.group_id = gmc.group_id  and gmc.id > gtu.group_message_id)
+    where gtu.user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 

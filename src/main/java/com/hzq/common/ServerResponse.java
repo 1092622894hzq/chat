@@ -3,6 +3,7 @@ package com.hzq.common;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.hzq.enums.ResponseCodeEnum;
+import com.hzq.execption.CustomGenericException;
 
 import java.io.Serializable;
 
@@ -104,6 +105,14 @@ public class ServerResponse<T> implements Serializable {
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(Integer errorCode,String errorMessage){
         return new ServerResponse<>(errorCode,errorMessage);
+    }
+
+    public static <T> ServerResponse<T> createByResponseCodeEnum(ResponseCodeEnum responseCodeEnum) {
+        return new ServerResponse<>(responseCodeEnum.getCode(),responseCodeEnum.getDesc());
+    }
+
+    public static <T> ServerResponse<T> createByException(CustomGenericException e) {
+        return new ServerResponse<>(e.getErrCode(),e.getErrMsg());
     }
 
 }

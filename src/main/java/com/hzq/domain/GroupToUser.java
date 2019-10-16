@@ -5,15 +5,35 @@ import java.sql.Timestamp;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.domain
+ * @Description: 群，群消息和用户的关系表
  * @version: 1.0
  */
 public class GroupToUser {
+
     private Integer id;
-    private Integer groupUserId;
+    /*
+    用户主表的id
+     */
+    private Integer userId;
+    /*
+    群的id
+     */
     private Integer groupId;
+    /*
+    群消息的已读消息的最后一个id
+     */
+    private Integer groupMessageId;
+    /*
+    用户在群内显示的昵称
+     */
     private String groupNickname;
+    /*
+    该表的创建时间
+     */
     private Timestamp gmtCreate;
+    /*
+    该表的修改时间
+     */
     private Timestamp gmtModified;
 
     public Integer getId() {
@@ -24,12 +44,20 @@ public class GroupToUser {
         this.id = id;
     }
 
-    public Integer getGroupUserId() {
-        return groupUserId;
+    public Integer getUserId() {
+        return userId;
     }
 
-    public void setGroupUserId(Integer groupUserId) {
-        this.groupUserId = groupUserId;
+    public void setUserId(Integer userId) {
+        this.userId = userId;
+    }
+
+    public Integer getGroupMessageId() {
+        return groupMessageId;
+    }
+
+    public void setGroupMessageId(Integer groupMessageId) {
+        this.groupMessageId = groupMessageId;
     }
 
     public Integer getGroupId() {

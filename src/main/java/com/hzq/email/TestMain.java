@@ -1,4 +1,4 @@
-package email;
+package com.hzq.email;
 
 /**
  * @Auther: blue

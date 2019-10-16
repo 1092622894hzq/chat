@@ -4,6 +4,7 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Result;
 import com.hzq.domain.User;
 
+import javax.servlet.http.HttpSession;
 import java.sql.SQLTransactionRollbackException;
 import java.util.List;
 import java.util.Map;
@@ -74,12 +75,12 @@ public interface UserService {
 
     /**
      * 根据用户名和用户id刷新token
-     * @param user 用户主表的信息
+     * @param session 一次会话
      * @param username 用户名
      * @param id 用户id
      * @return 返回通用结果
      */
-    ServerResponse<String> refreshToken(User user,String username, Integer id);
+    ServerResponse<String> refreshToken(String username, Integer id, HttpSession session);
 
 }
 

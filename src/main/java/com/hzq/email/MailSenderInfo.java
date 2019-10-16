@@ -1,4 +1,4 @@
-package email;
+package com.hzq.email;
 
 import java.util.Properties;
 

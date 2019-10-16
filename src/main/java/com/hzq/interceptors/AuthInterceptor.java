@@ -31,11 +31,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			if(requestUri.startsWith(request.getContextPath())){ //项目名 /test
 				requestUri = requestUri.substring(request.getContextPath().length()); //得到 /test.jsp
 			}
-			//要重新刷新token,设置标记
-			if (requestUri.equals("/user/refreshToken")) {
-				request.setAttribute(Const.REFRESH_TOKEN,Const.REFRESH_TOKEN);
-			}
-
 			LOGGER.debug("拦截的路径："+requestUri);
 			//系统根目录
 			if (StringUtils.equals("/",requestUri)) {

@@ -45,7 +45,7 @@ public class GroupServiceImpl implements GroupService {
         }
         GroupToUser groupToUser = new GroupToUser();
         groupToUser.setGroupId(group.getId());
-        groupToUser.setGroupUserId(userInfo.getUserId());
+        groupToUser.setUserId(userInfo.getUserId());
         groupToUser.setGroupNickname(userInfo.getNickname());
         if (groupToUserDao.insert(groupToUser) == 0) {
             throw CustomGenericException.CreateException(40,"创建群聊成功后，插入群主信息出错");

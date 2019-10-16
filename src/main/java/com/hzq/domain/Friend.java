@@ -10,7 +10,6 @@ import java.sql.Timestamp;
  */
 public class Friend {
     private Integer id;
-    private String friendAvatar;
     private String friendName;
     private String friendGroup;
     private Integer friendId;
@@ -27,13 +26,6 @@ public class Friend {
         this.id = id;
     }
 
-    public String getFriendAvatar() {
-        return friendAvatar;
-    }
-
-    public void setFriendAvatar(String friendAvatar) {
-        this.friendAvatar = friendAvatar;
-    }
 
     public String getFriendName() {
         return friendName;

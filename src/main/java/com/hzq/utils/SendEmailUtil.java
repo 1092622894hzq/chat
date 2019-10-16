@@ -1,13 +1,13 @@
 package com.hzq.utils;
 
-import email.MailSenderInfo;
-import email.SimpleMailSender;
+import com.hzq.email.MailSenderInfo;
+import com.hzq.email.SimpleMailSender;
 
 
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.utils
+ * @Description: 发送邮箱工具类
  * @version: 1.0
  */
 public class SendEmailUtil {

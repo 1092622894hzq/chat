@@ -2,6 +2,7 @@ package com.hzq.controller;
 
 import com.hzq.common.Const;
 import com.hzq.enums.FileTypeEnum;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Group;
@@ -36,7 +37,7 @@ public class FileHandlerController {
     @Autowired
     private GroupService groupService;
     //日志打印
-    private static Logger LOGGER = LoggerFactory.getLogger(ChatController.class);
+    private static Logger LOGGER = LoggerFactory.getLogger(FileHandlerController.class);
 
     /**
      * 处理上传头像
@@ -53,7 +54,7 @@ public class FileHandlerController {
             FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(avatar.getInputStream()));
             LOGGER.debug(fileTypeEnum.getExt());
             if (!FileUtil.isPhoto(fileTypeEnum)) {
-                throw CustomGenericException.CreateException(40,"上传文件失败");
+                throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
             }
             File f = new File(Const.File_PATH+"//"+user.getId());
             if (!f.exists()) {
@@ -70,7 +71,7 @@ public class FileHandlerController {
                 }
             }
         } catch (Exception e) {
-            throw CustomGenericException.CreateException(40,"上传文件失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
@@ -94,7 +95,7 @@ public class FileHandlerController {
             FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(icon.getInputStream()));
             LOGGER.debug(fileTypeEnum.getExt());
             if (!FileUtil.isPhoto(fileTypeEnum)) {
-                throw CustomGenericException.CreateException(40,"上传文件失败");
+                throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
             }
             File f = new File(Const.File_PATH+"//"+id);
             if (!f.exists()) {
@@ -111,7 +112,7 @@ public class FileHandlerController {
                 }
             }
         } catch (Exception e) {
-            throw CustomGenericException.CreateException(40,"上传文件失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
         Group group = new Group();
         group.setGroupIcon(fileName);
@@ -131,7 +132,7 @@ public class FileHandlerController {
             File dir = new File(Const.File_PATH+"//"+userId,file.getOriginalFilename());
             FileUtil.ByteToPhoto(file.getBytes(),dir);
         } catch (Exception e) {
-            throw CustomGenericException.CreateException(40,"上传文件失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
     }
 
@@ -145,13 +146,13 @@ public class FileHandlerController {
             File dir = new File(path);
             if (!dir.exists()) {
                 LOGGER.debug("文件不存在");
-                throw CustomGenericException.CreateException(40,"上传文件失败");
+                throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
             }
             if (!dir.delete()) {
                 LOGGER.debug("删除文件出错");
             }
         } catch (Exception e) {
-            throw CustomGenericException.CreateException(40,"上传文件失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
     }
     }
 

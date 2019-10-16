@@ -8,7 +8,7 @@ import java.util.Objects;
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: 流的工具类
+ * @Description: 处理文件的工具类
  * @version: 1.0
  */
 public class FileUtil {

@@ -1,6 +1,8 @@
-package com.hzq.webSocket;
+package com.hzq.config;
 
 
+import com.hzq.interceptors.ChatHandShakeInterceptor;
+import com.hzq.handler.ChatWebSocketHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -15,15 +17,15 @@ import org.springframework.web.socket.config.annotation.*;
  */
 @Configuration
 @EnableWebSocket
-public class MyWebSocketConfig implements WebSocketConfigurer {
+public class ChatWebSocketConfig implements WebSocketConfigurer {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(MyWebSocketConfig.class);
+    private static final Logger LOGGER = LoggerFactory.getLogger(ChatWebSocketConfig.class);
 
     public void registerWebSocketHandlers(WebSocketHandlerRegistry registry) {
         LOGGER.debug("开始建立连接配置");
         //注册WebSocket处理的类的、及监听/映射路径     //注册WebSocket握手的;
         registry.addHandler(getMyWebSocketHandler(),"/websocket")
-                .addInterceptors(new MyHandShakeInterceptor());
+                .addInterceptors(new ChatHandShakeInterceptor());
         //注册WebSocket处理的类的、及监听/映射路径      //注册WebSocket握手的拦截器
         registry.addHandler(getMyWebSocketHandler(), "/sockjs/websocket")
                 .addInterceptors(getMyHandShakeInterceptor())
@@ -33,13 +35,13 @@ public class MyWebSocketConfig implements WebSocketConfigurer {
 
 
     @Bean
-    public MyWebSocketHandler getMyWebSocketHandler() {
-        return new MyWebSocketHandler();
+    public ChatWebSocketHandler getMyWebSocketHandler() {
+        return new ChatWebSocketHandler();
     }
 
     @Bean
-    public MyHandShakeInterceptor getMyHandShakeInterceptor() {
-        return new MyHandShakeInterceptor();
+    public ChatHandShakeInterceptor getMyHandShakeInterceptor() {
+        return new ChatHandShakeInterceptor();
     }
 
 }

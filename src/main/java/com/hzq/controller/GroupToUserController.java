@@ -4,7 +4,6 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupToUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 /**
@@ -32,13 +31,13 @@ public class GroupToUserController {
 
     /**
      * 根据用户id和群id将用户从群聊移除
-     * @param groupUserId 用户id
+     * @param userId 用户id
      * @param groupId 群id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/delete/{groupUserId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<String> delete(@PathVariable Integer groupUserId, @PathVariable Integer groupId) {
-        return groupToUserService.delete(groupUserId,groupId);
+    @RequestMapping(value = "/delete/{userId}/{groupId}", method = RequestMethod.GET)
+    public ServerResponse<String> delete(@PathVariable Integer userId, @PathVariable Integer groupId) {
+        return groupToUserService.delete(userId,groupId);
     }
 
     /**
@@ -58,17 +57,17 @@ public class GroupToUserController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ServerResponse<String> update(@RequestBody GroupToUser groupToUser) {
-        return groupToUserService.update(groupToUser);
+        return groupToUserService.updateById(groupToUser);
     }
 
     /**
      * 根据用户id和群id查询用户
-     * @param groupUserId 用户id
+     * @param userId 用户id
      * @param groupId 群id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/select/{groupUserId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<GroupToUser> selectGroupToUser(@PathVariable Integer groupUserId, @PathVariable Integer groupId) {
-        return groupToUserService.selectGroupToUser(groupUserId,groupId);
+    @RequestMapping(value = "/select/{userId}/{groupId}", method = RequestMethod.GET)
+    public ServerResponse<GroupToUser> selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
+        return groupToUserService.selectGroupToUser(userId,groupId);
     }
 }

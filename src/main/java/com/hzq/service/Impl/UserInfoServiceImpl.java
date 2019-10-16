@@ -3,8 +3,10 @@ package com.hzq.service.Impl;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.UserInfo;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.service.UserInfoService;
+import com.hzq.service.UserService;
 import com.hzq.utils.RandomUtil;
 import com.hzq.utils.SendEmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +15,7 @@ import org.springframework.stereotype.Service;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.service.Impl
+ * @Description: 用户个人信息
  * @version: 1.0
  */
 @Service("userInfoService")
@@ -44,7 +46,7 @@ public class UserInfoServiceImpl implements UserInfoService {
             return ServerResponse.createByErrorMessage("邮箱已经被注册，请重新输入新邮箱");
         }
         if (userInfoDao.update(userInfo) == 0) {
-            return ServerResponse.createByErrorMessage("修改个人信息失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"修改个人信息失败");
         }
         return ServerResponse.createBySuccess();
     }
@@ -53,7 +55,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ServerResponse<UserInfo> queryUserByName(String username) {
         UserInfo userInfo = userInfoDao.queryUserByName(username);
         if (userInfo == null) {
-            throw CustomGenericException.CreateException(40,"用户不存在");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"用户不存在");
         }
         return ServerResponse.createBySuccess(userInfo);
     }
@@ -62,7 +64,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ServerResponse<String> findPasswordByUserId(Integer userId) {
         String email = userInfoDao.selectEmailByUserId(userId);
         if (email == null) {
-            throw CustomGenericException.CreateException(40,"该用户没有注册邮箱");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"该用户没有注册邮箱");
         }
         String number = RandomUtil.CreateRandom(6);
         String subject = "找回密码";

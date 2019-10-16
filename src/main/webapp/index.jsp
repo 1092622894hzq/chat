@@ -25,7 +25,7 @@
             var userId = 3;
             var socket = new SockJS('http://'+window.location.host+'/chat_war/hello');
             stompClient = Stomp.over(socket);
-            stompClient.connect({}, function(frame) {
+            stompClient.connect(1,12, function(frame) {
                 setConnected(true);
                 console.log('Connected: ' + frame);
                 stompClient.subscribe('/user/+'+userId+'/queue/result', function(msg){
@@ -33,7 +33,7 @@
                     alert(JSON.parse(msg.body));
                     showGreeting(JSON.parse(msg.body));
                 });
-                stompClient.subscribe('/user/4/queue/result', function (msg) {
+                stompClient.subscribe('/user/queue/result', function (msg) {
                     alert(msg);
                     alert(JSON.parse(msg.body));
                     showGreeting(JSON.parse(msg.body));

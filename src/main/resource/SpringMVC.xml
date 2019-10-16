@@ -53,7 +53,7 @@
 
     <!-- 配置拦截器  -->
     <mvc:interceptors>
-        <!-- 日志拦截器 -->
+        <!-- 用户权限拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**" />
             <mvc:exclude-mapping path="/css/**" />
@@ -62,12 +62,16 @@
             <mvc:exclude-mapping path="/js/**" />
             <mvc:exclude-mapping path="/user/register" />
             <mvc:exclude-mapping path="/user/login" />
+            <mvc:exclude-mapping path="/websocket/**" />
+            <mvc:exclude-mapping path="/user/refreshToken/**" />
             <bean class="com.hzq.interceptors.AuthInterceptor"/>
         </mvc:interceptor>
+        <!-- 用户是否已登录拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/user/login"/>
             <bean class="com.hzq.interceptors.LoginInterceptor" />
         </mvc:interceptor>
+        <!-- 用户是否有token拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**"/>
             <mvc:exclude-mapping path="/css/**" />
@@ -76,6 +80,8 @@
             <mvc:exclude-mapping path="/js/**" />
             <mvc:exclude-mapping path="/user/register"/>
             <mvc:exclude-mapping path="/user/login"/>
+            <mvc:exclude-mapping path="/websocket/**" />
+            <mvc:exclude-mapping path="/user/refreshToken/**" />
             <bean class="com.hzq.interceptors.TokenInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
@@ -108,9 +114,9 @@
 
 
     <!-- websocket处理类 -->
-    <bean id="msgHandler" class="com.hzq.webSocket.MyWebSocketHandler" />
+    <bean id="msgHandler" class="com.hzq.handler.ChatWebSocketHandler" />
     <!-- 握手接口/拦截器 ，看项目需求是否需要-->
-    <bean id="handshakeInterceptor" class="com.hzq.webSocket.MyHandShakeInterceptor" />
+    <bean id="handshakeInterceptor" class="com.hzq.interceptors.ChatHandShakeInterceptor" />
     <websocket:handlers>
         <websocket:mapping path="/websocket" handler="msgHandler" />
         <websocket:handshake-interceptors>

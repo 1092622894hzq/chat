@@ -21,7 +21,7 @@ public interface ApplyDao {
     int insert(Apply apply);
 
     /**
-     * 删除
+     * 根据申请的id删除申请
      * @param id 修改的申请
      * @return 返回修改次数
      */
@@ -35,7 +35,7 @@ public interface ApplyDao {
     int deleteByUserId(@Param("userId") Integer useId);
 
     /**
-     * 更新申请状态
+     * 根据申请人id和被申请人id来更新申请状态
      * @param apply 修改的申请
      * @return 返回修改次数
      */

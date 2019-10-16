@@ -53,7 +53,7 @@ public interface UserInfoDao {
      * @param email 邮箱
      * @return 返回查询到的条数
      */
-    int checkEmail(@Param("email") String email);
+    int checkEmail(@Param("com/hzq/email") String email);
 
     /**
      * 根据用户id获取用户邮箱

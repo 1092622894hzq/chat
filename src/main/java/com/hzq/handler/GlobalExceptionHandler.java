@@ -1,18 +1,19 @@
-package com.hzq.execption;
+package com.hzq.handler;
 
 import com.hzq.common.ServerResponse;
+import com.hzq.enums.ResponseCodeEnum;
+import com.hzq.execption.CustomGenericException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.common
+ * @Description: 统一异常处理类
  * @version: 1.0
  */
 @Component
@@ -29,9 +30,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(CustomGenericException.class)
     @ResponseBody
     public ServerResponse<String> allExceptionHandler(CustomGenericException e){
+        LOGGER.error("到达统一CustomGenericException异常处理方法");
         e.printStackTrace();
         LOGGER.error(e.getErrMsg(),e);
-        return ServerResponse.createByErrorCodeMessage(e.getErrCode(), e.getErrMsg());
+        return ServerResponse.createByException(e);
     }
 
     /**
@@ -42,9 +44,10 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(Exception.class)
     @ResponseBody
     public ServerResponse<String> handleException(Exception e){
+        LOGGER.error("到达统一Exception异常处理方法");
         e.printStackTrace();
         LOGGER.error(e.getMessage(), e);
-        return ServerResponse.createByErrorMessage("操作错误");
+        return ServerResponse.createByResponseCodeEnum(ResponseCodeEnum.SYSTEM_ERROR);
     }
 
 }

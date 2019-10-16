@@ -5,6 +5,12 @@ import org.apache.commons.codec.binary.Hex;
 import java.security.MessageDigest;
 import java.util.Random;
 
+/**
+ * @Auther: blue
+ * @Date: 2019/10/3
+ * @Description: 加密工具类
+ * @version: 1.0
+ */
 public class MD5Util {
 	 
 	/**

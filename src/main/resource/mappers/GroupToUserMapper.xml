@@ -5,63 +5,66 @@
 <mapper namespace="com.hzq.dao.GroupToUserDao">
     <resultMap id="BaseResultMap" type="com.hzq.domain.GroupToUser">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="group_user_id" jdbcType="INTEGER" property="groupUserId" />
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
         <result column="group_id" jdbcType="INTEGER" property="groupId" />
+        <result column="group_message_id" jdbcType="INTEGER" property="groupMessageId" />
         <result column="group_nickname" jdbcType="VARCHAR" property="groupNickname"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
 
-    <resultMap id="ResultMap" type="com.hzq.vo.GroupMessageAndGroupToUser">
-        <result column="user_id" jdbcType="INTEGER" property="userId" />
-        <result column="group_message_id" jdbcType = "INTEGER" property="groupMessageId"/>
-    </resultMap>
-
 <insert id="insert" parameterType="com.hzq.domain.GroupToUser"  useGeneratedKeys="true" keyProperty="id">
     insert into group_to_user (
-        group_user_id, group_id, group_nickname
+        user_id, group_id, group_nickname
     )
     values (
-        #{groupUserId, jdbcType = INTEGER}, #{groupId, jdbcType = INTEGER},#{groupNickname, jdbcType = VARCHAR}
+        #{userId, jdbcType = INTEGER}, #{groupId, jdbcType = INTEGER},#{groupNickname, jdbcType = VARCHAR}
     )
 </insert>
 
 <delete id="delete" parameterType="java.lang.Integer">
         delete from group_to_user
-        <where>
-            group_user_id = #{groupUserId, jdbcType = INTEGER}
-            and
-            group_id = #{groupId, jdbcType = INTEGER}
-        </where>
-</delete>
-
-<delete id="deleteById" parameterType="java.lang.Integer">
-        delete from group_to_user where id = #{id, jdbcType = INTEGER}
+        where user_id = #{userId, jdbcType = INTEGER}
+        and group_id = #{groupId, jdbcType = INTEGER}
 </delete>
 
 
+<update id="updateById" parameterType="com.hzq.domain.GroupToUser">
+        update  group_to_user
+        <set>
+            <if test="groupName != null">
+                group_nickname = #{groupNickname, jdbcType = VARCHAR},
+            </if>
+             <if test="groupMessageId != null">
+                group_message_id = #{groupMessageId, jdbcType = INTEGER},
+            </if>
+        </set>
+        where id = #{id, jdbcType = INTEGER}
+</update>
 
 <update id="update" parameterType="com.hzq.domain.GroupToUser">
-        update  group_to_user
-        set group_nickname = #{groupNickname, jdbcType = VARCHAR}
-        where id = #{id, jdbcType = INTEGER}
+        update group_to_user
+        <set>
+            <if test="groupName != null">
+                group_nickname = #{groupNickname, jdbcType = VARCHAR},
+            </if>
+            <if test="groupMessageId != null">
+                group_message_id = #{groupMessageId, jdbcType = INTEGER},
+            </if>
+        </set>
+        where group_id = #{groupId, jdbcType = INTEGER}
+        and user_id = #{userId, jdbcType = INETGER}
 </update>
 
 <select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select * from group_to_user
-        where group_user_id = #{groupUserId, jdbcType = INTEGER}
+        where user_id = #{userId, jdbcType = INTEGER}
         and  group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
 <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select * from group_to_user
         where group_id = #{groupId, jdbcType = INTEGER}
-</select>
-
-<select id="select" parameterType="java.lang.Integer" resultMap="ResultMap" >
-        select  gtu.user_id, gmtu.group_message_id from group_to_user gtu left join group_message_to_user gmtu
-        on gtu.group_user_id = gmtu.user_id
-        where gmtu.group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
 
