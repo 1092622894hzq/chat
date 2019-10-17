@@ -15,10 +15,15 @@
     </resultMap>
 
 <insert id="insert" parameterType="com.hzq.domain.Friend"  useGeneratedKeys="true" keyProperty="id">
-    insert into friend (friend_name, user_id, friend_id
-    )
-    values (#{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},#{friendId, jdbcType = INTEGER}
-    )
+    insert into friend (friend_name, user_id, friend_id)
+    values (#{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},#{friendId, jdbcType = INTEGER});
+
+    insert into friend (friend_name, user_id, friend_id)
+    select u.username,f.friend_id,u.id
+    from user u left join friend
+    on f.user_id = u.id
+    where f.user_id = #{friendId, jdbcType = INTEGER}
+    adn f.friend_id = #{userId, jdbcType = INTEGER}
 </insert>
 
 <update id="update" parameterType="com.hzq.domain.Friend">
@@ -46,10 +51,13 @@
         and
         user_id = #{userId, jdbcType = INTEGER}
     </where>
+
+    update friend set is_delete = #{userId,  jdbcType = INTEGER}
+    where friend_id = #{userId, jdbcType = INTEGER} and user_id = #{friendId, jdbcType = INTEGER}
 </delete>
 
 <delete id="deleteById" parameterType="java.lang.Integer">
-    delete from friend where user_id = #{userId, jdbcType = INTEGER}
+    delete from friend where user_id = #{userId, jdbcType = INTEGER};
 </delete>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">

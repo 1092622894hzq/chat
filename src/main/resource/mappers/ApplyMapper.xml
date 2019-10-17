@@ -39,7 +39,7 @@
 <update id="update" parameterType="com.hzq.domain.Apply">
     update apply
     set apply_status = #{applyStatus, jdbcType = INTEGER}
-    where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER}
+    where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER};
 </update>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">

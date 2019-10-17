@@ -4,6 +4,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.hzq.common.Const;
 import com.hzq.dao.GroupToUserDao;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.domain.*;
 import com.hzq.service.*;
@@ -47,23 +48,18 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     //WebSocket连接建立后的回调方法
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession){
-//        int uid = (Integer) webSocketSession.getAttributes().get(Const.CURRENT_CONNECT_ID);
-//        USER_SESSION_MAP.putIfAbsent(uid, webSocketSession);
+        int uid = (Integer) webSocketSession.getAttributes().get(Const.CURRENT_CONNECT_ID);
+        USER_SESSION_MAP.putIfAbsent(uid, webSocketSession);
         LOGGER.debug("用户已经成功连接了");
     }
 
-
-    //接收到WebSocket消息后的处理方法,交由父类处理
-//    @Override
-//    public void handleMessage(WebSocketSession webSocketSession, WebSocketMessage<?> webSocketMessage) {
-//    }
 
     @Override
     protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         if(message.getPayloadLength()==0)
             return ;
         Content msg = new Gson().fromJson(message.getPayload(), Content.class);
-        if (msg.getGroupId() == null)
+        if (msg.getGroupId() != null)
             handlerGroupMessage(msg);
         else
             handlerUserMessage(msg);
@@ -108,6 +104,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
 
 
     private void handlerGroupMessage(Content content) {
+        LOGGER.debug(content.getGroupId()+"---"+content.getFromId()+"---"+content.getMessage()+"---"+content.getType());
         GroupMessageContent message = new GroupMessageContent();
             message.setGroupId(content.getGroupId());
             message.setGmFromId(content.getFromId());
@@ -128,6 +125,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     }
 
     private void handlerUserMessage(Content content) {
+        LOGGER.debug(content.getGroupId()+"---"+content.getFromId()+"---"+content.getMessage()+"---"+content.getType());
         Integer userId = content.getToId();
         Message message = new Message();
         message.setMessageContent(content.getMessage());
@@ -151,7 +149,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
             if (session != null && session.isOpen())
                 session.sendMessage(message);
         } catch (IOException e) {
-            throw CustomGenericException.CreateException(40,"发送消息出错");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"发送消息出错");
         }
     }
 
@@ -162,7 +160,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
             if (session != null && session.isOpen())
                 session.sendMessage(message);
         } catch (IOException e) {
-            throw CustomGenericException.CreateException(40,"发送消息出错");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"发送消息出错");
         }
     }
 }

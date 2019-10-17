@@ -27,6 +27,8 @@ public class GroupController {
 
     /**
      * 创建群聊
+     *  必须的参数：groupName,groupNotice,groupIntroduction
+     *  后台给的：,groupAdminId
      * @param group 群信息
      * @param session 一次会话
      * @return 返回通用对象

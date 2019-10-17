@@ -3,6 +3,7 @@ package com.hzq.service.Impl;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.GroupToUserDao;
 import com.hzq.domain.GroupToUser;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.service.GroupToUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +26,7 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     @Override
     public ServerResponse<String> insert(GroupToUser groupToUser) {
         if (groupToUserDao.insert(groupToUser) == 0) {
-            return ServerResponse.createByErrorMessage("在群聊内添加用户失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"在群聊内添加用户失败");
         }
         return ServerResponse.createBySuccess();
     }

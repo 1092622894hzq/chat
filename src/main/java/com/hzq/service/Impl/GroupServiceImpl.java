@@ -9,8 +9,11 @@ import com.hzq.domain.Group;
 import com.hzq.domain.GroupToUser;
 import com.hzq.domain.User;
 import com.hzq.domain.UserInfo;
+import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.service.GroupService;
+import com.hzq.service.GroupToUserService;
+import com.hzq.service.UserInfoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,28 +31,13 @@ public class GroupServiceImpl implements GroupService {
 
     @Autowired
     private GroupDao groupDao;
-    @Autowired
-    private GroupToUserDao groupToUserDao;
-    @Autowired
-    private UserInfoDao userInfoDao;
 
     @Override
     public ServerResponse<String> insert(Group group, HttpSession session) {
         if (groupDao.insert(group) == 0) {
-            return ServerResponse.createByErrorMessage("创建群聊失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"创建群聊失败");
         }
-        String username = ((User)session.getAttribute(Const.CURRENT_USER)).getUsername();
-        UserInfo userInfo = userInfoDao.queryUserByName(username);
-        if (userInfo == null) {
-            throw CustomGenericException.CreateException(40,"创建群聊成功后，查找不到群主信息");
-        }
-        GroupToUser groupToUser = new GroupToUser();
-        groupToUser.setGroupId(group.getId());
-        groupToUser.setUserId(userInfo.getUserId());
-        groupToUser.setGroupNickname(userInfo.getNickname());
-        if (groupToUserDao.insert(groupToUser) == 0) {
-            throw CustomGenericException.CreateException(40,"创建群聊成功后，插入群主信息出错");
-        }
+        //群主的由触发器自动设定
         return ServerResponse.createBySuccess();
     }
 

@@ -26,7 +26,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.service.Impl
+ * @Description: 用户
  * @version: 1.0
  */
 @Service("userService")

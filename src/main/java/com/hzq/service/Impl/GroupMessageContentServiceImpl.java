@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.service.Impl
+ * @Description: 群聊消息
  * @version: 1.0
  */
 @Service("groupMessageContentService")
