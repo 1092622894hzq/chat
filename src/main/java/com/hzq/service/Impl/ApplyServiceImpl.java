@@ -4,18 +4,19 @@ package com.hzq.service.Impl;
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.ApplyDao;
+import com.hzq.dao.MessageDao;
 import com.hzq.dao.UserInfoDao;
-import com.hzq.domain.Apply;
-import com.hzq.domain.Friend;
-import com.hzq.domain.UserInfo;
+import com.hzq.domain.*;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
+import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.ApplyService;
 import com.hzq.service.FriendService;
 import com.hzq.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
@@ -36,11 +37,36 @@ public class ApplyServiceImpl implements ApplyService {
     private UserInfoDao userInfoDao;
     @Autowired
     private FriendService friendService;
+    @Autowired
+    private ChatWebSocketHandler chat;
+    @Autowired
+    private MessageDao messageDao;
 
     @Override
     public ServerResponse<String> insert(Apply apply) {
         if (applyDao.insert(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "添加申请失败");
+        }
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        apply.setGmtCreate(time);
+        apply.setGmtModified(time);
+        //通知安卓有好友申请
+        Integer toId = apply.getToId();
+        Content content = new Content();
+        content.setNotice(Const.APPLY);
+        content.setTime(time);
+        content.setMessage(apply.toJson());
+        if (!chat.isOnline(toId)) {
+            Message message = new Message();
+            message.setMessageFromId(Const.AUTHORITY);
+            message.setMessageContent(content.toJson());
+            message.setMessageToId(toId);
+            message.setMessageType(Const.TEXT);
+            message.setMessageStatus(Const.MARK_AS_UNREAD);
+            message.setUserId(toId);
+            messageDao.insert(message);
+        } else {
+            chat.sendMessageToUser(toId,content);
         }
         return ServerResponse.createBySuccess();
     }
@@ -77,8 +103,6 @@ public class ApplyServiceImpl implements ApplyService {
                 friendService.insert(friend);
             }
         }
-        //告诉安卓申请通过，或者拒绝
-
         return ServerResponse.createBySuccess();
     }
 

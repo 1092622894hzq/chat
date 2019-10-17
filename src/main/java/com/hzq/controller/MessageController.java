@@ -6,7 +6,6 @@ import com.hzq.domain.Message;
 import com.hzq.domain.User;
 import com.hzq.service.MessageService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
@@ -32,7 +31,6 @@ public class MessageController {
         message.setMessageFromId(user.getId());
         message.setMessageStatus(Const.MARK_AS_READ);
         message.setMessageType(Const.TEXT);
-        message.setMessageGroup(Const.DEFAULT_GROUP);
         message.setUserId(user.getId());
         return messageService.insert(message);
     }

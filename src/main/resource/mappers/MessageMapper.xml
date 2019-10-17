@@ -7,7 +7,6 @@
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="message_content" jdbcType="VARCHAR" property="messageContent" />
         <result column="message_status" jdbcType="INTEGER" property="messageStatus" />
-        <result column="message_group" jdbcType="VARCHAR" property="messageGroup"/>
         <result column="message_type" jdbcType="INTEGER" property="messageType"/>
         <result column="message_from_id" jdbcType="INTEGER" property="messageFromId"/>
         <result column="message_to_id" jdbcType="INTEGER" property="messageToId"/>
@@ -18,12 +17,20 @@
 
 <insert id="insert" parameterType="com.hzq.domain.Message"  useGeneratedKeys="true" keyProperty="id">
     insert into message (
-    message_content, message_status, message_group, message_type, message_from_id,
-    message_to_id, user_id
+    message_content, message_status, message_type, message_from_id,message_to_id, user_id
     )
-    values ( #{messageContent, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER}, #{messageGroup, jdbcType = VARCHAR},
-            #{messageType, jdbcType = INTEGER}, #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER },
-             #{userId, jdbcType = INTEGER}
+    values (
+    #{messageContent, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER},#{messageType, jdbcType = INTEGER},
+    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{toId, jdbcType = INTEGER}
+    );
+
+    insert into message (
+     message_content, message_status, message_type, message_from_id,message_to_id, user_id)
+    )
+    values (
+     #{messageContent, jdbcType = VARCHAR},1,#{messageType, jdbcType = INTEGER},
+    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{FromId, jdbcType = INTEGER}
+    );
     )
 </insert>
 

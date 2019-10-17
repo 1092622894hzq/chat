@@ -2,62 +2,58 @@ package com.hzq.domain;
 
 import com.google.gson.Gson;
 
+import java.sql.Timestamp;
+
+/**
+ * @Auther: blue
+ * @Date: 2019/10/15
+ * @Description: 跟安卓交互的消息表
+ * @version: 1.0
+ */
 public class Content {
+        /*
+        通知类型 --- 后台发送通知告诉安卓
+         apply---对应好友申请通知--》安卓对应进行有好友申请的通知
+         friend---对应好友通过通知--》安坐对应发布消息
+         */
+        private String notice;
+        /*
+        消息内容
+         */
+        private String message;
+        /*
+        发送消息的时间
+         */
+        private Timestamp time;
 
-  private String message;
+        public String getNotice() {
+          return notice;
+        }
 
-  private Integer type;
+        public void setNotice(String notice) {
+          this.notice = notice;
+        }
 
-  private Integer toId;
+        public String getMessage() {
+          return message;
+        }
 
-  private Integer fromId;
+        public void setMessage(String message) {
+          this.message = message;
+        }
 
-  private Integer groupId;
+        public Timestamp getTime() {
+          return time;
+        }
 
-  public String getMessage() {
-    return message;
-  }
+        public void setTime(Timestamp time) {
+          this.time = time;
+        }
 
-  public void setMessage(String message) {
-    this.message = message;
-  }
+        public String toJson(){
+          return gson.toJson(this);
+        }
 
-  public Integer getType() {
-    return type;
-  }
-
-  public void setType(Integer type) {
-    this.type = type;
-  }
-
-  public Integer getToId() {
-    return toId;
-  }
-
-  public void setToId(Integer toId) {
-    this.toId = toId;
-  }
-
-  public Integer getFromId() {
-    return fromId;
-  }
-
-  public void setFromId(Integer fromId) {
-    this.fromId = fromId;
-  }
-
-  public Integer getGroupId() {
-    return groupId;
-  }
-
-  public void setGroupId(Integer groupId) {
-    this.groupId = groupId;
-  }
-
-  public String toJson(){
-    return gson.toJson(this);
-  }
-
-  private static Gson gson = new Gson();
+        private static Gson gson = new Gson();
 
 }

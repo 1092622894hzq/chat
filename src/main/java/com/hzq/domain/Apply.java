@@ -1,5 +1,7 @@
 package com.hzq.domain;
 
+import com.google.gson.Gson;
+
 import java.sql.Timestamp;
 
 /**
@@ -81,4 +83,10 @@ public class Apply {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    public String toJson(){
+        return gson.toJson(this);
+    }
+
+    private static Gson gson = new Gson();
 }

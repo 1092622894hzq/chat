@@ -1,23 +1,42 @@
 package com.hzq.domain;
 
 
-import com.google.gson.Gson;
-
 import java.sql.Timestamp;
 
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.domain
+ * @Description: 群消息
  * @version: 1.0
  */
 public class GroupMessageContent {
+    /*
+    消息id
+     */
     private Integer id;
+    /*
+    消息内容--必须有
+     */
     private String gmContent;
+    /*
+    消息类型--必须有
+     */
     private Integer gmType;
+    /*
+    发送者--必须有
+     */
     private Integer gmFromId;
+   /*
+   创建时间--必须有
+    */
     private Timestamp gmtCreate;
+    /*
+    修改时间--必须有
+     */
     private Timestamp gmtModified;
+    /*
+    群id--必须有
+     */
     private Integer groupId;
 
     public Integer getId() {
@@ -76,6 +95,17 @@ public class GroupMessageContent {
         this.groupId = groupId;
     }
 
+    @Override
+    public String toString() {
+        return "GroupMessageContent{" +
+                "gmContent='" + gmContent + '\'' +
+                ", gmType=" + gmType +
+                ", gmFromId=" + gmFromId +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", groupId=" + groupId +
+                '}';
+    }
 }
 
 

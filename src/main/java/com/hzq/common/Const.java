@@ -116,6 +116,11 @@ public class Const {
     表示消息未读
      */
     public static final Integer MARK_AS_UNREAD = 0; //未读
+    /*
+    表示通知类型
+     */
+    public static final String APPLY = "apply";
+    public static final String FRIEND = "friend";
 
     //申请表中的常量
     /*

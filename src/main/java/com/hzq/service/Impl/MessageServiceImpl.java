@@ -15,7 +15,7 @@ import java.util.Map;
 /**
  * @Auther: blue
  * @Date: 2019/10/2
- * @Description: com.hzq.service.Impl
+ * @Description: 私聊消息
  * @version: 1.0
  */
 @Service("messageService")
@@ -26,7 +26,7 @@ public class MessageServiceImpl implements MessageService {
     @Autowired
     private UserService userService;
 
-    @Override
+    @Override //利用mybatis执行多条语句完成两次消息的插入
     public ServerResponse<String> insert(Message message) {  //默认每次先插入的是接收者的信息
         if (messageDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("插入消息失败");

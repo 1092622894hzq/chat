@@ -57,13 +57,7 @@ public class UserServiceImpl implements UserService {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "注册失败");
         }
         //由触发器自动设定默认个人信息
-        Friend friend = new Friend();
-        friend.setFriendId(Const.AUTHORITY);
-        friend.setUserId(user.getId());
-        friend.setFriendName(Const.AUTHORITY_NAME);
-        if (friendDao.insert(friend) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"注册时插入好友个人信息出错");
-        }
+        //由触发器自动添加微信官方为好友
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
