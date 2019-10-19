@@ -2,6 +2,7 @@ package com.hzq.domain;
 
 import com.google.gson.Gson;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -10,7 +11,7 @@ import java.sql.Timestamp;
  * @Description: 跟安卓交互的消息表
  * @version: 1.0
  */
-public class Content {
+public class Content implements Serializable {
         /*
         通知类型 --- 后台发送通知告诉安卓
          apply---对应好友申请通知--》安卓对应进行有好友申请的通知

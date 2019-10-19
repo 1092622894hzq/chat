@@ -1,6 +1,6 @@
 package com.hzq.dao;
 
-import com.hzq.domain.Result;
+import com.hzq.vo.Result;
 import com.hzq.domain.User;
 import org.apache.ibatis.annotations.Param;
 

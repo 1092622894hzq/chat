@@ -22,6 +22,8 @@ public class LoginInterceptor implements HandlerInterceptor {
 
     @Override
     public boolean preHandle(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Object o) throws Exception {
+        //有问题的
+        //去数据库，查看标志位是否登录
         if (httpServletRequest.getSession().getAttribute(Const.CURRENT_USER) != null) {
             LOGGER.debug("用户已经登陆了");
             throw CustomGenericException.CreateException(-20,"用户已经登陆了");

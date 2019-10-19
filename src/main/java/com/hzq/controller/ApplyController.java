@@ -5,6 +5,7 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.domain.User;
 import com.hzq.service.ApplyService;
+import com.hzq.vo.ApplyVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -70,13 +71,24 @@ public class ApplyController {
 
 
     /**
-     * 根据用户id查询所有好友申请
+     * 根据用户id查询所有申请人的信息
      * @param userId 用户id
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectAll/{userId}", method = RequestMethod.GET)
-    public ServerResponse<Map<Integer,List<Apply>>> selectAll(@PathVariable Integer userId) {
+    public ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(@PathVariable Integer userId) {
         return applyService.selectAll(userId);
+    }
+
+    /**
+     * 根据申请人和被申请人id来查询申请人信息
+     * @param fromId 申请人的id
+     * @param toId 被申请人的id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/selectAll/{fromId}/{toId}", method = RequestMethod.GET)
+    public ServerResponse<ApplyVo> select(@PathVariable Integer fromId, @PathVariable Integer toId) {
+        return applyService.select(fromId,toId);
     }
 
 }

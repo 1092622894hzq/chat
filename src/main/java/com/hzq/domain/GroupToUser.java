@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  * @Description: 群，群消息和用户的关系表
  * @version: 1.0
  */
-public class GroupToUser {
+public class GroupToUser implements Serializable {
 
     private Integer id;
     /*

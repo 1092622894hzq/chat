@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import java.io.Serializable;
 import java.sql.Date;
 import java.sql.Timestamp;
 
@@ -9,14 +10,12 @@ import java.sql.Timestamp;
  * @Description: com.hzq.domain
  * @version: 1.0
  */
-public class UserInfo {
+public class UserInfo implements Serializable {
     private Integer id;
     private String nickname;
     private String avatar;
     private Integer sex;
-    private Integer age;
     private String email;
-    private Date birthday;
     private String sign;
     private Timestamp gmtCreate;
     private Timestamp gmtModified;
@@ -54,28 +53,12 @@ public class UserInfo {
         this.sex = sex;
     }
 
-    public Integer getAge() {
-        return age;
-    }
-
-    public void setAge(Integer age) {
-        this.age = age;
-    }
-
     public String getEmail() {
         return email;
     }
 
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public Date getBirthday() {
-        return birthday;
-    }
-
-    public void setBirthday(Date birthday) {
-        this.birthday = birthday;
     }
 
     public String getSign() {

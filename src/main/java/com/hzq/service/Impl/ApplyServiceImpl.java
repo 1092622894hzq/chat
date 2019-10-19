@@ -13,6 +13,10 @@ import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.ApplyService;
 import com.hzq.service.FriendService;
 import com.hzq.service.UserService;
+import com.hzq.utils.JsonUtil;
+import com.hzq.utils.RedisUtil;
+import com.hzq.vo.ApplyVo;
+import com.hzq.vo.CommonResult;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,7 +44,7 @@ public class ApplyServiceImpl implements ApplyService {
     @Autowired
     private ChatWebSocketHandler chat;
     @Autowired
-    private MessageDao messageDao;
+    private RedisUtil redisUtil;
 
     @Override
     public ServerResponse<String> insert(Apply apply) {
@@ -50,21 +54,16 @@ public class ApplyServiceImpl implements ApplyService {
         Timestamp time = new Timestamp(System.currentTimeMillis());
         apply.setGmtCreate(time);
         apply.setGmtModified(time);
+        apply.setApplyStatus(Const.APPLY_UNTREATED);
         //通知安卓有好友申请
         Integer toId = apply.getToId();
         Content content = new Content();
         content.setNotice(Const.APPLY);
         content.setTime(time);
-        content.setMessage(apply.toJson());
+        ApplyVo applyVo = select(apply.getFromId(),apply.getToId()).getData();
+        content.setMessage(JsonUtil.toJson(applyVo));
         if (!chat.isOnline(toId)) {
-            Message message = new Message();
-            message.setMessageFromId(Const.AUTHORITY);
-            message.setMessageContent(content.toJson());
-            message.setMessageToId(toId);
-            message.setMessageType(Const.TEXT);
-            message.setMessageStatus(Const.MARK_AS_UNREAD);
-            message.setUserId(toId);
-            messageDao.insert(message);
+            redisUtil.appendObj(toId.toString(),content);
         } else {
             chat.sendMessageToUser(toId,content);
         }
@@ -107,12 +106,21 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public ServerResponse<Map<Integer,List<Apply>>> selectAll(Integer id) {
-        List<Apply> applies = applyDao.selectAll(id);
+    public ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(Integer id) {
+        List<ApplyVo> applies = applyDao.selectAll(id);
         if ( applies == null) {
             return ServerResponse.createBySuccessMessage("没有好友可查询");
         }
-        Map<Integer,List<Apply>> map = userService.MessageSubgroup(applies,new Apply());
+        Map<Integer,List<ApplyVo>> map = userService.MessageSubgroup(applies,new ApplyVo());
         return ServerResponse.createBySuccess(map);
+    }
+
+    @Override
+    public ServerResponse<ApplyVo> select(Integer fromId, Integer toId) {
+        ApplyVo applyVo = applyDao.select(fromId,toId);
+        if ( applyVo == null) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"查询不到该申请");
+        }
+        return ServerResponse.createBySuccess(applyVo);
     }
 }

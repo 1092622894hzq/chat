@@ -2,6 +2,7 @@ package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Friend;
+import com.hzq.vo.FriendVo;
 
 import java.util.List;
 
@@ -40,7 +41,7 @@ public interface FriendService {
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<List<Friend>> selectAll(Integer userId);
+    ServerResponse<List<FriendVo>> selectAll(Integer userId);
 
     /**
      * 根据用户id和好友昵称查询好友
@@ -48,6 +49,6 @@ public interface FriendService {
      * @param friendName 好于昵称
      * @return 返回包含好友的通用对象
      */
-    ServerResponse<Friend> selectFriendByFriendName(Integer userId, String friendName);
+    ServerResponse<FriendVo> selectFriendByFriendName(Integer userId, String friendName);
 
 }

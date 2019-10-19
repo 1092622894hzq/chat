@@ -1,13 +1,11 @@
 package com.hzq.interceptors;
 
 import com.hzq.common.Const;
-import com.hzq.dao.UserDao;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.domain.User;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -20,11 +18,8 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(AuthInterceptor.class);
 	private List<String> exceptUrls;
-	@Autowired
-	private UserDao userDao;
 
 		@Override
-		@ExceptionHandler(CustomGenericException.class)
 		public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) {
 			LOGGER.debug("到达权限拦截器");
 			String requestUri = request.getRequestURI();  //得到项目名开始的路径 /test/test.jsp
@@ -50,6 +45,7 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			}
 			//其他需要登录后才能进行访问的url
 			User user = (User) request.getSession().getAttribute(Const.CURRENT_USER);
+			LOGGER.debug("用户的是否登录user-->"+user);
 			if (null == user ) {
 				LOGGER.debug("该用户尚未登录");
 				throw CustomGenericException.CreateException(-20, "该用户尚未登录");

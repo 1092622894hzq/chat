@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  * @Description: com.hzq.domain
  * @version: 1.0
  */
-public class Group {
+public class Group implements Serializable {
     private Integer id;
     private String groupName;
     private Integer groupAdminId;

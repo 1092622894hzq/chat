@@ -6,6 +6,7 @@ import com.hzq.domain.Friend;
 import com.hzq.domain.User;
 import com.hzq.service.FriendService;
 import com.hzq.utils.JwtUil;
+import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -59,7 +60,7 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
-    public ServerResponse<List<Friend>> selectAll(HttpSession session) {
+    public ServerResponse<List<FriendVo>> selectAll(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.selectAll(user.getId());
     }
@@ -71,7 +72,7 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectFriend/{friendName}", method = RequestMethod.GET)
-    public ServerResponse<Friend> selectFriendByFriendName(@PathVariable String friendName, HttpSession session) {
+    public ServerResponse<FriendVo> selectFriendByFriendName(@PathVariable String friendName, HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.selectFriendByFriendName(user.getId(),friendName);
     }

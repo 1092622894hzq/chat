@@ -13,6 +13,21 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="user_id" jdbcType="INTEGER" property="userId" />
     </resultMap>
+    <resultMap id="ApplyVoMap" type="com.hzq.vo.ApplyVo">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="from_id" jdbcType="INTEGER" property="fromId" />
+        <result column="to_id" jdbcType="INTEGER" property="toId" />
+        <result column="apply_reason" jdbcType="VARCHAR" property="applyReason"/>
+        <result column="apply_status" jdbcType="INTEGER" property="applyStatus"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="nickname" jdbcType="VARCHAR" property="nickname" />
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+    </resultMap>
 
 
 
@@ -42,10 +57,23 @@
     where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER};
 </update>
 
-<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from apply where user_id = #{userId, jdbcType = INTEGER}
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="ApplyVoMap">
+    select a.*,u.username,ui.nickname,ui.avatar,ui.sex,ui.sign
+    from apply a left join user u
+    on a.to_id = u.id
+    left join user_info ui
+    on ui.user_id = u.id
+    where a.user_id = #{userId, jdbcType = INTEGER}
 </select>
 
+<select id="select" parameterType="java.lang.Integer" resultMap="ApplyVoMap">
+    select a.*,u.username,ui.nickname,ui.avatar,ui.sex,ui.sign
+    from apply a left join user u
+    on a.to_id = u.id
+    left join user_info ui
+    on ui.user_id = u.id
+    where a.from_id = #{fromId, jdbcType = INTEGER} and a.to_id = #{toId, jdbcType = INTEGER}
+</select>
 
 
 </mapper>

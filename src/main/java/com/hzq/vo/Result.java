@@ -1,5 +1,7 @@
-package com.hzq.domain;
+package com.hzq.vo;
 
+
+import com.hzq.domain.*;
 
 import java.util.List;
 import java.util.Map;
@@ -13,11 +15,12 @@ import java.util.Map;
 public class Result {
     private User user;
     private UserInfo userInfo;
-    private List<Friend> friends;
+    private List<FriendVo> friends;
     private List<Group> groups;
-    private Map<Integer, List<Apply>> applyMap;
+    private Map<Integer, List<ApplyVo>> applyMap;
     private Map<Integer, List<Message>> messageMap;
     private Map<Integer, List<GroupMessageContent>> groupContentMap;
+    private CommonResult commonResult;
 
     public User getUser() {
         return user;
@@ -35,11 +38,11 @@ public class Result {
         this.userInfo = userInfo;
     }
 
-    public List<Friend> getFriends() {
+    public List<FriendVo> getFriends() {
         return friends;
     }
 
-    public void setFriends(List<Friend> friends) {
+    public void setFriends(List<FriendVo> friends) {
         this.friends = friends;
     }
 
@@ -51,11 +54,11 @@ public class Result {
         this.groups = groups;
     }
 
-    public Map<Integer, List<Apply>> getApplyMap() {
+    public Map<Integer, List<ApplyVo>> getApplyMap() {
         return applyMap;
     }
 
-    public void setApplyMap(Map<Integer, List<Apply>> applyMap) {
+    public void setApplyMap(Map<Integer, List<ApplyVo>> applyMap) {
         this.applyMap = applyMap;
     }
 
@@ -73,5 +76,13 @@ public class Result {
 
     public void setGroupContentMap(Map<Integer, List<GroupMessageContent>> groupContentMap) {
         this.groupContentMap = groupContentMap;
+    }
+
+    public CommonResult getCommonResult() {
+        return commonResult;
+    }
+
+    public void setCommonResult(CommonResult commonResult) {
+        this.commonResult = commonResult;
     }
 }

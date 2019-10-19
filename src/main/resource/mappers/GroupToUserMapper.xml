@@ -32,7 +32,7 @@
 <update id="updateById" parameterType="com.hzq.domain.GroupToUser">
         update  group_to_user
         <set>
-            <if test="groupName != null">
+            <if test="groupNickname != null">
                 group_nickname = #{groupNickname, jdbcType = VARCHAR},
             </if>
              <if test="groupMessageId != null">
@@ -45,7 +45,7 @@
 <update id="update" parameterType="com.hzq.domain.GroupToUser">
         update group_to_user
         <set>
-            <if test="groupName != null">
+            <if test="groupNickname != null">
                 group_nickname = #{groupNickname, jdbcType = VARCHAR},
             </if>
             <if test="groupMessageId != null">
@@ -53,7 +53,7 @@
             </if>
         </set>
         where group_id = #{groupId, jdbcType = INTEGER}
-        and user_id = #{userId, jdbcType = INETGER}
+        and user_id = #{userId, jdbcType = INTEGER}
 </update>
 
 <select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">

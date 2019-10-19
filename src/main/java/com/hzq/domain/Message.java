@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  * @Description: 私聊消息表
  * @version: 1.0
  */
-public class Message {
+public class Message implements Serializable {
     /*
     消息的id
      */

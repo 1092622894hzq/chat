@@ -26,11 +26,11 @@ public class ChatHandShakeInterceptor implements HandshakeInterceptor {
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
         LOGGER.debug("握手连接前");
         ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
-//            HttpSession session = servletRequest.getServletRequest().getSession(false);
-//            // 标记用户
-//            User user = (User) session.getAttribute(Const.CURRENT_USER);
-//            LOGGER.debug("Websocket:用户[ID:" + user.getId() + "]已经建立连接");
-//            map.put(Const.CURRENT_CONNECT_ID, user.getId());
+            HttpSession session = servletRequest.getServletRequest().getSession(false);
+            // 标记用户
+            User user = (User) session.getAttribute(Const.CURRENT_USER);
+            LOGGER.debug("Websocket:用户[ID:" + user.getId() + "]已经建立连接");
+            map.put(Const.CURRENT_CONNECT_ID, user.getId());
         return true;
     }
 

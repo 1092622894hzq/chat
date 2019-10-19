@@ -14,6 +14,21 @@
         <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
     </resultMap>
 
+    <resultMap id="FriendVoMap" type="com.hzq.vo.FriendVo">
+        <result column="friend_name" jdbcType="VARCHAR" property="friendName" />
+        <result column="friend_group" jdbcType="VARCHAR" property="friendGroup"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="friend_id" jdbcType="INTEGER" property="friendId"/>
+        <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
+        <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+    </resultMap>
+
+    <sql id="Base_Column_List">
+     f.friend_name, f.friend_group, f.user_id, f.friend_id, f.is_delete
+    </sql>
+
 <insert id="insert" parameterType="com.hzq.domain.Friend"  useGeneratedKeys="true" keyProperty="id">
     insert into friend (friend_name, user_id, friend_id)
     values (#{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},#{friendId, jdbcType = INTEGER});
@@ -60,26 +75,28 @@
     delete from friend where user_id = #{userId, jdbcType = INTEGER};
 </delete>
 
-<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from friend
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="FriendVoMap">
+    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar
+    from friend f left join user u
+    on f.user_id = u.id
+    left join user_info ui
+    on ui.user_id = u.id
+    where f.user_id = #{userId, jdbcType = INTEGER}
+</select>
+
+<select id="selectFriendByFriendName" resultMap="FriendVoMap">
+    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar from friend f left join user u on f.user_id = u.id
+    left join user_info ui on ui.user_id = u.id
     <where>
-        user_id = #{userId, jdbcType = INTEGER}
+        f.friend_name = #{friendName, jdbcType = VARCHAR}
         and
-        is_delete = #{isDelete, jdbcType = INTEGER}
+        f.user_id = #{userId, jdbcType = INTEGER}
     </where>
 </select>
 
-<select id="selectFriendByFriendName" resultMap="BaseResultMap">
-    select * from friend
-    <where>
-        friend_name = #{friendName, jdbcType = VARCHAR}
-        and
-        user_id = #{userId, jdbcType = INTEGER}
-    </where>
-</select>
-
-<select id="selectFriendByFriendId" resultMap="BaseResultMap">
-    select * from friend
+<select id="selectFriendByFriendId" resultMap="FriendVoMap">
+    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar from friend f left join user u on f.user_id = u.id
+    left join user_info ui on ui.user_id = u.id
     <where>
         friend_id = #{friendId, jdbcType = INTEGER}
         and

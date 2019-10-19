@@ -1,6 +1,7 @@
 package com.hzq.dao;
 
 import com.hzq.domain.Friend;
+import com.hzq.vo.FriendVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.sql.SQLTransactionRollbackException;
@@ -46,10 +47,9 @@ public interface FriendDao {
     /**
      * 查询所有好友
      * @param userId 用户主表id
-     * @param isDelete 判断是否被好友删除了
      * @return 返回好友集合
      */
-    List<Friend> selectAll(@Param("userId") Integer userId, @Param("isDelete") Integer isDelete);
+    List<FriendVo> selectAll(@Param("userId") Integer userId);
 
     /**
      * 根据用户id和好友昵称查询好友
@@ -57,7 +57,7 @@ public interface FriendDao {
      * @param friendName 好友昵称
      * @return 返回好友
      */
-    Friend selectFriendByFriendName(@Param("userId") Integer userId, @Param("friendName") String friendName);
+    FriendVo selectFriendByFriendName(@Param("userId") Integer userId, @Param("friendName") String friendName);
 
     /**
      * 根据用户id和好友id查询好友
@@ -65,5 +65,5 @@ public interface FriendDao {
      * @param friendId 好友id
      * @return 返回好友
      */
-    Friend selectFriendByFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+    FriendVo selectFriendByFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 }

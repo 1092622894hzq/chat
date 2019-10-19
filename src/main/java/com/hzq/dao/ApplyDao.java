@@ -1,6 +1,7 @@
 package com.hzq.dao;
 
 import com.hzq.domain.Apply;
+import com.hzq.vo.ApplyVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -47,6 +48,13 @@ public interface ApplyDao {
      * @param userId 用户id
      * @return 返回申请集合
      */
-    List<Apply> selectAll(@Param("userId") Integer userId);
+    List<ApplyVo> selectAll(@Param("userId") Integer userId);
 
+    /**
+     * 根据申请人id和被申请人id查询申请人信息
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @return 信息对象
+     */
+    ApplyVo select(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
 }

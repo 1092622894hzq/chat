@@ -1,8 +1,7 @@
-<!DOCTYPE web-app PUBLIC
- "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"
- "http://java.sun.com/dtd/web-app_2_3.dtd" >
-
-<web-app>
+<web-app xmlns="http://java.sun.com/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
+         version="3.0">
   <display-name>Archetype Created Web Application</display-name>
   <!-- 项目启动后打开的第一个页面 -->
   <welcome-file-list>
@@ -44,13 +43,19 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
 
-  <!-- 加载  ApplicationContext.xml 文件 -->
+  <!-- 加载  spring-redis.xml和ApplicationContext.xml 文件 -->
   <context-param>
     <param-name>contextConfigLocation</param-name>
-    <param-value>classpath:ApplicationContext.xml</param-value>
+    <param-value>classpath:spring-redis.xml,classpath:ApplicationContext.xml</param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
 
 </web-app>
+
+<!--        <!DOCTYPE web-app PUBLIC-->
+<!--                "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN"-->
+<!--                "http://java.sun.com/dtd/web-app_2_3.dtd" >
+<web-app>  导致红线报错
+-->

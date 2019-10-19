@@ -1,10 +1,14 @@
 package com.hzq.controller;
 
+import com.google.gson.Gson;
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
-import com.hzq.domain.Result;
+import com.hzq.domain.Apply;
+import com.hzq.utils.JsonUtil;
+import com.hzq.utils.RedisUtil;
+import com.hzq.vo.CommonResult;
+import com.hzq.vo.Result;
 import com.hzq.domain.User;
-import com.hzq.execption.CustomGenericException;
 import com.hzq.service.UserService;
 import com.hzq.utils.JwtUil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +16,9 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 
@@ -27,6 +34,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     /**
      * 注册账号

@@ -8,14 +8,17 @@
         <result column="nickname" jdbcType="VARCHAR" property="nickname" />
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
         <result column="sex" jdbcType="INTEGER" property="sex"/>
-        <result column="age" jdbcType="INTEGER" property="age"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
-        <result column="birthday" jdbcType="DATE" property="birthday"/>
         <result column="sign" jdbcType="VARCHAR" property="sign"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
+
+    <sql id="Base_Column_List">
+     nickname, avatar, sex, email, sign, user_id
+    </sql>
+
 
 <insert id="insert" parameterType="com.hzq.domain.UserInfo"  useGeneratedKeys="true" keyProperty="id">
     insert into user_info (nickname,user_id)
@@ -38,24 +41,21 @@
         <if test="sex != null">
             sex = #{sex, jdbcType = INTEGER},
         </if>
-        <if test="age != null">
-            age = #{age, jdbcType = INTEGER},
-        </if>
         <if test="email != null">
             email = #{email, jdbcType = VARCHAR},
-        </if>
-        <if test="birthday != null">
-            birthday = #{birthday, jdbcType = DATE},
         </if>
         <if test="sign != null">
             sign = #{sign, jdbcType = VARCHAR},
         </if>
     </set>
-            where user_id = #{userId, jdbcType = INTEGER}
+            where user_id = #{userId, jdbcType = INTEGER};
+
 </update>
 
 <select id="queryUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select ui.* from user_info ui left join user u
+    select
+     <include refid="Base_Column_List" />
+    from user_info ui left join user u
     on u.id = ui.user_id
     where u.username = #{username, jdbcType = VARCHAR}
 </select>

@@ -1,6 +1,7 @@
 package com.hzq.domain;
 
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -9,7 +10,7 @@ import java.sql.Timestamp;
  * @Description: 群消息
  * @version: 1.0
  */
-public class GroupMessageContent {
+public class GroupMessageContent implements Serializable {
     /*
     消息id
      */

@@ -51,7 +51,11 @@ public class Const {
     /*
     表示文件存储的路径
      */
-    public static final String File_PATH = "C:\\images";
+    public static final String FILE_PATH = "C:\\images";
+    /*
+    表示图片展示的路径
+     */
+    public static final String IMAGE_PATH = "http://116.62.12.63:8080/images/";
     /*
     表示还是好友
      */

@@ -1,32 +1,46 @@
-package com.hzq.domain;
-
-import java.io.Serializable;
-import java.sql.Timestamp;
+package com.hzq.vo;
 
 /**
  * @Auther: blue
- * @Date: 2019/9/30
- * @Description: com.hzq.domain
+ * @Date: 2019/10/18
+ * @Description: 好友信息vo对象
  * @version: 1.0
  */
-public class Friend implements Serializable {
-    private Integer id;
+public class FriendVo {
+    /*
+    用户为好友起的昵称
+     */
     private String friendName;
+    /*
+    用户为好友设定的分组
+     */
     private String friendGroup;
+    /*
+    好友在主表中的id
+     */
     private Integer friendId;
+    /*
+    用户在主表中的id
+     */
     private Integer userId;
-    private Timestamp gmtCreate;
-    private Timestamp gmtModified;
+    /*
+    是否别好友删除 0 没有 其他数字都是被删除的标志
+     */
     private Integer isDelete;
 
-    public Integer getId() {
-        return id;
-    }
+    /*
+    好友的账号名
+     */
+    private String username;
 
-    public void setId(Integer id) {
-        this.id = id;
-    }
-
+    /*
+    好友的个性签名
+     */
+    private String sign;
+    /*
+    好友的头像
+     */
+    private String avatar;
 
     public String getFriendName() {
         return friendName;
@@ -59,23 +73,6 @@ public class Friend implements Serializable {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
-
-    public Timestamp getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Timestamp gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public Integer getIsDelete() {
         return isDelete;
     }
@@ -83,32 +80,28 @@ public class Friend implements Serializable {
     public void setIsDelete(Integer isDelete) {
         this.isDelete = isDelete;
     }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign;
+    }
+
+    public String getAvatar() {
+        return avatar;
+    }
+
+    public void setAvatar(String avatar) {
+        this.avatar = avatar;
+    }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

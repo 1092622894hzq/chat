@@ -10,8 +10,14 @@ import com.hzq.service.ApplyService;
 import com.hzq.service.GroupMessageContentService;
 import com.hzq.service.MessageService;
 import com.hzq.service.UserService;
+import com.hzq.utils.JsonUtil;
 import com.hzq.utils.JwtUil;
 import com.hzq.utils.MD5Util;
+import com.hzq.utils.RedisUtil;
+import com.hzq.vo.ApplyVo;
+import com.hzq.vo.CommonResult;
+import com.hzq.vo.FriendVo;
+import com.hzq.vo.Result;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -45,6 +51,8 @@ public class UserServiceImpl implements UserService {
     private MessageService messageService;
     @Autowired
     private GroupMessageContentService groupMessageContentService;
+    @Autowired
+    private RedisUtil redisUtil;
 
     @Override
     public ServerResponse<String> register(User user) {
@@ -77,16 +85,22 @@ public class UserServiceImpl implements UserService {
         result.setUser(user);
         UserInfo userInfo = userInfoDao.queryUserByName(username);
         result.setUserInfo(userInfo);
-        List<Friend> friends = friendDao.selectAll(user.getId(),Const.IS_FRIEND);
+        List<FriendVo> friends = friendDao.selectAll(user.getId());
         result.setFriends(friends);
         List<Group> groups = groupDao.selectAll(user.getId());
         result.setGroups(groups);
-        Map<Integer, List<Apply>> applyMap = applyService.selectAll(user.getId()).getData();
+        Map<Integer, List<ApplyVo>> applyMap = applyService.selectAll(user.getId()).getData();
         result.setApplyMap(applyMap);
         Map<Integer, List<Message>> messageMap = messageService.queryUnreadMessageByUserId(user.getId()).getData();
         result.setMessageMap(messageMap);
         Map<Integer, List<GroupMessageContent>> groupContentMap = groupMessageContentService.selectAllUnread(user.getId()).getData();
         result.setGroupContentMap(groupContentMap);
+        if (redisUtil.exists(user.getId().toString())) {
+            CommonResult commonResult = JsonUtil.getObjFromJson((String) redisUtil.get(user.getId().toString()),CommonResult.class);
+            result.setCommonResult(commonResult);
+            redisUtil.remove(user.getId().toString());
+            //把消息删除
+        }
         return ServerResponse.createBySuccess("成功",result);
     }
 
@@ -142,8 +156,8 @@ public class UserServiceImpl implements UserService {
         for (T message : messages) {
             if (Message.class.equals(t.getClass())) {
                 key = ((Message)message).getMessageFromId();
-            } else if (Apply.class.equals(t.getClass())){
-                key = ((Apply)message).getFromId();
+            } else if (ApplyVo.class.equals(t.getClass())){
+                key = ((ApplyVo)message).getFromId();
             } else {
                 key = ((GroupMessageContent)message).getGroupId();
             }

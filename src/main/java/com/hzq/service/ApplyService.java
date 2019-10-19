@@ -2,6 +2,7 @@ package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
+import com.hzq.vo.ApplyVo;
 
 import java.util.List;
 import java.util.Map;
@@ -47,6 +48,13 @@ public interface ApplyService {
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<Map<Integer,List<Apply>>> selectAll(Integer userId);
+    ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(Integer userId);
 
+    /**
+     * 根据申请人id和被申请人id查询申请人信息
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @return 通用对象
+     */
+    ServerResponse<ApplyVo> select(Integer fromId, Integer toId);
 }

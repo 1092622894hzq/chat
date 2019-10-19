@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import java.io.Serializable;
 import java.sql.Timestamp;
 
 /**
@@ -8,7 +9,7 @@ import java.sql.Timestamp;
  * @Description: com.hzq.domain
  * @version: 1.0
  */
-public class User {
+public class User implements Serializable {
     private Integer id;
     private String username;
     private String password;
@@ -71,6 +72,19 @@ public class User {
 
     public void setLoginTime(Timestamp loginTime) {
         this.loginTime = loginTime;
+    }
+
+    @Override
+    public String toString() {
+        return "User{" +
+                "id=" + id +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", status=" + status +
+                ", gmtCreate=" + gmtCreate +
+                ", gmtModified=" + gmtModified +
+                ", loginTime=" + loginTime +
+                '}';
     }
 }
 

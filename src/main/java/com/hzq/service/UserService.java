@@ -1,11 +1,10 @@
 package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
-import com.hzq.domain.Result;
+import com.hzq.vo.Result;
 import com.hzq.domain.User;
 
 import javax.servlet.http.HttpSession;
-import java.sql.SQLTransactionRollbackException;
 import java.util.List;
 import java.util.Map;
 

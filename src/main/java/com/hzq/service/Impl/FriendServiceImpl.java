@@ -11,6 +11,9 @@ import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.FriendService;
+import com.hzq.utils.RandomUtil;
+import com.hzq.utils.RedisUtil;
+import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,7 +33,7 @@ public class FriendServiceImpl implements FriendService {
     @Autowired
     private ChatWebSocketHandler chat;
     @Autowired
-    private MessageDao messageDao;
+    private RedisUtil redisUtil;
 
     //借助mybatis同时执行多条sql完成两部分的好友信息的插入
     @Override
@@ -55,14 +58,7 @@ public class FriendServiceImpl implements FriendService {
         //发送给好友
         content.setMessage("我通过了你的朋友验证请求，现在我们可以开始聊天了");
         if (!chat.isOnline(friendId)) {
-            Message message = new Message();
-            message.setUserId(friendId);
-            message.setMessageStatus(Const.MARK_AS_UNREAD);
-            message.setMessageType(Const.TEXT);
-            message.setMessageFromId(Const.AUTHORITY);
-            message.setMessageToId(friendId);
-            message.setMessageContent(content.toJson());
-            messageDao.insert(message);
+            redisUtil.appendObj(friendId.toString(),content);
         } else {
             chat.sendMessageToUser(friendId,content);
         }
@@ -87,8 +83,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ServerResponse<List<Friend>> selectAll(Integer id) {
-        List<Friend> friends = friendDao.selectAll(id,Const.IS_FRIEND);
+    public ServerResponse<List<FriendVo>> selectAll(Integer id) {
+        List<FriendVo> friends = friendDao.selectAll(id);
         if (friends == null) {
             return ServerResponse.createByErrorMessage("没有查询到好友");
         }
@@ -96,8 +92,8 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
-    public ServerResponse<Friend> selectFriendByFriendName(Integer id, String friendName) {
-        Friend friend = friendDao.selectFriendByFriendName(id,friendName);
+    public ServerResponse<FriendVo> selectFriendByFriendName(Integer id, String friendName) {
+        FriendVo friend = friendDao.selectFriendByFriendName(id,friendName);
         if (friend == null) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"查不到该好友的个人信息");
         }

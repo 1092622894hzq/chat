@@ -21,7 +21,7 @@
     )
     values (
     #{messageContent, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER},#{messageType, jdbcType = INTEGER},
-    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{toId, jdbcType = INTEGER}
+    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{messageToId, jdbcType = INTEGER}
     );
 
     insert into message (
@@ -29,7 +29,7 @@
     )
     values (
      #{messageContent, jdbcType = VARCHAR},1,#{messageType, jdbcType = INTEGER},
-    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{FromId, jdbcType = INTEGER}
+    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{messageFromId, jdbcType = INTEGER}
     );
     )
 </insert>
