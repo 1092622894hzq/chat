@@ -14,12 +14,12 @@ import java.util.List;
  */
 public interface FriendService {
 
-    /**
-     * 添加好友
-     * @param friend 好有信息
-     * @return 返回通用对象
-     */
-    ServerResponse<String> insert(Friend friend);
+//    /**
+//     * 添加好友
+//     * @param friend 好有信息
+//     * @return 返回通用对象
+//     */
+//    ServerResponse<String> insert(Friend friend);
 
     /**
      * 更新好友  用户id和好友id不可缺
@@ -50,5 +50,21 @@ public interface FriendService {
      * @return 返回包含好友的通用对象
      */
     ServerResponse<FriendVo> selectFriendByFriendName(Integer userId, String friendName);
+
+    /**
+     * 根据用户id和好友id查询好友
+     * @param userId 用户id
+     * @param friendId 好友id
+     * @return 返回对象信息
+     */
+    ServerResponse<FriendVo> selectFriendByFriendId(Integer userId, Integer friendId);
+
+    /**
+     * 根据用户id和准好友id来查询好友信息，并完成好友的插入
+     * @param userId 用户id
+     * @param friendId 准好友id
+     * @return 返回结果
+     */
+    ServerResponse<String> insertFriendBySelect(Integer userId, Integer friendId);
 
 }

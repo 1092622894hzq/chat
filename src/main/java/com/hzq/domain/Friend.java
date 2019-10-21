@@ -10,13 +10,37 @@ import java.sql.Timestamp;
  * @version: 1.0
  */
 public class Friend implements Serializable {
+    /*
+    好友表的id
+     */
     private Integer id;
+    /*
+    好友昵称，默认是好友自己的昵称
+     */
     private String friendName;
+    /*
+    好友分组
+     */
     private String friendGroup;
+    /*
+    好友的id
+     */
     private Integer friendId;
+    /*
+    用户的id
+     */
     private Integer userId;
+    /*
+    创建时间
+     */
     private Timestamp gmtCreate;
+    /*
+    修改时间
+     */
     private Timestamp gmtModified;
+    /*
+    是否被好友删除 0没有 其他是
+     */
     private Integer isDelete;
 
     public Integer getId() {

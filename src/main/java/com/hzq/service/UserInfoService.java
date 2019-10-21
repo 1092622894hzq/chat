@@ -42,6 +42,13 @@ public interface UserInfoService {
     ServerResponse<UserInfo> queryUserByName(String username);
 
     /**
+     * 根据用户id查询用户个人信息
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
+    ServerResponse<UserInfo> queryUserById(Integer userId);
+
+    /**
      * 根据用户id查找用户邮箱
      * where的条件：主表id
      * @param userId 主表的id

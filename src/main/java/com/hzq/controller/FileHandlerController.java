@@ -11,6 +11,7 @@ import com.hzq.domain.UserInfo;
 import com.hzq.service.GroupService;
 import com.hzq.service.UserInfoService;
 import com.hzq.utils.FileUtil;
+import com.hzq.utils.StringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -65,7 +66,8 @@ public class FileHandlerController {
             UserInfo userInfo = userInfoService.queryUserByName(user.getUsername()).getData();
             String avatarName = userInfo.getAvatar();
             if (!avatarName.equals(Const.DEFAULT_AVATAR)) {
-                File deleteFile = new File(Const.FILE_PATH +"//"+user.getId(),avatarName);
+                File deleteFile = new File(StringUtil.getPhotoUrl(avatarName));
+                LOGGER.debug("剪切过后的路径: "+StringUtil.getPhotoUrl(avatarName));
                 if (!deleteFile.delete()) {
                     LOGGER.debug("存储用户头像的时候，删除之前头像出现了错误");
                 }
@@ -77,7 +79,7 @@ public class FileHandlerController {
         userInfo.setUserId(user.getId());
         userInfo.setAvatar(Const.IMAGE_PATH+user.getId()+"//"+fileName);
         ServerResponse<String> response = userInfoService.update(userInfo);
-        response.setData(fileName);
+        response.setData(Const.IMAGE_PATH+user.getId()+"//"+fileName);
         return response;
     }
 
@@ -106,7 +108,7 @@ public class FileHandlerController {
             Group group = groupService.select(id).getData();
             String groupIcon = group.getGroupIcon();
             if (!groupIcon.equals(Const.DEFAULT_AVATAR)) {
-                File deleteFile = new File(Const.FILE_PATH +"//"+id,groupIcon);
+                File deleteFile = new File(StringUtil.getPhotoUrl(groupIcon));
                 if (!deleteFile.delete()) {
                     LOGGER.debug("存储群头像的时候，删除之前头像出现了错误");
                 }

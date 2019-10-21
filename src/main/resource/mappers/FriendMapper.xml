@@ -21,24 +21,31 @@
         <result column="friend_id" jdbcType="INTEGER" property="friendId"/>
         <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
         <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="nickname" jdbcType="VARCHAR" property="nickname" />
         <result column="sign" jdbcType="VARCHAR" property="sign"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
     </resultMap>
 
     <sql id="Base_Column_List">
      f.friend_name, f.friend_group, f.user_id, f.friend_id, f.is_delete
     </sql>
 
-<insert id="insert" parameterType="com.hzq.domain.Friend"  useGeneratedKeys="true" keyProperty="id">
+<insert id="insertFriendBySelect" parameterType="com.hzq.domain.Friend" >
     insert into friend (friend_name, user_id, friend_id)
-    values (#{friendName, jdbcType = VARCHAR}, #{userId, jdbcType = INTEGER},#{friendId, jdbcType = INTEGER});
+    select ui.nickname,ui.user_id,u.id
+    from user u left join user_info ui
+    on u.id = #{userId, jdbcType = INTEGER} and ui.user_id =  #{friendId, jdbcType = INTEGER}
+    where ui.user_id = #{friendId, jdbcType = INTEGER}
+    and u.id = #{userId, jdbcType = INTEGER};
 
     insert into friend (friend_name, user_id, friend_id)
-    select u.username,f.friend_id,u.id
-    from user u left join friend
-    on f.user_id = u.id
-    where f.user_id = #{friendId, jdbcType = INTEGER}
-    adn f.friend_id = #{userId, jdbcType = INTEGER}
+    select ui.nickname,ui.user_id,u.id
+    from user u left join user_info ui
+    on u.id = #{friendId, jdbcType = INTEGER} and ui.user_id = #{userId, jdbcType = INTEGER}
+    where ui.user_id = #{userId, jdbcType = INTEGER}
+    and u.id = #{friendId, jdbcType = INTEGER}
+
 </insert>
 
 <update id="update" parameterType="com.hzq.domain.Friend">
@@ -66,9 +73,6 @@
         and
         user_id = #{userId, jdbcType = INTEGER}
     </where>
-
-    update friend set is_delete = #{userId,  jdbcType = INTEGER}
-    where friend_id = #{userId, jdbcType = INTEGER} and user_id = #{friendId, jdbcType = INTEGER}
 </delete>
 
 <delete id="deleteById" parameterType="java.lang.Integer">
@@ -76,17 +80,20 @@
 </delete>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar
+    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
     from friend f left join user u
-    on f.user_id = u.id
+    on f.friend_id = u.id
     left join user_info ui
     on ui.user_id = u.id
     where f.user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 <select id="selectFriendByFriendName" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar from friend f left join user u on f.user_id = u.id
-    left join user_info ui on ui.user_id = u.id
+    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
+    from friend f left join user u
+    on f.user_id = u.id
+    left join user_info ui
+    on ui.user_id = u.id
     <where>
         f.friend_name = #{friendName, jdbcType = VARCHAR}
         and
@@ -95,13 +102,19 @@
 </select>
 
 <select id="selectFriendByFriendId" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username,ui.sign ,ui.avatar from friend f left join user u on f.user_id = u.id
+    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
+    from friend f left join user u
+    on f.user_id = u.id
     left join user_info ui on ui.user_id = u.id
     <where>
-        friend_id = #{friendId, jdbcType = INTEGER}
+        f.friend_id = #{friendId, jdbcType = INTEGER}
         and
-        user_id = #{userId, jdbcType = INTEGER}
+        f.user_id = #{userId, jdbcType = INTEGER}
     </where>
+</select>
+
+<select id="checkFriend" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+    select count(1) from friend where friend_id = #{friendId, jdbcType = INTEGER} and user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 </mapper>

@@ -84,7 +84,7 @@ public class JwtUil {
 
     /**
      * 获取token中的id
-     * @param token 所需的tooken
+     * @param token 所需的token
      * @return 返回用户id
      */
     public static Integer getId(String token) {

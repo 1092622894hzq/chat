@@ -1,17 +1,15 @@
 package com.hzq.controller;
 
-import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
-import com.hzq.domain.User;
 import com.hzq.service.ApplyService;
 import com.hzq.vo.ApplyVo;
+import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
@@ -38,13 +36,14 @@ public class ApplyController {
     }
 
     /**
-     * 根据申请的id删除申请
-     * @param id 该数据的id
+     * 根据申请人id删除特点申请
+     * @param fromId 申请人id
+     * @param toId 被申请人id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteById(@PathVariable Integer id) {
-        return applyService.deleteById(id);
+    @RequestMapping(value = "/deleteById/{fromId}/{toId}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteById(@PathVariable Integer fromId, @PathVariable Integer toId, HttpSession session) {
+        return applyService.delete(fromId,toId,session);
     }
 
 
@@ -65,7 +64,7 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<String> update(@RequestBody Apply apply) {
+    public ServerResponse<FriendVo> update(@RequestBody Apply apply) {
         return applyService.update(apply);
     }
 
@@ -76,7 +75,7 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/selectAll/{userId}", method = RequestMethod.GET)
-    public ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(@PathVariable Integer userId) {
+    public ServerResponse<List<ApplyVo>> selectAll(@PathVariable Integer userId) {
         return applyService.selectAll(userId);
     }
 
@@ -86,7 +85,7 @@ public class ApplyController {
      * @param toId 被申请人的id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/selectAll/{fromId}/{toId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/select/{fromId}/{toId}", method = RequestMethod.GET)
     public ServerResponse<ApplyVo> select(@PathVariable Integer fromId, @PathVariable Integer toId) {
         return applyService.select(fromId,toId);
     }

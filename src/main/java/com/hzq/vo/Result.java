@@ -17,7 +17,7 @@ public class Result {
     private UserInfo userInfo;
     private List<FriendVo> friends;
     private List<Group> groups;
-    private Map<Integer, List<ApplyVo>> applyMap;
+    private List<ApplyVo> applies;
     private Map<Integer, List<Message>> messageMap;
     private Map<Integer, List<GroupMessageContent>> groupContentMap;
     private CommonResult commonResult;
@@ -54,12 +54,12 @@ public class Result {
         this.groups = groups;
     }
 
-    public Map<Integer, List<ApplyVo>> getApplyMap() {
-        return applyMap;
+    public List<ApplyVo> getApplies() {
+        return applies;
     }
 
-    public void setApplyMap(Map<Integer, List<ApplyVo>> applyMap) {
-        this.applyMap = applyMap;
+    public void setApplies(List<ApplyVo> applies) {
+        this.applies = applies;
     }
 
     public Map<Integer, List<Message>> getMessageMap() {

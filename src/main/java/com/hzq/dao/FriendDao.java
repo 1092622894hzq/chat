@@ -66,4 +66,20 @@ public interface FriendDao {
      * @return 返回好友
      */
     FriendVo selectFriendByFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+
+    /**
+     * 根据用户id和好友id来插入好友
+     * @param userId 用户id
+     * @param friendId 好友id
+     * @return 返回修改次数 要等于2才成功
+     */
+    int insertFriendBySelect(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+
+    /**
+     * 根据用户id和好友id查询好友
+     * @param userId 用户id
+     * @param friendId 好友id
+     * @return 返回次数
+     */
+    int checkFriend(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 }

@@ -57,6 +57,13 @@ public interface UserDao {
     int checkUsername(@Param("username") String username);
 
     /**
+     * 根据用户id查询用户是否存在
+     * @param userId 用户id
+     * @return 返回查询到的数据条数
+     */
+    int checkUserId(@Param("userId") Integer userId);
+
+    /**
      * 根据用户id查询用户
      * @param id 用户id
      * @return 返回用户对象

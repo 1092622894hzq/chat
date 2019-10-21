@@ -61,6 +61,16 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
+    public ServerResponse<UserInfo> queryUserById(Integer userId) {
+        UserInfo userInfo = userInfoDao.queryUserById(userId);
+        if (userInfo == null) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"用户不存在");
+        }
+        return ServerResponse.createBySuccess(userInfo);
+    }
+
+
+    @Override
     public ServerResponse<String> findPasswordByUserId(Integer userId) {
         String email = userInfoDao.selectEmailByUserId(userId);
         if (email == null) {

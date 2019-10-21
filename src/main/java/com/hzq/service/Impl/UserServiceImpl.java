@@ -19,6 +19,9 @@ import com.hzq.vo.CommonResult;
 import com.hzq.vo.FriendVo;
 import com.hzq.vo.Result;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.shiro.SecurityUtils;
+import org.apache.shiro.authc.UsernamePasswordToken;
+import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -65,7 +68,7 @@ public class UserServiceImpl implements UserService {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "注册失败");
         }
         //由触发器自动设定默认个人信息
-        //由触发器自动添加微信官方为好友
+        //由触发器自动添加自己为好友
         return ServerResponse.createBySuccessMessage("注册成功");
     }
 
@@ -89,8 +92,8 @@ public class UserServiceImpl implements UserService {
         result.setFriends(friends);
         List<Group> groups = groupDao.selectAll(user.getId());
         result.setGroups(groups);
-        Map<Integer, List<ApplyVo>> applyMap = applyService.selectAll(user.getId()).getData();
-        result.setApplyMap(applyMap);
+        List<ApplyVo> applies = applyService.selectAll(user.getId()).getData();
+        result.setApplies(applies);
         Map<Integer, List<Message>> messageMap = messageService.queryUnreadMessageByUserId(user.getId()).getData();
         result.setMessageMap(messageMap);
         Map<Integer, List<GroupMessageContent>> groupContentMap = groupMessageContentService.selectAllUnread(user.getId()).getData();
@@ -98,8 +101,8 @@ public class UserServiceImpl implements UserService {
         if (redisUtil.exists(user.getId().toString())) {
             CommonResult commonResult = JsonUtil.getObjFromJson((String) redisUtil.get(user.getId().toString()),CommonResult.class);
             result.setCommonResult(commonResult);
+            //把消息从redis中删除
             redisUtil.remove(user.getId().toString());
-            //把消息删除
         }
         return ServerResponse.createBySuccess("成功",result);
     }
@@ -128,6 +131,8 @@ public class UserServiceImpl implements UserService {
         if (userDao.deleteUserByPrimaryId(id) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"删除用户失败");
         }
+        //删除所有申请
+        applyService.deleteByUserId(id);
         //通知好友被删除了
         return ServerResponse.createBySuccess();
     }
@@ -187,6 +192,17 @@ public class UserServiceImpl implements UserService {
         }
         return ServerResponse.createByErrorMessage("刷新token失败");
     }
+
+    @Override
+    public ServerResponse<User> selectByUsername(String username) {
+        User user = userDao.selectLogin(username);
+        if (user == null) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
+        }
+        return ServerResponse.createBySuccess(user);
+    }
+
+
 }
 
 

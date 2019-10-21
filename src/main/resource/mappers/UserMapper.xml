@@ -25,6 +25,11 @@
     select count(1) from user where username = #{username, jdbcType = VARCHAR}
 </select>
 
+<select id="checkUserId" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(1) from user where id = #{userId, jdbcType = INTEGER}
+</select>
+
+
 <update id="updatePassword">
     update user
     set password = #{newPassword, jdbcType = VARCHAR}

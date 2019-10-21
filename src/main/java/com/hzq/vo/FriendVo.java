@@ -34,6 +34,10 @@ public class FriendVo {
     private String username;
 
     /*
+   申请人的性别 性别 1 表示男 0 表示女
+    */
+    private Integer sex;
+    /*
     好友的个性签名
      */
     private String sign;
@@ -41,6 +45,10 @@ public class FriendVo {
     好友的头像
      */
     private String avatar;
+    /*
+     申请人的昵称
+     */
+    private String nickname;
 
     public String getFriendName() {
         return friendName;
@@ -103,5 +111,21 @@ public class FriendVo {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public Integer getSex() {
+        return sex;
+    }
+
+    public void setSex(Integer sex) {
+        this.sex = sex;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
     }
 }

@@ -81,6 +81,12 @@ public interface UserService {
      */
     ServerResponse<String> refreshToken(String username, Integer id, HttpSession session);
 
+    /**
+     * 根据用户名查询用户
+     * @param username 用户名
+     * @return 返回通用对象
+     */
+    ServerResponse<User> selectByUsername(String username);
 }
 
 

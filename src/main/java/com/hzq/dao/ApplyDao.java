@@ -22,11 +22,21 @@ public interface ApplyDao {
     int insert(Apply apply);
 
     /**
-     * 根据申请的id删除申请
-     * @param id 修改的申请
+     * 根据申请的两个id删除两条申请
+     * @param fromId 申请人id
+     * @param toId 被申请人id
      * @return 返回修改次数
      */
-    int deleteById(@Param("id") Integer id);
+    int deleteById(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
+
+    /**
+     * 删除特定申请
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @param userId 用户id
+     * @return 返回修改次数
+     */
+    int delete(@Param("fromId") Integer fromId, @Param("toId") Integer toId, @Param("userId") Integer userId);
 
     /**
      * 根据用户id删除所有好友申请
@@ -57,4 +67,13 @@ public interface ApplyDao {
      * @return 信息对象
      */
     ApplyVo select(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
+
+    /**
+     * 根据申请人id和被申请人id查询申请人信息
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @param applyStatus 申请状态
+     * @return 返回个数
+     */
+    int checkApply(@Param("fromId") Integer fromId, @Param("toId") Integer toId, @Param("applyStatus") Integer applyStatus);
 }

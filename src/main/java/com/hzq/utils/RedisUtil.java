@@ -1,19 +1,14 @@
 package com.hzq.utils;
- 
-import java.io.Serializable;
+
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
-import com.hzq.domain.Apply;
 import com.hzq.domain.Content;
 import com.hzq.vo.CommonResult;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
-import org.springframework.data.redis.core.SetOperations;
 import org.springframework.data.redis.core.ValueOperations;
 import org.springframework.stereotype.Component;
 

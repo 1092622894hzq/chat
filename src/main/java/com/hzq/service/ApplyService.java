@@ -3,7 +3,10 @@ package com.hzq.service;
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.vo.ApplyVo;
+import com.hzq.vo.FriendVo;
+import org.springframework.messaging.handler.annotation.Header;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 import java.util.Map;
 
@@ -23,14 +26,23 @@ public interface ApplyService {
     ServerResponse<String> insert(Apply apply);
 
     /**
-     * 根据申请的id删除申请
-     * @param id 数据的id
+     * 删除特定申请
+     * @param fromId 申请人id
+     * @param toId 被申请人id
      * @return 返回通用对象
      */
-    ServerResponse<String> deleteById(Integer id);
+    ServerResponse<String> delete(Integer fromId, Integer toId, HttpSession session);
 
     /**
-     * 根据用户id删除所有好友申请
+     * 根据申请的id删除申请
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> deleteById(Integer fromId , Integer toId);
+
+    /**
+     * 根据用户id删除所有跟用户相关的好友申请
      * @param userId 用户id
      * @return 返回通用对象
      */
@@ -41,14 +53,14 @@ public interface ApplyService {
      * @param apply 申请信息
      * @return 返回通用对象
      */
-    ServerResponse<String> update(Apply apply);
+    ServerResponse<FriendVo> update(Apply apply);
 
     /**
      * 根据用户id查询所有好友申请
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(Integer userId);
+    ServerResponse<List<ApplyVo>> selectAll(Integer userId);
 
     /**
      * 根据申请人id和被申请人id查询申请人信息

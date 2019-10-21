@@ -8,6 +8,9 @@ import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.domain.*;
 import com.hzq.service.*;
+import com.hzq.utils.JsonUtil;
+import com.hzq.utils.RedisUtil;
+import com.hzq.vo.ApplyVo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +19,7 @@ import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -37,6 +41,10 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     private GroupMessageContentService groupMessageContentService;
     @Autowired
     private GroupToUserDao groupToUserDao;
+    @Autowired
+    private ApplyService applyService;
+    @Autowired
+    private RedisUtil redisUtil;
     //日志打印
     private static Logger LOGGER;
     //存储用户的连接
@@ -131,13 +139,60 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         }
     }
 
-    //判断是否在线
-    public boolean isOnline(Integer id) {
-        WebSocketSession session = USER_SESSION_MAP.get(id);
-        return session != null;
+    //系统通知好友申请消息
+    public void systemAdviceApply(Apply apply) {
+        //初始化申请的时间和申请状态
+        Timestamp time = new Timestamp(System.currentTimeMillis());
+        apply.setGmtCreate(time);
+        apply.setGmtModified(time);
+        apply.setApplyStatus(Const.APPLY_UNTREATED);
+        //获取申请人信息
+        Integer toId = apply.getToId();
+        ApplyVo applyVo = applyService.select(apply.getFromId(),toId).getData();
+        //用个通用消息对象把通知存储起来
+        Content advice = new Content();
+        advice.setNotice(Const.APPLY);
+        advice.setTime(time);
+        advice.setMessage(JsonUtil.toJson(applyVo));
+        //在线就发送消息，不在线就存入redis中
+        if (isOnline(toId)) {
+            redisUtil.appendObj(toId.toString(),advice);
+        } else {
+            sendMessageToUser(toId,advice);
+        }
+    }
+
+    //系统通知好友添加成功消息
+    public void systemAdviceFriend(Integer friendId, Integer userId){
+        //告诉安卓，好友添加成功
+        Content advice = new Content();
+        advice.setNotice(Const.FRIEND);
+        advice.setTime(new Timestamp(System.currentTimeMillis()));
+        advice.setMessage("你们已经是朋友了，可以开始聊天了");
+        //发送给自己
+        sendMessageToUser(userId,advice);
+        //发送给好友
+        advice.setMessage("我通过了你的朋友验证请求，现在我们可以开始聊天了");
+        if (isOnline(friendId)) {
+            redisUtil.appendObj(friendId.toString(),advice);
+        } else {
+            sendMessageToUser(friendId,advice);
+        }
     }
 
 
+
+
+
+
+
+    //判断是否在线
+    public boolean isOnline(Integer id) {
+        WebSocketSession session = USER_SESSION_MAP.get(id);
+        return session == null;
+    }
+
+    //处理错误连接的回调方法
     @Override
     public void handleTransportError(WebSocketSession session, Throwable throwable) throws Exception {
         LOGGER.debug("连接发生错误");
@@ -150,7 +205,6 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
             }
         }
     }
-
 
     //WebSocket连接关闭后的回调方法
     @Override

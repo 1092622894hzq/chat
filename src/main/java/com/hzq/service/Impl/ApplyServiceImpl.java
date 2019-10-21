@@ -4,7 +4,6 @@ package com.hzq.service.Impl;
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.ApplyDao;
-import com.hzq.dao.MessageDao;
 import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.*;
 import com.hzq.enums.ResponseCodeEnum;
@@ -12,17 +11,14 @@ import com.hzq.execption.CustomGenericException;
 import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.ApplyService;
 import com.hzq.service.FriendService;
-import com.hzq.service.UserService;
-import com.hzq.utils.JsonUtil;
-import com.hzq.utils.RedisUtil;
+import com.hzq.service.UserInfoService;
 import com.hzq.vo.ApplyVo;
-import com.hzq.vo.CommonResult;
+import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.sql.Timestamp;
+import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
@@ -36,47 +32,40 @@ public class ApplyServiceImpl implements ApplyService {
     @Autowired
     private ApplyDao applyDao;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private UserInfoDao userInfoDao;
-    @Autowired
     private FriendService friendService;
     @Autowired
     private ChatWebSocketHandler chat;
-    @Autowired
-    private RedisUtil redisUtil;
 
     @Override
     public ServerResponse<String> insert(Apply apply) {
+        if (applyDao.checkApply(apply.getFromId(),apply.getToId(),Const.APPLY_REFUSE) > 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "已经是好友，或者对方还没处理申请");
+        }
         if (applyDao.insert(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "添加申请失败");
         }
-        Timestamp time = new Timestamp(System.currentTimeMillis());
-        apply.setGmtCreate(time);
-        apply.setGmtModified(time);
-        apply.setApplyStatus(Const.APPLY_UNTREATED);
-        //通知安卓有好友申请
-        Integer toId = apply.getToId();
-        Content content = new Content();
-        content.setNotice(Const.APPLY);
-        content.setTime(time);
-        ApplyVo applyVo = select(apply.getFromId(),apply.getToId()).getData();
-        content.setMessage(JsonUtil.toJson(applyVo));
-        if (!chat.isOnline(toId)) {
-            redisUtil.appendObj(toId.toString(),content);
-        } else {
-            chat.sendMessageToUser(toId,content);
+        //向用户发布有申请的消息通知
+        chat.systemAdviceApply(apply);
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> delete(Integer fromId, Integer toId, HttpSession session) {
+        User user = (User) session.getAttribute(Const.CURRENT_USER);
+        if (applyDao.delete(fromId,toId,user.getId()) == 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"删除申请失败");
         }
         return ServerResponse.createBySuccess();
     }
 
     @Override
-    public ServerResponse<String> deleteById(Integer id) {
-        if (applyDao.deleteById(id) == 0) {
+    public ServerResponse<String> deleteById(Integer fromId, Integer toId) {
+        if (applyDao.deleteById(fromId,toId) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "删除申请失败");
         }
         return ServerResponse.createBySuccess();
     }
+
 
     @Override
     public ServerResponse<String> deleteByUserId(Integer userId) {
@@ -88,31 +77,33 @@ public class ApplyServiceImpl implements ApplyService {
 
 
     @Override
-    public ServerResponse<String> update(Apply apply) {
+    public ServerResponse<FriendVo> update(Apply apply) {
         if (applyDao.update(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新申请失败");
         }
         if (Const.APPLY_AGREE.equals(apply.getApplyStatus())) {
-            UserInfo userInfo = userInfoDao.queryUserById(apply.getFromId());
-            if (userInfo != null) {
-                Friend friend = new Friend();
-                friend.setFriendName(userInfo.getNickname());
-                friend.setFriendId(apply.getToId());
-                friend.setUserId(apply.getFromId());
-                friendService.insert(friend);
-            }
+            friendService.insertFriendBySelect(apply.getToId(),apply.getFromId());
+            //添加好友
+//            UserInfo userInfo = userInfoDao.queryUserById(apply.getFromId());
+//            if (userInfo != null) {
+//                Friend friend = new Friend();
+//                friend.setFriendName(userInfo.getNickname());
+//                friend.setFriendId(apply.getToId());
+//                friend.setUserId(apply.getFromId());
+//                friendService.insert(friend);
+//            }
         }
-        return ServerResponse.createBySuccess();
+        return friendService.selectFriendByFriendId(apply.getToId(),apply.getFromId());
+
     }
 
     @Override
-    public ServerResponse<Map<Integer,List<ApplyVo>>> selectAll(Integer id) {
+    public ServerResponse<List<ApplyVo>> selectAll(Integer id) {
         List<ApplyVo> applies = applyDao.selectAll(id);
         if ( applies == null) {
             return ServerResponse.createBySuccessMessage("没有好友可查询");
         }
-        Map<Integer,List<ApplyVo>> map = userService.MessageSubgroup(applies,new ApplyVo());
-        return ServerResponse.createBySuccess(map);
+        return ServerResponse.createBySuccess(applies);
     }
 
     @Override
