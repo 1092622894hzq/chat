@@ -10,21 +10,24 @@
         <result column="gm_from_id" jdbcType="INTEGER" property="gmFromId"/>
         <result column="group_id" jdbcType="INTEGER" property="groupId"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
 
-<insert id="insert" parameterType="com.hzq.domain.GroupMessageContent"  useGeneratedKeys="true" keyProperty="id">
+    <sql id="Base_Column_List">
+        id,gm_content,gm_type,gm_from_id,group_id,gmt_create
+    </sql>
+
+<insert id="insert" parameterType="com.hzq.vo.SendMessage">
     insert into group_message_content (
         gm_content, gm_type, gm_from_id, group_id
     )
     values (
-        #{gmContent, jdbcType = VARCHAR}, #{gmType, jdbcType = INTEGER}, #{gmFromId, jdbcType = INTEGER},
-        #{groupId, jdbcType = INTEGER}
+        #{message, jdbcType = VARCHAR}, #{messageType, jdbcType = INTEGER}, #{fromId, jdbcType = INTEGER},
+        #{toIdOrGroupId, jdbcType = INTEGER}
     )
 </insert>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from group_message_content
+    select <include refid="Base_Column_List" /> from group_message_content
     where group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
@@ -34,7 +37,7 @@
 </delete>
 
 <select id="selectUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select  gmc.*
+    select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create
     from group_message_content gmc left join group_to_user gtu
     on (gtu.group_id = gmc.group_id  and gmc.id > gtu.group_message_id)
     where gtu.user_id = #{userId, jdbcType = INTEGER}
@@ -43,7 +46,7 @@
 </select>
 
 <select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select  gmc.*
+    select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create
     from group_message_content gmc left join group_to_user gtu
     on (gtu.group_id = gmc.group_id  and gmc.id > gtu.group_message_id)
     where gtu.user_id = #{userId, jdbcType = INTEGER}

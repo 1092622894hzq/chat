@@ -4,16 +4,14 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.vo.ApplyVo;
 import com.hzq.vo.FriendVo;
-import org.springframework.messaging.handler.annotation.Header;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
  * @Date: 2019/10/2
- * @Description: com.hzq.service
+ * @Description: 申请
  * @version: 1.0
  */
 public interface ApplyService {
@@ -69,4 +67,12 @@ public interface ApplyService {
      * @return 通用对象
      */
     ServerResponse<ApplyVo> select(Integer fromId, Integer toId);
+
+    /**
+     * 根据申请人id和被申请人id查询申请人信息
+     * @param fromId 申请人id
+     * @param toId 被申请人id
+     * @return 返回个数
+     */
+    int checkApply(Integer fromId, Integer toId);
 }

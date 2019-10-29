@@ -4,14 +4,13 @@ package com.hzq.service.Impl;
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.ApplyDao;
-import com.hzq.dao.UserInfoDao;
+import com.hzq.dao.FriendDao;
 import com.hzq.domain.*;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.ApplyService;
 import com.hzq.service.FriendService;
-import com.hzq.service.UserInfoService;
 import com.hzq.vo.ApplyVo;
 import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,12 +33,20 @@ public class ApplyServiceImpl implements ApplyService {
     @Autowired
     private FriendService friendService;
     @Autowired
+    private FriendDao friendDao;
+    @Autowired
     private ChatWebSocketHandler chat;
 
     @Override
     public ServerResponse<String> insert(Apply apply) {
-        if (applyDao.checkApply(apply.getFromId(),apply.getToId(),Const.APPLY_REFUSE) > 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "已经是好友，或者对方还没处理申请");
+        //1.用户删除了好友又添加好友
+        //2.用户删除了好友，好友又添加用户
+        //3.用户第一次添加好友，用户未处理，又发起好友申请
+        if(friendDao.checkFriend(apply.getFromId(),apply.getToId()) > 0) {  //只要查出用户不是它的朋友即可
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "已经是好友");
+        }
+        if (applyDao.checkApply(apply.getFromId(),apply.getToId(),Const.APPLY_REFUSE) > 0) { //查出好友尚未处理申请
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "请耐心等待，对方还没处理申请");
         }
         if (applyDao.insert(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "添加申请失败");
@@ -52,46 +59,39 @@ public class ApplyServiceImpl implements ApplyService {
     @Override
     public ServerResponse<String> delete(Integer fromId, Integer toId, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (applyDao.delete(fromId,toId,user.getId()) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"删除申请失败");
-        }
+        applyDao.delete(fromId,toId,user.getId());
         return ServerResponse.createBySuccess();
     }
 
     @Override
     public ServerResponse<String> deleteById(Integer fromId, Integer toId) {
-        if (applyDao.deleteById(fromId,toId) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "删除申请失败");
-        }
+        applyDao.deleteById(fromId,toId);
         return ServerResponse.createBySuccess();
     }
 
 
     @Override
     public ServerResponse<String> deleteByUserId(Integer userId) {
-        if (applyDao.deleteByUserId(userId) == 0) {
-            return ServerResponse.createBySuccessMessage("删除所有申请失败");
-        }
+        applyDao.deleteByUserId(userId);
         return ServerResponse.createBySuccess();
     }
 
 
     @Override
     public ServerResponse<FriendVo> update(Apply apply) {
+        //改变申请状态
         if (applyDao.update(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新申请失败");
         }
+        //同意则添加好友
         if (Const.APPLY_AGREE.equals(apply.getApplyStatus())) {
+            //1.用户删除了好友又添加好友
+            //2.用户删除了好友，好友又添加用户
+            //3.用户第一次添加好友，用户未处理，又发起好友申请
+            //对于上述三种情况，直接删除好友，这样避免讨论
+            friendDao.deleteTwo(apply.getFromId(),apply.getToId());
+            //同时插入用户和好友的关系
             friendService.insertFriendBySelect(apply.getToId(),apply.getFromId());
-            //添加好友
-//            UserInfo userInfo = userInfoDao.queryUserById(apply.getFromId());
-//            if (userInfo != null) {
-//                Friend friend = new Friend();
-//                friend.setFriendName(userInfo.getNickname());
-//                friend.setFriendId(apply.getToId());
-//                friend.setUserId(apply.getFromId());
-//                friendService.insert(friend);
-//            }
         }
         return friendService.selectFriendByFriendId(apply.getToId(),apply.getFromId());
 
@@ -113,5 +113,10 @@ public class ApplyServiceImpl implements ApplyService {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"查询不到该申请");
         }
         return ServerResponse.createBySuccess(applyVo);
+    }
+
+    @Override
+    public int checkApply(Integer fromId, Integer toId) {
+        return applyDao.checkApply(fromId,toId,Const.APPLY_UNTREATED);
     }
 }

@@ -2,6 +2,7 @@ package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
 import com.hzq.domain.GroupMessageContent;
+import com.hzq.vo.SendMessage;
 
 import java.util.List;
 import java.util.Map;
@@ -16,10 +17,10 @@ public interface GroupMessageContentService {
 
     /**
      * 存储群聊消息
-     * @param groupMessageContent 群聊消息
+     * @param message 群聊消息
      * @return 返回通用对象
      */
-    ServerResponse<String> insert(GroupMessageContent groupMessageContent);
+    ServerResponse<String> insert(SendMessage message);
 
     /**
      * 查询群聊所有的消息

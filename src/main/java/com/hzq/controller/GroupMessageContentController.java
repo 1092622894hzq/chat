@@ -25,11 +25,6 @@ public class GroupMessageContentController {
     @Autowired
     private GroupMessageContentService messageContentService;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(GroupMessageContent content) {
-        return messageContentService.insert(content);
-    }
-
     @RequestMapping(value = "/selectAll", method = RequestMethod.GET)
     public ServerResponse<List<GroupMessageContent>> selectAll(@RequestParam("id") Integer id) {
         return messageContentService.selectAll(id);

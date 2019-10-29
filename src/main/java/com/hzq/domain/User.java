@@ -6,16 +6,29 @@ import java.sql.Timestamp;
 /**
  * @Auther: blue
  * @Date: 2019/9/28
- * @Description: com.hzq.domain
+ * @Description: 用户主表
  * @version: 1.0
  */
 public class User implements Serializable {
+    /*
+    用户id
+     */
     private Integer id;
+    /*
+    用户账号
+     */
     private String username;
+    /*
+    用户密码
+     */
     private String password;
+    /*
+    用户状态  0 下线 1 在线  2 隐身
+     */
     private Integer status;
-    private Timestamp gmtCreate;
-    private Timestamp gmtModified;
+    /*
+    用户登录时的时间(用户在线和隐身时就是输入账号密码时的时间，下线就是退出时的时间)
+     */
     private Timestamp loginTime;
 
     public Integer getId() {
@@ -50,22 +63,6 @@ public class User implements Serializable {
         this.status = status;
     }
 
-    public Timestamp getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Timestamp gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public Timestamp getLoginTime() {
         return loginTime;
     }
@@ -81,8 +78,6 @@ public class User implements Serializable {
                 ", username='" + username + '\'' +
                 ", password='" + password + '\'' +
                 ", status=" + status +
-                ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
                 ", loginTime=" + loginTime +
                 '}';
     }

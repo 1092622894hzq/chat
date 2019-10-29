@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
 import java.io.File;
+import java.io.IOException;
 import java.util.Objects;
 
 /**
@@ -72,7 +73,8 @@ public class FileHandlerController {
                     LOGGER.debug("存储用户头像的时候，删除之前头像出现了错误");
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
         UserInfo userInfo = new UserInfo();
@@ -113,7 +115,8 @@ public class FileHandlerController {
                     LOGGER.debug("存储群头像的时候，删除之前头像出现了错误");
                 }
             }
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
         Group group = new Group();
@@ -129,15 +132,21 @@ public class FileHandlerController {
      * @param file 上传的文件
      * @param userId 用户id
      */
-    @RequestMapping("/userId")
-    //处理发送消息过程中发送的图片和文件，约定安卓自己随机生成名字
-    public void handlerFile(@RequestPart("file") MultipartFile file, @PathVariable Integer userId) {
+    @RequestMapping("/{userId}")
+    public ServerResponse<String> handlerFile(@RequestPart("file") MultipartFile file, @PathVariable Integer userId) {
+        String fileName = System.currentTimeMillis()+file.getOriginalFilename();
         try {
-            File dir = new File(Const.FILE_PATH +"//"+userId,file.getOriginalFilename());
+            File f = new File(Const.FILE_PATH +"//"+userId);
+            if (!f.exists()) {
+                FileUtil.CheckPath(f);
+            }
+            File dir = new File(Const.FILE_PATH +"//"+userId,fileName);
             FileUtil.ByteToPhoto(file.getBytes(),dir);
-        } catch (Exception e) {
+        } catch (IOException e) {
+            e.printStackTrace();
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
         }
+        return ServerResponse.createBySuccess(Const.IMAGE_PATH+userId+"//"+fileName);
     }
 
     /**
@@ -156,6 +165,7 @@ public class FileHandlerController {
                 LOGGER.debug("删除文件出错");
             }
         } catch (Exception e) {
+            e.printStackTrace();
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
     }
     }

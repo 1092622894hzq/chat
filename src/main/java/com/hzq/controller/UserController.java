@@ -2,6 +2,7 @@ package com.hzq.controller;
 
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
+import com.hzq.utils.MD5Util;
 import com.hzq.vo.Result;
 import com.hzq.domain.User;
 import com.hzq.service.UserService;
@@ -96,6 +97,16 @@ public class UserController {
     @RequestMapping(value = "/refreshToken/{username}/{id}", method = RequestMethod.GET)
     public ServerResponse<String> refreshToken(@PathVariable String username, @PathVariable Integer id, HttpSession session) {
         return userService.refreshToken(username,id,session);
+    }
+
+    /**
+     * 删除用户
+     * @param id 用户id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/delete/{id}")
+    public ServerResponse<String> deleteUserById(@PathVariable Integer id) {
+        return userService.deleteUserById(id);
     }
 
 }

@@ -1,5 +1,6 @@
 package com.hzq.utils;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
@@ -20,17 +21,17 @@ public class JsonUtil {
      * @return 返回对象
      */
     public static  <T>  T getObjFromJson(String json, Class t) {
-        return new Gson().fromJson(json, (Type) t);
+        return JSON.parseObject(json, (Type) t);
     }
 
     /**
      * 将对象变为json
-     * @param t 对象
      * @param <T> 泛型
+     * @param t 对象
      * @return 返回json数据
      */
-    public static <T> String  toJson(T t) {
-        return new Gson().toJson(t);
+    public static <T> String toJson(T t) {
+        return String.valueOf(JSON.toJSON(t));
     }
 
 }

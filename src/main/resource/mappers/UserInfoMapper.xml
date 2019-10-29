@@ -4,14 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.hzq.dao.UserInfoDao">
     <resultMap id="BaseResultMap" type="com.hzq.domain.UserInfo">
-        <id column="id" jdbcType="INTEGER" property="id" />
         <result column="nickname" jdbcType="VARCHAR" property="nickname" />
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
         <result column="sex" jdbcType="INTEGER" property="sex"/>
         <result column="email" jdbcType="VARCHAR" property="email"/>
         <result column="sign" jdbcType="VARCHAR" property="sign"/>
-        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
@@ -50,18 +47,23 @@
     </set>
             where user_id = #{userId, jdbcType = INTEGER};
 
+    <if test="nickname != null">
+        update friend set friend_name = #{nickname, jdbcType = INTEGER}
+        where user_id = #{userId, jdbcType = INTEGER} and friend_id = #{userId, jdbcType = INTEGER}
+    </if>
+
 </update>
 
 <select id="queryUserByName" parameterType="java.lang.String" resultMap="BaseResultMap">
-    select
-     <include refid="Base_Column_List" />
+    select <include refid="Base_Column_List" />
     from user_info ui left join user u
     on u.id = ui.user_id
     where u.username = #{username, jdbcType = VARCHAR}
 </select>
 
 <select id="queryUserById" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from user_info where user_id = #{userId, jdbcType = INTEGER}
+    select <include refid="Base_Column_List" />
+    from user_info where user_id = #{userId, jdbcType = INTEGER}
 </select>
 
 <select id="checkEmail" resultType="java.lang.Integer" parameterType="java.lang.String" >

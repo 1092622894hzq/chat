@@ -5,8 +5,8 @@ import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.UserInfo;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
+import com.hzq.service.FriendService;
 import com.hzq.service.UserInfoService;
-import com.hzq.service.UserService;
 import com.hzq.utils.RandomUtil;
 import com.hzq.utils.SendEmailUtil;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -34,9 +34,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public ServerResponse<String> deleteUserInfoByPrimaryId(Integer userId) {
-        if (userInfoDao.deleteUserInfoByPrimaryId(userId) == 0) {
-            return ServerResponse.createByErrorMessage("删除用户个人信息失败");
-        }
+        userInfoDao.deleteUserInfoByPrimaryId(userId);
         return ServerResponse.createBySuccess();
     }
 

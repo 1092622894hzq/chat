@@ -16,14 +16,13 @@ import java.util.Map;
  */
 public class CommonResult implements Serializable {
 
-    private List<Content> contentList;
+    private List<SendMessage> contentList;
 
-
-    public List<Content> getContentList() {
+    public List<SendMessage> getContentList() {
         return contentList;
     }
 
-    public void setContentList(List<Content> contentList) {
+    public void setContentList(List<SendMessage> contentList) {
         this.contentList = contentList;
     }
 

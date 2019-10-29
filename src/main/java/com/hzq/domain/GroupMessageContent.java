@@ -32,10 +32,6 @@ public class GroupMessageContent implements Serializable {
     */
     private Timestamp gmtCreate;
     /*
-    修改时间--必须有
-     */
-    private Timestamp gmtModified;
-    /*
     群id--必须有
      */
     private Integer groupId;
@@ -80,14 +76,6 @@ public class GroupMessageContent implements Serializable {
         this.gmtCreate = gmtCreate;
     }
 
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
-    }
-
     public Integer getGroupId() {
         return groupId;
     }
@@ -103,7 +91,6 @@ public class GroupMessageContent implements Serializable {
                 ", gmType=" + gmType +
                 ", gmFromId=" + gmFromId +
                 ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
                 ", groupId=" + groupId +
                 '}';
     }

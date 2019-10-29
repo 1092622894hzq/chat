@@ -10,79 +10,84 @@
         <result column="message_type" jdbcType="INTEGER" property="messageType"/>
         <result column="message_from_id" jdbcType="INTEGER" property="messageFromId"/>
         <result column="message_to_id" jdbcType="INTEGER" property="messageToId"/>
-        <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="user_id" jdbcType="INTEGER" property="userId"/>
     </resultMap>
 
-<insert id="insert" parameterType="com.hzq.domain.Message"  useGeneratedKeys="true" keyProperty="id">
-    insert into message (
-    message_content, message_status, message_type, message_from_id,message_to_id, user_id
-    )
-    values (
-    #{messageContent, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER},#{messageType, jdbcType = INTEGER},
-    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{messageToId, jdbcType = INTEGER}
-    );
+    <sql id="Base_Column_List">
+        id,message_content,message_status,message_type,message_from_id,message_to_id,gmt_create,user_id
+    </sql>
 
+<insert id="insert" useGeneratedKeys="true" keyProperty="msg.id">
     insert into message (
-     message_content, message_status, message_type, message_from_id,message_to_id, user_id)
+     message_content, message_status, message_type, message_from_id,message_to_id, user_id
     )
     values (
-     #{messageContent, jdbcType = VARCHAR},1,#{messageType, jdbcType = INTEGER},
-    #{messageFromId, jdbcType = INTEGER}, #{messageToId, jdbcType = INTEGER }, #{messageFromId, jdbcType = INTEGER}
-    );
+      #{msg.message, jdbcType = VARCHAR}, #{messageStatus, jdbcType = INTEGER}, #{msg.messageType, jdbcType = INTEGER},
+    #{msg.fromId, jdbcType = INTEGER}, #{msg.toIdOrGroupId, jdbcType = INTEGER }, #{userId, jdbcType = INTEGER}
     )
 </insert>
 
-<delete id="deleteMessageById" parameterType="java.lang.Integer">
-    delete from message
-    where id = #{id, jdbcType = INTEGER}
-</delete>
+    <select id="queryMessageByUserIdAndFriendId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
+        select <include refid="Base_Column_List" /> from message where (
+        (
+        message_from_id = #{userId, jdbcType = INTEGER}
+        and
+        message_to_id = #{friendId, jdbcType = INTEGER}
+        )
+        or
+        (
+        message_to_id = #{userId, jdbcType = INTEGER}
+        and
+        message_from_id = #{friendId, jdbcType = INTEGER}
+        )
+        )
+    </select>
 
-<delete id="deleteAllByUserId" parameterType="java.lang.Integer">
-    delete from message where user_id = #{userId, jdbcType = INTEGER}
+<update id="updateOneMessage" parameterType="java.lang.Integer">
+    update message set message_status = #{messageStatus, jdbcType = INTEGER}
+    where id = #{id, jdbcType = INTEGER}
+</update>
+
+<update id="update" parameterType="java.lang.Integer">
+    update message set message_status = #{messageStatus, jdbcType = INTEGER}
+    where (id between #{smallId, jdbcType = INTEGER} and  #{bigId, jdbcType = INTEGER})
+    and user_id = #{userId, jdbcType = INTEGER}
+</update>
+
+<delete id="deleteMessageById" parameterType="java.lang.Integer">
+    delete from message where id = #{id, jdbcType = INTEGER}
 </delete>
 
 <delete id="deleteMessageByUserIdAndFriendId" parameterType="java.lang.Integer">
     delete from message
     where user_id = #{userId, jdbcType = INTEGER}
-    and ( message_from_id = #{friendId, jdbcType = INTEGER} or message_to_id = #{friend, jdbcType = INTEGER})
+    and ( message_from_id = #{friendId, jdbcType = INTEGER} or message_to_id = #{friendId, jdbcType = INTEGER})
 </delete>
 
 
-<select id="queryMessageByUserIdAndFriendId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select * from message where (
-     (
-     message_from_id = #{userId, jdbcType = INTEGER}
-     and
-     message_to_id = #{friendId, jdbcType = INTEGER}
-     )
-     or
-     (
-     message_to_id = #{userId, jdbcType = INTEGER}
-     and
-     message_from_id = #{friendId, jdbcType = INTEGER}
-     )
-     )
+    <resultMap id="SendMessageMap" type="com.hzq.vo.SendMessage">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="message_content" jdbcType="VARCHAR" property="message" />
+        <result column="message_type" jdbcType="INTEGER" property="messageType"/>
+        <result column="message_from_id" jdbcType="INTEGER" property="fromId"/>
+        <result column="message_to_id" jdbcType="INTEGER" property="toIdOrGroupId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="nickname" jdbcType="VARCHAR" property="name"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
 
+    <sql id="SendMessage_List">
+         m.id, m.message_content, m.message_type, m.message_from_id, m.message_to_id, m.gmt_create, nickname, avatar
+    </sql>
 
-</select>
-
-<select id="queryUnreadMessageByUserId" resultMap="BaseResultMap">
-    select * from message where
-    user_id = #{userId, jdbcType = INTEGER}
-    and  message_status = #{messageStatus, jdbcType = INTEGER}
-</select>
-
-<update id="updateOneMessage" parameterType="java.lang.Integer">
-    update message set message_status = #{read, jdbcType = INTEGER}
-    where id = #{id, jdbcType = INTEGER}
-</update>
-
-<update id="update" parameterType="java.lang.Integer">
-    update message set message_status = #{read, jdbcType = INTEGER}
-    where (id between #{smallId, jdbcType = INTEGER} and  #{bigId, jdbcType = INTEGER})
-    and user_id = #{userId, jdbcType = INTEGER}
-</update>
-
+    <select id="selectUnReadSendMessage" parameterType="java.lang.Integer" resultMap="SendMessageMap">
+        select <include refid="SendMessage_List"/>
+        from user_info ui
+        left join message m
+        on m.message_from_id = ui.user_id
+        where m.message_status = #{messageStatus, jdbcType = INTEGER}
+        and m.message_to_id = #{userId, jdbcType = INTEGER}
+        and m.user_id = #{userId, jdbcType = INTEGER}
+    </select>
 </mapper>

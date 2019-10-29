@@ -4,7 +4,6 @@ package com.hzq.vo;
 import com.hzq.domain.*;
 
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
@@ -18,8 +17,6 @@ public class Result {
     private List<FriendVo> friends;
     private List<Group> groups;
     private List<ApplyVo> applies;
-    private Map<Integer, List<Message>> messageMap;
-    private Map<Integer, List<GroupMessageContent>> groupContentMap;
     private CommonResult commonResult;
 
     public User getUser() {
@@ -60,22 +57,6 @@ public class Result {
 
     public void setApplies(List<ApplyVo> applies) {
         this.applies = applies;
-    }
-
-    public Map<Integer, List<Message>> getMessageMap() {
-        return messageMap;
-    }
-
-    public void setMessageMap(Map<Integer, List<Message>> messageMap) {
-        this.messageMap = messageMap;
-    }
-
-    public Map<Integer, List<GroupMessageContent>> getGroupContentMap() {
-        return groupContentMap;
-    }
-
-    public void setGroupContentMap(Map<Integer, List<GroupMessageContent>> groupContentMap) {
-        this.groupContentMap = groupContentMap;
     }
 
     public CommonResult getCommonResult() {

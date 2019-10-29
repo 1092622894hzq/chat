@@ -6,6 +6,7 @@ import java.util.Set;
 import java.util.concurrent.TimeUnit;
 import com.hzq.domain.Content;
 import com.hzq.vo.CommonResult;
+import com.hzq.vo.SendMessage;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.redis.core.RedisTemplate;
@@ -114,10 +115,10 @@ public final class RedisUtil {
 	}
 
 
-	public  void appendObj(String id, Content content) {
+	public  void appendObj(String id, SendMessage content) {
 		if (exists(id)) {
 			CommonResult result = JsonUtil.getObjFromJson((String) get(id),CommonResult.class);
-			List<Content> list = result.getContentList();
+			List<SendMessage> list = result.getContentList();
 			if (list != null) {
 				list.add(content);
 			} else {
@@ -127,7 +128,7 @@ public final class RedisUtil {
 			set(id,JsonUtil.toJson(result));
 		} else {
 			CommonResult result = new CommonResult();
-			List<Content> list = new ArrayList<>();
+			List<SendMessage> list = new ArrayList<>();
 			list.add(content);
 			result.setContentList(list);
 			set(id,JsonUtil.toJson(result));

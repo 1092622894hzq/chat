@@ -15,13 +15,17 @@ public class Message implements Serializable {
      */
     private Integer id;
     /*
+    消息状态
+    */
+    private Integer messageStatus;
+    /*
+    拥有该消息的用户id
+    */
+    private Integer userId;
+    /*
     消息内容---必须有
      */
     private String messageContent;
-    /*
-    消息状态
-     */
-    private Integer messageStatus;
     /*
     消息类型---必须有
      */
@@ -38,14 +42,6 @@ public class Message implements Serializable {
     发送的时间--必须有
      */
     private Timestamp gmtCreate;
-    /*
-    修改的时间--必须有
-     */
-    private Timestamp gmtModified;
-    /*
-    拥有该消息的用户id
-     */
-    private Integer userId;
 
     public Integer getId() {
         return id;
@@ -103,13 +99,6 @@ public class Message implements Serializable {
         this.gmtCreate = gmtCreate;
     }
 
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 
     public Integer getUserId() {
         return userId;
@@ -128,7 +117,6 @@ public class Message implements Serializable {
                 ", messageFromId=" + messageFromId +
                 ", messageToId=" + messageToId +
                 ", gmtCreate=" + gmtCreate +
-                ", gmtModified=" + gmtModified +
                 '}';
     }
 }

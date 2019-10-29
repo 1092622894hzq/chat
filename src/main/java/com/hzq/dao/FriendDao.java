@@ -16,18 +16,19 @@ import java.util.List;
 public interface FriendDao {
 
     /**
-     * 添加好友
-     * @param friend 好友
-     * @return 返回修改次数
-     */
-    int insert(Friend friend);
-
-    /**
      * 更新好友信息
      * @param friend 要更改的好友信息
      * @return 返回修改次数
      */
     int update(Friend friend);
+
+    /**
+     * 更新被好友删除的标志位
+     * @param userId 用户id
+     * @param friendId 好友id
+     * @return 返回修改次数
+     */
+    int updateForDelete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 
     /**
      * 根据用户id和好友昵称删除好友
@@ -38,11 +39,17 @@ public interface FriendDao {
     int delete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 
     /**
+     * 同时删除用户和好友在好友表的关系
+     * @param userId 用户id
+     * @param friendId 好友id
+     */
+    void deleteTwo(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+
+    /**
      * 根据用户id删除所有好友
      * @param userId 用户id
-     * @return 返回修改次数
      */
-    int deleteById(@Param("userId") Integer userId);
+    void deleteById(@Param("userId") Integer userId);
 
     /**
      * 查询所有好友

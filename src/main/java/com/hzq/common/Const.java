@@ -25,14 +25,6 @@ public class Const {
      */
     public static final String EMAIL = "email";
     /*
-    表示默认好友微信官方的类型
-     */
-    public static final Integer AUTHORITY = 0 ;
-    /*
-    表示默认好友卫微信官方的名字
-     */
-    public static final String AUTHORITY_NAME = "微信官方";
-    /*
     表示时间格式
      */
     public static final String TIME_FORMAT = "yyyy:MM:dd HH:mm:ss";
@@ -113,6 +105,18 @@ public class Const {
      */
     public static final Integer PICTURE = 2;
     /*
+    表示私聊
+     */
+    public static final Integer PRIVATE_CHAT = 0;
+    /*
+    表示群聊
+     */
+    public static final Integer GROUP_CHAT = 1;
+    /*
+    表示申请
+     */
+    public static final Integer APPLY = 2;
+    /*
     表示消息已读
      */
     public static final Integer MARK_AS_READ = 1;
@@ -120,11 +124,6 @@ public class Const {
     表示消息未读
      */
     public static final Integer MARK_AS_UNREAD = 0; //未读
-    /*
-    表示通知类型
-     */
-    public static final String APPLY = "apply";
-    public static final String FRIEND = "friend";
 
     //申请表中的常量
     /*

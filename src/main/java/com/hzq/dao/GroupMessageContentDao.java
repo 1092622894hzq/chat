@@ -1,6 +1,7 @@
 package com.hzq.dao;
 
 import com.hzq.domain.GroupMessageContent;
+import com.hzq.vo.SendMessage;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -8,17 +9,17 @@ import java.util.List;
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.dao
+ * @Description: 群聊
  * @version: 1.0
  */
 public interface GroupMessageContentDao {
 
     /**
      * 存储群聊消息
-     * @param groupMessageContent 群聊消息
+     * @param message 群聊消息
      * @return 返回修改的次数
      */
-    int insert(GroupMessageContent groupMessageContent);
+    int insert(SendMessage message);
 
     /**
      * 查询群聊所有的消息

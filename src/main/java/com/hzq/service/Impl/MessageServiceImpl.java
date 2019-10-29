@@ -4,11 +4,15 @@ import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.dao.MessageDao;
 import com.hzq.domain.Message;
+import com.hzq.enums.ResponseCodeEnum;
+import com.hzq.execption.CustomGenericException;
 import com.hzq.service.MessageService;
 import com.hzq.service.UserService;
+import com.hzq.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
@@ -23,26 +27,11 @@ public class MessageServiceImpl implements MessageService {
 
     @Autowired
     private MessageDao messageDao;
-    @Autowired
-    private UserService userService;
-
-    @Override //利用mybatis执行多条语句完成两次消息的插入
-    public ServerResponse<String> insert(Message message) {  //默认每次先插入的是接收者的信息
-        if (messageDao.insert(message) == 0) {
-            return ServerResponse.createByErrorMessage("插入消息失败");
-        }
-        message.setMessageStatus(Const.MARK_AS_READ);
-        message.setUserId(message.getMessageFromId());
-        if (messageDao.insert(message) == 0) {
-            return ServerResponse.createByErrorMessage("插入消息失败");
-        }
-        return ServerResponse.createBySuccess();
-    }
 
     @Override
-    public ServerResponse<String> deleteMessageById(Integer id) {
-        if (messageDao.deleteMessageById(id) == 0) {
-            return ServerResponse.createByErrorMessage("删除聊天记录失败");
+    public ServerResponse<String> insert(SendMessage message, Integer messageStatus, Integer userId) {  //默认每次先插入的是接收者的信息
+        if (messageDao.insert(message,messageStatus,userId) == 0) {
+            return ServerResponse.createByErrorMessage("插入消息失败");
         }
         return ServerResponse.createBySuccess();
     }
@@ -56,18 +45,39 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ServerResponse<Map<Integer, List<Message>>> queryUnreadMessageByUserId(Integer userId) {
-        List<Message> messages =  messageDao.queryUnreadMessageByUserId(userId, Const.MARK_AS_UNREAD);
+    public void updateOneMessage(Integer id) {
+        if (messageDao.updateOneMessage(id,Const.MARK_AS_READ) == 0) {
+           System.out.println("更新消息状态失败");
+        }
+    }
+
+    @Override
+    public void update(Integer bigId, Integer smallId, Integer userId) {
+        if (messageDao.update(bigId,smallId,Const.MARK_AS_READ,userId) == 0) {
+            System.out.println("更新消息状态失败");
+        }
+    }
+
+    @Override
+    public ServerResponse<String> deleteMessageById(Integer id) {
+        messageDao.deleteMessageById(id);
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> deleteMessageByUserIdAndFriendId(Integer userId, Integer friendId) {
+        messageDao.deleteMessageByUserIdAndFriendId(userId,friendId);
+        return ServerResponse.createBySuccess();
+    }
+
+
+    @Override
+    public ServerResponse<List<SendMessage>> selectUnReadSendMessage(Integer userId) {
+        List<SendMessage> messages =  messageDao.selectUnReadSendMessage(userId, Const.MARK_AS_UNREAD);
         if (messages == null || messages.isEmpty()) {
             return ServerResponse.createByErrorMessage("没有找到未读的消息");
         }
-        Map<Integer, List<Message>>  map = userService.MessageSubgroup(messages,new Message());
-        if (messages.size() == 1) {
-            messageDao.updateOneMessage(messages.get(0).getId(),Const.MARK_AS_READ);
-        } else {
-            messageDao.update(messages.get(messages.size()-1).getId(),messages.get(0).getId(),Const.MARK_AS_READ,userId);
-        }
-        return ServerResponse.createBySuccess(map);
+        return ServerResponse.createBySuccess(messages);
     }
 
 

@@ -7,27 +7,35 @@ import java.sql.Timestamp;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.domain
+ * @Description: 用户个人信息
  * @version: 1.0
  */
 public class UserInfo implements Serializable {
-    private Integer id;
+    /*
+    用户昵称
+     */
     private String nickname;
+    /*
+    用户头像
+     */
     private String avatar;
+    /*
+    用户性别
+     */
     private Integer sex;
+    /*
+    用户邮箱
+     */
     private String email;
+    /*
+    用户个性签名
+     */
     private String sign;
-    private Timestamp gmtCreate;
-    private Timestamp gmtModified;
+    /*
+    用户主表的id 即user类中对应的id
+     */
     private Integer userId;
 
-    public Integer getId() {
-        return id;
-    }
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public String getNickname() {
         return nickname;
@@ -67,22 +75,6 @@ public class UserInfo implements Serializable {
 
     public void setSign(String sign) {
         this.sign = sign;
-    }
-
-    public Timestamp getGmtCreate() {
-        return gmtCreate;
-    }
-
-    public void setGmtCreate(Timestamp gmtCreate) {
-        this.gmtCreate = gmtCreate;
-    }
-
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
     }
 
     public Integer getUserId() {

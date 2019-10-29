@@ -20,7 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 /**
  * @Auther: blue
  * @Date: 2019/10/5
- * @Description: com.hzq.common
+ * @Description: 将token和sessionId添加到方法的返回值上
  * @version: 1.0
  */
 @ControllerAdvice

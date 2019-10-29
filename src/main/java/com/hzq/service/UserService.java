@@ -32,30 +32,6 @@ public interface UserService {
     ServerResponse<Result> login(String username, String password);
 
     /**
-     * 更新用户密码
-     * @param newPassword 新密码
-     * @param oldPassword 旧密码
-     * @param id 主键id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id);
-
-    /**
-     * 更新用户状态
-     * @param status 状态
-     * @param id 用户id
-     * @return 返回通用结果
-     */
-    ServerResponse<String> updateStatus(Integer status, Integer id);
-
-    /**
-     * 根据id删除用户
-     * @param id 用户id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> deleteUserByPrimaryId(Integer id);
-
-    /**
      * 检查用户名和邮箱是否存在
      * @param str 检查的用户名或者邮箱
      * @param type 类型
@@ -87,6 +63,30 @@ public interface UserService {
      * @return 返回通用对象
      */
     ServerResponse<User> selectByUsername(String username);
+
+    /**
+     * 更新用户密码
+     * @param newPassword 新密码
+     * @param oldPassword 旧密码
+     * @param id 主键id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id);
+
+    /**
+     * 更新用户状态
+     * @param status 状态
+     * @param id 用户id
+     * @return 返回通用结果
+     */
+    ServerResponse<String> updateStatus(Integer status, Integer id);
+
+    /**
+     * 根据用户id删除用户
+     * @param id 用户id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> deleteUserById(Integer id);
 }
 
 

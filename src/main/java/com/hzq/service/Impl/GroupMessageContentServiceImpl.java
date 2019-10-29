@@ -7,6 +7,7 @@ import com.hzq.domain.GroupMessageContent;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupMessageContentService;
 import com.hzq.service.UserService;
+import com.hzq.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -30,8 +31,8 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     private GroupToUserDao groupToUserDao;
 
     @Override
-    public ServerResponse<String> insert(GroupMessageContent groupMessageContent) {
-        if (messageContentDao.insert(groupMessageContent) == 0) {
+    public ServerResponse<String> insert(SendMessage message) {
+        if (messageContentDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("存放群聊消息失败");
         }
         return ServerResponse.createBySuccess();

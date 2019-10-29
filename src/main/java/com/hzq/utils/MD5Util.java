@@ -68,13 +68,14 @@ public class MD5Util {
 			}
 		}
 
-	// 测试主函数
+	// 测试主函数  265c50a54658e13392d4af9403563fc57b7e936c3dc46998
 	public static void main(String[] args) {
 		// 原文
-		String plaintext = "12";
+		String plaintext = "111111";
 		// 获取加盐后的MD5值
-		String ciphertext = MD5Util.generate(plaintext);
-		System.out.println("加盐后MD5：" + ciphertext);
+		String ciphertext = "265c50a54658e13392d4af9403563fc57b7e936c3dc46998";
+				//MD5Util.generate(plaintext);
+		//System.out.println("加盐后MD5：" + ciphertext);
 		System.out.println("是否是同一字符串:" + MD5Util.verify(plaintext, ciphertext));
 
 	}

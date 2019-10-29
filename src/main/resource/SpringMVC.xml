@@ -8,12 +8,13 @@
        xmlns:tx="http://www.springframework.org/schema/tx"
        xmlns:mvc="http://www.springframework.org/schema/mvc"
        xmlns:websocket="http://www.springframework.org/schema/websocket"
+       xmlns:util="http://www.springframework.org/schema/util"
        xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.0.xsd
         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.0.xsd
         http://www.springframework.org/schema/mvc   http://www.springframework.org/schema/mvc/spring-mvc.xsd
         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.0.xsd
         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-4.0.xsd
-        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd">
+        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.0.xsd http://www.springframework.org/schema/websocket http://www.springframework.org/schema/websocket/spring-websocket.xsd http://www.springframework.org/schema/util http://www.springframework.org/schema/util/spring-util.xsd">
     <!-- 开启注解扫描，只扫描Controller注解 -->
     <context:component-scan base-package="com.hzq">
         <context:include-filter type="annotation" expression="org.springframework.stereotype.Controller"/>
@@ -63,26 +64,11 @@
             <mvc:mapping path="/**" />
             <mvc:exclude-mapping path="/css/**" />
             <mvc:exclude-mapping path="/images/**" />
-            <mvc:exclude-mapping path="/hello/**" />
             <mvc:exclude-mapping path="/js/**" />
             <mvc:exclude-mapping path="/user/register" />
             <mvc:exclude-mapping path="/user/login" />
-            <mvc:exclude-mapping path="/websocket/**" />
             <mvc:exclude-mapping path="/user/refreshToken/**" />
             <bean class="com.hzq.interceptors.AuthInterceptor"/>
-        </mvc:interceptor>
-        <!-- 用户是否有token拦截器 -->
-        <mvc:interceptor>
-            <mvc:mapping path="/**"/>
-            <mvc:exclude-mapping path="/css/**" />
-            <mvc:exclude-mapping path="/images/**" />
-            <mvc:exclude-mapping path="/hello/**" />
-            <mvc:exclude-mapping path="/js/**" />
-            <mvc:exclude-mapping path="/user/register"/>
-            <mvc:exclude-mapping path="/user/login"/>
-            <mvc:exclude-mapping path="/websocket/**" />
-            <mvc:exclude-mapping path="/user/refreshToken/**" />
-            <bean class="com.hzq.interceptors.TokenInterceptor" />
         </mvc:interceptor>
     </mvc:interceptors>
 

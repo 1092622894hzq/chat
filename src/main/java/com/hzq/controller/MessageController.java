@@ -5,17 +5,17 @@ import com.hzq.common.ServerResponse;
 import com.hzq.domain.Message;
 import com.hzq.domain.User;
 import com.hzq.service.MessageService;
+import com.hzq.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpSession;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
  * @Date: 2019/10/2
- * @Description: com.hzq.controller
+ * @Description: 私聊
  * @version: 1.0
  */
 @RestController
@@ -25,30 +25,25 @@ public class MessageController {
     @Autowired
     private MessageService messageService;
 
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(HttpSession session, Message message) {
-        User user = (User)session.getAttribute(Const.CURRENT_USER);
-        message.setMessageFromId(user.getId());
-        message.setMessageStatus(Const.MARK_AS_READ);
-        message.setMessageType(Const.TEXT);
-        message.setUserId(user.getId());
-        return messageService.insert(message);
-    }
-
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteMessageById(@PathVariable("id") Integer id) {
+    public ServerResponse<String> deleteMessageById(@PathVariable Integer id) {
         return messageService.deleteMessageById(id);
     }
 
+    @RequestMapping(value = "/delete/{userId}/{friendId}", method = RequestMethod.GET)
+    public ServerResponse<String> deleteMessageByUserIdAndFriendId(@PathVariable Integer userId, @PathVariable Integer friendId) {
+        return messageService.deleteMessageByUserIdAndFriendId(userId,friendId);
+    }
+
     @RequestMapping(value = "query", method = RequestMethod.POST)
-    public ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(@RequestParam("id") Integer id, @RequestParam("friendId") Integer friendId) {
+    public ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(@RequestParam Integer id, @RequestParam Integer friendId) {
         return messageService.queryMessageByUserIdAndFriendId(id,friendId);
     }
 
-    @RequestMapping(value = "/queryUnreadMessage", method = RequestMethod.GET)
-    public ServerResponse<Map<Integer,List<Message>>> queryUnreadMessageByUserId(HttpSession session) {
+    @RequestMapping(value = "/selectUnReadSendMessage", method = RequestMethod.GET)
+    public ServerResponse<List<SendMessage>> selectUnReadSendMessage(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
-        return messageService.queryUnreadMessageByUserId(user.getId());
+        return messageService.selectUnReadSendMessage(user.getId());
     }
 
 }

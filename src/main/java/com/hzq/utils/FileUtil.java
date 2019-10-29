@@ -3,6 +3,7 @@ package com.hzq.utils;
 import com.hzq.enums.FileTypeEnum;
 
 import java.io.*;
+import java.sql.Timestamp;
 import java.util.Objects;
 
 /**
@@ -152,9 +153,11 @@ public class FileUtil {
 
 
     public static void main(String[] args) {
-        File file = new File ("D:\\images", "1fdgasdg3.png");
-        byte[] buf =  getBytesFromPhoto("D:\\images\\defaultAvatar.jpg");
-        ByteToPhoto(buf,file);
+//        File file = new File ("D:\\images", "1fdgasdg3.png");
+//        byte[] buf =  getBytesFromPhoto("D:\\images\\defaultAvatar.jpg");
+//        ByteToPhoto(buf,file);
+        Timestamp timestamp = Timestamp.valueOf("2019-10-14 23:38:50");
+        System.out.println(timestamp.getTime() + "--" + timestamp);
     }
 
 }

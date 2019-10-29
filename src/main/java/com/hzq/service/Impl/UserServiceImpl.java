@@ -6,22 +6,13 @@ import com.hzq.dao.*;
 import com.hzq.domain.*;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.service.ApplyService;
-import com.hzq.service.GroupMessageContentService;
-import com.hzq.service.MessageService;
-import com.hzq.service.UserService;
+import com.hzq.service.*;
 import com.hzq.utils.JsonUtil;
 import com.hzq.utils.JwtUil;
 import com.hzq.utils.MD5Util;
 import com.hzq.utils.RedisUtil;
-import com.hzq.vo.ApplyVo;
-import com.hzq.vo.CommonResult;
-import com.hzq.vo.FriendVo;
-import com.hzq.vo.Result;
+import com.hzq.vo.*;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.shiro.SecurityUtils;
-import org.apache.shiro.authc.UsernamePasswordToken;
-import org.apache.shiro.subject.Subject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,11 +36,11 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserInfoDao userInfoDao;
     @Autowired
-    private FriendDao friendDao;
+    private FriendService friendService;
     @Autowired
     private ApplyService applyService;
     @Autowired
-    private GroupDao groupDao;
+    private GroupService groupService;
     @Autowired
     private MessageService messageService;
     @Autowired
@@ -77,65 +68,16 @@ public class UserServiceImpl implements UserService {
         if (userDao.checkUsername(username) == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
-        User user = userDao.selectLogin(username);
+        User user = userDao.selectByUsername(username);
         if (!MD5Util.verify(password,user.getPassword())) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
         updateStatus(Const.ONLINE,user.getId());
-
         user.setPassword(StringUtils.EMPTY);
-        Result result = new Result();
-        result.setUser(user);
-        UserInfo userInfo = userInfoDao.queryUserByName(username);
-        result.setUserInfo(userInfo);
-        List<FriendVo> friends = friendDao.selectAll(user.getId());
-        result.setFriends(friends);
-        List<Group> groups = groupDao.selectAll(user.getId());
-        result.setGroups(groups);
-        List<ApplyVo> applies = applyService.selectAll(user.getId()).getData();
-        result.setApplies(applies);
-        Map<Integer, List<Message>> messageMap = messageService.queryUnreadMessageByUserId(user.getId()).getData();
-        result.setMessageMap(messageMap);
-        Map<Integer, List<GroupMessageContent>> groupContentMap = groupMessageContentService.selectAllUnread(user.getId()).getData();
-        result.setGroupContentMap(groupContentMap);
-        if (redisUtil.exists(user.getId().toString())) {
-            CommonResult commonResult = JsonUtil.getObjFromJson((String) redisUtil.get(user.getId().toString()),CommonResult.class);
-            result.setCommonResult(commonResult);
-            //把消息从redis中删除
-            redisUtil.remove(user.getId().toString());
-        }
+        Result result = getAllInfo(user);
         return ServerResponse.createBySuccess("成功",result);
     }
 
-    @Override
-    public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
-        User user = userDao.selectUserById(id);
-        newPassword = MD5Util.generate(newPassword);
-        boolean isTrue = MD5Util.verify(oldPassword,user.getPassword());
-        if (isTrue && userDao.updatePassword(newPassword,id) > 0) {
-            return ServerResponse.createBySuccess();
-        }
-        throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更改密码时发生错误,很可能密码错误");
-    }
-
-    @Override
-    public ServerResponse<String> updateStatus(Integer status, Integer id) {
-        if (userDao.updateStatus(status,id) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户登录状态失败");
-        }
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public ServerResponse<String> deleteUserByPrimaryId(Integer id) {
-        if (userDao.deleteUserByPrimaryId(id) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"删除用户失败");
-        }
-        //删除所有申请
-        applyService.deleteByUserId(id);
-        //通知好友被删除了
-        return ServerResponse.createBySuccess();
-    }
 
     @Override
     public ServerResponse<String> checkValid(String str, String type) {
@@ -195,13 +137,70 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<User> selectByUsername(String username) {
-        User user = userDao.selectLogin(username);
+        User user = userDao.selectByUsername(username);
         if (user == null) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
         }
         return ServerResponse.createBySuccess(user);
     }
 
+    @Override
+    public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
+        User user = userDao.selectById(id);
+        newPassword = MD5Util.generate(newPassword);
+        System.out.println("旧密码为："+oldPassword);
+        boolean isTrue = MD5Util.verify(oldPassword,user.getPassword());
+        System.out.println("密码是否正确："+isTrue);
+        boolean b = userDao.updatePassword(newPassword,id) > 0;
+        System.out.println("更新密码成功："+b);
+        if (isTrue && b) {
+            return ServerResponse.createBySuccess();
+        }
+        throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更改密码时发生错误,很可能密码错误");
+    }
+
+    @Override
+    public ServerResponse<String> updateStatus(Integer status, Integer id) {
+        if (userDao.updateStatus(status,id) == 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户登录状态失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> deleteUserById(Integer id) {
+        //1. 删除所有申请---有外键关联，所有好友申请都会被删除
+        //2. 删除所有好友---有外键关联，所有好友都会被删除
+        //3. 删除用户个人信息---有外键关联，自动删除
+        //4. 删除私聊消息---有外键关联，自动删除
+        //5. 删除用户和群聊关系---有外键关联，自动删除
+        //6. 删除redis跟用户相关的存储数据
+        redisUtil.remove(id.toString());
+        //7. 删除用户
+        userDao.deleteUserById(id);
+        return ServerResponse.createBySuccess();
+    }
+
+
+    public Result getAllInfo(User user) {
+        Result result = new Result();
+        result.setUser(user);
+        UserInfo userInfo = userInfoDao.queryUserByName(user.getUsername());
+        result.setUserInfo(userInfo);
+        List<FriendVo> friends = friendService.selectAll(user.getId()).getData();
+        result.setFriends(friends);
+        List<Group> groups = groupService.selectAll(user.getId()).getData();
+        result.setGroups(groups);
+        List<ApplyVo> applies = applyService.selectAll(user.getId()).getData();
+        result.setApplies(applies);
+        if (redisUtil.exists(user.getId().toString())) {
+            CommonResult commonResult = JsonUtil.getObjFromJson((String) redisUtil.get(user.getId().toString()),CommonResult.class);
+            result.setCommonResult(commonResult);
+            //把消息从redis中删除
+            redisUtil.remove(user.getId().toString());
+        }
+        return result;
+    }
 
 }
 

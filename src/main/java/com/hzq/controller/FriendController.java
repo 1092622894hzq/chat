@@ -30,8 +30,6 @@ public class FriendController {
     @Autowired
     private FriendService friendService;
 
-
-
     /**
      * 更新好友信息
      * @param friend 好友信息   用户id和好友id必须有
@@ -76,15 +74,4 @@ public class FriendController {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
         return friendService.selectFriendByFriendName(user.getId(),friendName);
     }
-
-
-//    /**
-//     * 添加好友 ---通常后台自动添加，不用曝露该接口
-//     * @param friend 好友信息  用户id和好友id必须有
-//     * @return 返回通用对象
-//     */
-//    @RequestMapping( value = "/insert", method = RequestMethod.POST)
-//    public ServerResponse<String> insert(@RequestBody Friend friend) {
-//        return friendService.insert(friend);
-//    }
 }

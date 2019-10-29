@@ -13,6 +13,38 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
         <result column="user_id" jdbcType="INTEGER" property="userId" />
     </resultMap>
+
+
+<insert id="insert" parameterType="com.hzq.domain.Apply"  useGeneratedKeys="true" keyProperty="id">
+    insert into apply ( from_id, to_id, apply_reason, user_id )
+    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER},
+            #{applyReason, jdbcType = VARCHAR},#{toId, jdbcType = INTEGER}
+    )
+</insert>
+
+<select id="checkApply" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
+    select count(1) from apply
+    where to_id = #{toId, jdbcType = INTEGER}
+    and from_id = #{fromId, jdbcType = INTEGER}
+    and apply_status != #{applyStatus, jdbcType = INTEGER}
+</select>
+
+<update id="update" parameterType="com.hzq.domain.Apply">
+    update apply
+    set apply_status = #{applyStatus, jdbcType = INTEGER}
+    where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER};
+</update>
+
+<delete id="deleteById" parameterType="java.lang.Integer">
+    delete from apply
+    where (from_id = #{fromId, jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER})
+    or (from_id = #{toId, jdbcType = INTEGER} and to_id = #{fromId, jdbcType = INTEGER})
+</delete>
+
+<delete id="deleteByUserId" parameterType="java.lang.Integer">
+    delete from apply where from_id = #{userId, jdbcType = INTEGER} or to_id = #{userId, jdbcType = INTEGER}
+</delete>
+
     <resultMap id="ApplyVoMap" type="com.hzq.vo.ApplyVo">
         <id column="id" jdbcType="INTEGER" property="id" />
         <result column="from_id" jdbcType="INTEGER" property="fromId" />
@@ -30,33 +62,6 @@
     </resultMap>
 
 
-
-
-<insert id="insert" parameterType="com.hzq.domain.Apply"  useGeneratedKeys="true" keyProperty="id">
-    insert into apply ( from_id, to_id, apply_reason, user_id )
-    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER},
-            #{applyReason, jdbcType = VARCHAR},#{fromId, jdbcType = INTEGER}
-    );
-    insert into apply ( from_id, to_id, apply_reason, user_id )
-    values ( #{fromId, jdbcType = INTEGER}, #{toId, jdbcType = INTEGER},
-            #{applyReason, jdbcType = VARCHAR},#{toId, jdbcType = INTEGER}
-    )
-</insert>
-
-<delete id="deleteById" parameterType="java.lang.Integer">
-    delete from apply where from_id = #{fromId, jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER}
-    or from_id = #{toId, jdbcType = INTEGER} and to_id = #{fromId, jdbcType = INTEGER}
-</delete>
-
-<delete id="deleteByUserId" parameterType="java.lang.Integer">
-    delete from apply where from_id = #{userId, jdbcType = INTEGER} or to_id = #{userId, jdbcType = INTEGER}
-</delete>
-
-<update id="update" parameterType="com.hzq.domain.Apply">
-    update apply
-    set apply_status = #{applyStatus, jdbcType = INTEGER}
-    where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER};
-</update>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="ApplyVoMap">
     select a.*,u.username,ui.nickname,ui.avatar,ui.sex,ui.sign
@@ -76,13 +81,6 @@
     where a.from_id = #{fromId, jdbcType = INTEGER}
     and a.to_id = #{toId, jdbcType = INTEGER}
     and a.user_id = #{toId, jdbcType = INTEGER}
-</select>
-
-<select id="checkApply" resultType="java.lang.Integer" parameterType="java.lang.Integer" >
-    select count(1) from apply
-    where to_id = #{toId, jdbcType = INTEGER}
-    and from_id = #{fromId, jdbcType = INTEGER}
-    and apply_status != #{applyStatus, jdbcType = INTEGER}
 </select>
 
 </mapper>

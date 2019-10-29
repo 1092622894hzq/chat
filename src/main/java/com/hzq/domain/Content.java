@@ -1,5 +1,6 @@
 package com.hzq.domain;
 
+import com.alibaba.fastjson.JSON;
 import com.google.gson.Gson;
 
 import java.io.Serializable;
@@ -57,4 +58,13 @@ public class Content implements Serializable {
 
         private static Gson gson = new Gson();
 
+
+    public static void main(String[] args) {
+        Content content = new Content();
+        content.setNotice("fsfsd");
+        content.setMessage("sdfsd");
+        content.setTime(new Timestamp(System.currentTimeMillis()));
+        System.out.println(content.toJson()); //这个对于时间是转换为字符串
+        System.out.println(JSON.toJSON(content)); //这个对于时间是转换为long
+    }
 }

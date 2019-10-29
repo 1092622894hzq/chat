@@ -1,6 +1,5 @@
 package com.hzq.dao;
 
-import com.hzq.vo.Result;
 import com.hzq.domain.User;
 import org.apache.ibatis.annotations.Param;
 
@@ -24,30 +23,20 @@ public interface UserDao {
      * @param username 用户名
      * @return 返回用户
      */
-    User selectLogin(@Param("username") String username);
+    User selectByUsername(@Param("username") String username);
+
+    /**
+     * 根据用户id查询用户
+     * @param id 用户id
+     * @return 返回用户对象
+     */
+    User selectById(@Param("id") Integer id);
 
     /**
      * 根据用户id删除用户
      * @param id 用户id
-     * @return 返回修改次数
      */
-    int deleteUserByPrimaryId(@Param("id") Integer id);
-
-    /**
-     * 修改密码
-     * @param newPassword 新密码
-     * @param id 用户id
-     * @return 返回修改次数
-     */
-    int updatePassword(@Param(("newPassword")) String newPassword, @Param("id") Integer id);
-
-    /**
-     * 更新用户状态
-     * @param status 状态
-     * @param id 用户id
-     * @return 返回更改次数
-     */
-    int updateStatus(@Param("status") Integer status, @Param("id") Integer id);
+    void deleteUserById(@Param("id") Integer id);
 
     /**
      * 根据用户名查询用户是否存在
@@ -58,34 +47,26 @@ public interface UserDao {
 
     /**
      * 根据用户id查询用户是否存在
-     * @param userId 用户id
+     * @param id 用户id
      * @return 返回查询到的数据条数
      */
-    int checkUserId(@Param("userId") Integer userId);
+    int checkUserId(@Param("id") Integer id);
 
     /**
-     * 根据用户id查询用户
+     * 更新用户状态
+     * @param status 状态
      * @param id 用户id
-     * @return 返回用户对象
+     * @return 返回更改次数
      */
-    User selectUserById(@Param("id") Integer id);
+    int updateStatus(@Param("status") Integer status, @Param("id") Integer id);
 
-
-
-    Result selectAll(User user);
-
-
-
-
-
-
-
-
-
-
-
-
-
+    /**
+     * 修改密码
+     * @param newPassword 新密码
+     * @param id 用户id
+     * @return 返回修改次数
+     */
+    int updatePassword(@Param(("newPassword")) String newPassword, @Param("id") Integer id);
 
 
 
