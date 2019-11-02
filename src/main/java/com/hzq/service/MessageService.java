@@ -1,7 +1,6 @@
 package com.hzq.service;
 
 import com.hzq.common.ServerResponse;
-import com.hzq.domain.Message;
 import com.hzq.vo.SendMessage;
 
 import java.util.List;
@@ -24,21 +23,12 @@ public interface MessageService {
     ServerResponse<String> insert(SendMessage message, Integer messageStatus, Integer userId);
 
 
-    ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId);
-
-    /**
-     * 根据消息id更新一条消息状态
-     * @param id 消息id
-     */
-    void updateOneMessage(Integer id);
 
     /**
      * 根据两个id更新多条消息状态
-     * @param bigId 大的id
-     * @param smallId 小的id
-     * @param userId 用户id
+     * @param messageList  未读消息集合
      */
-    void update( Integer bigId, Integer smallId, Integer userId);
+    void update(List<SendMessage> messageList);
 
     /**
      * 根据消息删除消息
@@ -54,6 +44,14 @@ public interface MessageService {
      * @return 返回通用对象
      */
     ServerResponse<String>  deleteMessageByUserIdAndFriendId(Integer userId, Integer friendId);
+
+    /**
+     * 根据用户id和好友id查询聊天记录
+     * @param id 用户id
+     * @param friendId 好友id
+     * @return 返回通用对象
+     */
+    ServerResponse<List<SendMessage>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId);
 
     /**
      *

@@ -3,6 +3,7 @@ package com.hzq.controller;
 import com.hzq.common.Const;
 import com.hzq.common.ServerResponse;
 import com.hzq.utils.MD5Util;
+import com.hzq.utils.RedisUtil;
 import com.hzq.vo.Result;
 import com.hzq.domain.User;
 import com.hzq.service.UserService;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.Set;
 
 
 /**
@@ -27,7 +29,8 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private RedisUtil redisUtil;
     /**
      * 注册账号
      * @param user 注册的信息
@@ -52,11 +55,13 @@ public class UserController {
         if (response.isSuccess()) {
             String accessToken = JwtUil.sign(username, response.getData().getUser().getId());
             session.setAttribute(Const.CURRENT_USER,response.getData().getUser());
+            //设置session不失效
+            session.setMaxInactiveInterval(-1);
             resp.setHeader("Access-Control-Allow-Origin","*");
             response.setAccessToken(accessToken);
             response.setSessionId("JSESSIONID="+session.getId());
             return response;
-            }
+        }
         return response;
     }
 

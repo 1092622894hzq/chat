@@ -65,5 +65,11 @@ public interface GroupToUserDao {
      */
     List<GroupToUser> selectByGroupId(@Param("groupId") Integer groupId);
 
-
+    /**
+     * 根据用户id和群id查询用户是否存在
+     * @param userId 用户id
+     * @param groupId 群id
+     * @return 返回次数
+     */
+    Integer checkGroupToUser(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 }

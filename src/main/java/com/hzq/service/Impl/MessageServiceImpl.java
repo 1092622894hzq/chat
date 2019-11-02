@@ -37,24 +37,18 @@ public class MessageServiceImpl implements MessageService {
     }
 
     @Override
-    public ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId) {
-        if (messageDao.queryMessageByUserIdAndFriendId(id,friendId) == null) {
-            return ServerResponse.createByErrorMessage("没有查询到聊天记录");
-        }
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public void updateOneMessage(Integer id) {
-        if (messageDao.updateOneMessage(id,Const.MARK_AS_READ) == 0) {
-           System.out.println("更新消息状态失败");
-        }
-    }
-
-    @Override
-    public void update(Integer bigId, Integer smallId, Integer userId) {
-        if (messageDao.update(bigId,smallId,Const.MARK_AS_READ,userId) == 0) {
-            System.out.println("更新消息状态失败");
+    public void update(List<SendMessage> messageList) {
+        if (messageList.size() == 1) {
+            if (messageDao.updateOneMessage(messageList.get(0).getId(),Const.MARK_AS_READ) == 0) {
+                System.out.println("更新消息状态失败");
+            }
+        } else {
+            Integer bigId = messageList.get(messageList.size()-1).getId();
+            Integer smallId = messageList.get(0).getId();
+            Integer id = messageList.get(0).getToIdOrGroupId();
+            if (messageDao.update(bigId,smallId,Const.MARK_AS_READ,id) == 0) {
+                System.out.println("更新消息状态失败");
+            }
         }
     }
 
@@ -70,6 +64,14 @@ public class MessageServiceImpl implements MessageService {
         return ServerResponse.createBySuccess();
     }
 
+    @Override
+    public ServerResponse<List<SendMessage>> queryMessageByUserIdAndFriendId(Integer id, Integer friendId) {
+        List<SendMessage> list = messageDao.queryMessageByUserIdAndFriendId(id,friendId);
+        if (list == null) {
+            return ServerResponse.createByErrorMessage("没有查询到聊天记录");
+        }
+        return ServerResponse.createBySuccess(list);
+    }
 
     @Override
     public ServerResponse<List<SendMessage>> selectUnReadSendMessage(Integer userId) {

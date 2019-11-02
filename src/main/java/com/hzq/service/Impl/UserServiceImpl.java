@@ -42,10 +42,6 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private GroupService groupService;
     @Autowired
-    private MessageService messageService;
-    @Autowired
-    private GroupMessageContentService groupMessageContentService;
-    @Autowired
     private RedisUtil redisUtil;
 
     @Override
@@ -120,6 +116,35 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ServerResponse<User> selectByUsername(String username) {
+        User user = userDao.selectByUsername(username);
+        if (user == null) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
+        }
+        return ServerResponse.createBySuccess(user);
+    }
+
+    @Override
+    public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
+        User user = userDao.selectById(id);
+        newPassword = MD5Util.generate(newPassword);
+        boolean isTrue = MD5Util.verify(oldPassword,user.getPassword());
+        boolean b = userDao.updatePassword(newPassword,id) > 0;
+        if (isTrue && b) {
+            return ServerResponse.createBySuccess();
+        }
+        throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更改密码时，原密码错误");
+    }
+
+    @Override
+    public ServerResponse<String> updateStatus(Integer status, Integer id) {
+        if (userDao.updateStatus(status,id) == 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户登录状态失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
     public ServerResponse<String> refreshToken(String username, Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         if (user == null || !user.getId().equals(id)) {
@@ -135,37 +160,6 @@ public class UserServiceImpl implements UserService {
         return ServerResponse.createByErrorMessage("刷新token失败");
     }
 
-    @Override
-    public ServerResponse<User> selectByUsername(String username) {
-        User user = userDao.selectByUsername(username);
-        if (user == null) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
-        }
-        return ServerResponse.createBySuccess(user);
-    }
-
-    @Override
-    public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
-        User user = userDao.selectById(id);
-        newPassword = MD5Util.generate(newPassword);
-        System.out.println("旧密码为："+oldPassword);
-        boolean isTrue = MD5Util.verify(oldPassword,user.getPassword());
-        System.out.println("密码是否正确："+isTrue);
-        boolean b = userDao.updatePassword(newPassword,id) > 0;
-        System.out.println("更新密码成功："+b);
-        if (isTrue && b) {
-            return ServerResponse.createBySuccess();
-        }
-        throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更改密码时发生错误,很可能密码错误");
-    }
-
-    @Override
-    public ServerResponse<String> updateStatus(Integer status, Integer id) {
-        if (userDao.updateStatus(status,id) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户登录状态失败");
-        }
-        return ServerResponse.createBySuccess();
-    }
 
     @Override
     public ServerResponse<String> deleteUserById(Integer id) {
@@ -193,12 +187,6 @@ public class UserServiceImpl implements UserService {
         result.setGroups(groups);
         List<ApplyVo> applies = applyService.selectAll(user.getId()).getData();
         result.setApplies(applies);
-        if (redisUtil.exists(user.getId().toString())) {
-            CommonResult commonResult = JsonUtil.getObjFromJson((String) redisUtil.get(user.getId().toString()),CommonResult.class);
-            result.setCommonResult(commonResult);
-            //把消息从redis中删除
-            redisUtil.remove(user.getId().toString());
-        }
         return result;
     }
 

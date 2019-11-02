@@ -11,6 +11,7 @@ import org.springframework.stereotype.Component;
  */
 @Component
 public class CustomGenericException extends RuntimeException  {
+
     //异常数字
     private Integer errCode;
     //异常信息

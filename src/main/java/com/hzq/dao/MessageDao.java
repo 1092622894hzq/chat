@@ -22,15 +22,6 @@ public interface MessageDao {
      * @return 返回修改次数
      */
     int insert(@Param("msg") SendMessage msg, @Param("messageStatus") Integer messageStatus, @Param("userId") Integer userId);
-
-    /**
-     * 根据用户id和好友id查询聊天记录
-     * @param userId  用户主表id
-     * @param friendId 好友主表id
-     * @return 返回聊天记录集合
-     */
-    List<Message> queryMessageByUserIdAndFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
-
     /**
      * 更新一条消息状态
      * @param id 消息id
@@ -59,6 +50,15 @@ public interface MessageDao {
      * @param friendId 好友id
      */
     void deleteMessageByUserIdAndFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+
+
+    /**
+     * 根据用户id和好友id查询聊天记录
+     * @param userId  用户主表id
+     * @param friendId 好友主表id
+     * @return 返回聊天记录集合
+     */
+    List<SendMessage> queryMessageByUserIdAndFriendId(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 
 
     /**

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 /**
  * @Auther: blue
  * @Date: 2019/10/6
- * @Description: com.hzq.controller
+ * @Description: 群用户
  * @version: 1.0
  */
 @RestController
@@ -21,6 +21,7 @@ public class GroupToUserController {
 
     /**
      * 添加用户进入群聊
+     * 必须参数 userId, groupId, groupNickname
      * @param groupToUser 用户在群聊中显示的相关信息
      * @return 返回通用结果
      */

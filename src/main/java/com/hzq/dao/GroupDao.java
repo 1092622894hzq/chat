@@ -48,5 +48,4 @@ public interface GroupDao {
      */
     Group selectGroup(@Param("id") Integer id);
 
-
 }

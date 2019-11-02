@@ -17,7 +17,6 @@ public class Result {
     private List<FriendVo> friends;
     private List<Group> groups;
     private List<ApplyVo> applies;
-    private CommonResult commonResult;
 
     public User getUser() {
         return user;
@@ -57,13 +56,5 @@ public class Result {
 
     public void setApplies(List<ApplyVo> applies) {
         this.applies = applies;
-    }
-
-    public CommonResult getCommonResult() {
-        return commonResult;
-    }
-
-    public void setCommonResult(CommonResult commonResult) {
-        this.commonResult = commonResult;
     }
 }

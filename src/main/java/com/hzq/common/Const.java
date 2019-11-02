@@ -60,6 +60,10 @@ public class Const {
     表示当前用户id
      */
     public static final String CURRENT_CONNECT_ID = "uid";
+    /*
+    最大临时存储未读消息数
+     */
+    public static final Integer MAX_SIZE = 200;
 
     //用户表的常量
     /*
@@ -104,6 +108,10 @@ public class Const {
     表示消息为图片
      */
     public static final Integer PICTURE = 2;
+    /*
+    表示心跳消息
+     */
+    public static final Integer HEART = -1;
     /*
     表示私聊
      */

@@ -100,7 +100,7 @@ public class ServerResponse<T> implements Serializable {
 
 
     public static <T> ServerResponse<T> createByErrorMessage(String errorMessage){
-        return new ServerResponse<>(ResponseCodeEnum.ERROR.getCode(),errorMessage);
+        return new ServerResponse<>(ResponseCodeEnum.USER_ERROR.getCode(),errorMessage);
     }
 
     public static <T> ServerResponse<T> createByErrorCodeMessage(Integer errorCode,String errorMessage){

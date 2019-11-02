@@ -11,7 +11,6 @@ import com.hzq.service.*;
 import com.hzq.utils.JsonUtil;
 import com.hzq.utils.RedisUtil;
 import com.hzq.vo.ApplyVo;
-import com.hzq.vo.CommonResult;
 import com.hzq.vo.FriendVo;
 import com.hzq.vo.SendMessage;
 import org.slf4j.Logger;
@@ -21,11 +20,8 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.AbstractWebSocketHandler;
 import java.io.IOException;
-import java.nio.ByteBuffer;
 import java.sql.Timestamp;
-import java.util.Arrays;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.ConcurrentHashMap;
 
 /**
@@ -54,6 +50,9 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     @Autowired
     private UserService userService;
 
+    private static boolean flag = true;
+    private static boolean remove = true;
+    private static Thread thread;
     //日志打印
     private static Logger LOGGER;
     //存储用户的连接
@@ -66,137 +65,117 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
 
     @Override
     public void afterConnectionEstablished(WebSocketSession webSocketSession){
-        int uid = (Integer) webSocketSession.getAttributes().get(Const.CURRENT_CONNECT_ID);
+        Integer uid = (Integer) webSocketSession.getAttributes().get(Const.CURRENT_CONNECT_ID);
         USER_SESSION_MAP.put(uid, webSocketSession);
         //处理用户在线的标志位
         userService.updateStatus(Const.ONLINE,uid);
         //处理离线消息
         //处理redis中的消息
-        Object msg = redisUtil.get(String.valueOf(uid));
-        if (msg != null) {
-            CommonResult result = JsonUtil.getObjFromJson((String) msg, CommonResult.class);
-            List<SendMessage> messageList = result.getContentList();
-            if (messageList != null && !messageList.isEmpty()) {
-                for (SendMessage m : messageList) {
-                    sendMessageToUser(uid,getTextMessage(m));
-                }
+        String pattern = "*-"+uid+"-*";
+        if (redisUtil.existsKeys(pattern)) {
+            List<SendMessage> list = redisUtil.getValues(pattern);
+            for (SendMessage m : list) {
+                sendMessageToUser(uid,getTextMessage(m));
             }
-            if (redisUtil.exists(String.valueOf(uid))) {
-                redisUtil.remove(String.valueOf(uid));
-            }
+            redisUtil.removePattern(pattern);
         }
         //1.私聊消息
         ServerResponse<List<SendMessage>> response = messageService.selectUnReadSendMessage(uid);
         if (response.isSuccess()) {
             List<SendMessage> messageList = response.getData();
-            LOGGER.debug("一共有多少条离线消息："+messageList.size());
             //发送消息
             for (SendMessage m : messageList) {
+                m.setType(Const.PRIVATE_CHAT);
                 sendMessageToUser(uid,getTextMessage(m));
             }
-            System.out.println(messageList.get(0).getId()+"---"+messageList.get(messageList.size()-1).getId());
             //更新消息状态
-            if (messageList.size() == 1) {
-                messageService.updateOneMessage(messageList.get(0).getId());
-            } else {
-                Integer bigId = messageList.get(messageList.size()-1).getId();
-                Integer smallId = messageList.get(0).getId();
-                messageService.update(bigId,smallId,uid);
+            messageService.update(messageList);
             }
-        }
-
         //2.群聊消息
 
+        //3.心跳
+        changeHear(true);
+        thread = new Thread(()->{
+            while (flag) {
+                try {
+                    Thread.sleep(7000);
+                } catch (InterruptedException e) {
+                    //System.out.println("提前结束休眠");
+                }
+                if (remove) {
+                    removeSession(webSocketSession);
+                }
+                remove = true;
+            }
+        });
+        thread.start();
     }
 
     @Override
     public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) {
-        LOGGER.debug("用户正常离开了, 因为:" + closeStatus);
-        LOGGER.debug("WebSocket in staticMap: 用户id为：" + session.getAttributes().get(Const.CURRENT_CONNECT_ID) + " 离开了");
+        //LOGGER.debug("用户正常离开了, 因为:" + closeStatus);
+        //结束心跳
+        changeHear(false);
         //移除session
         removeSession(session);
     }
 
-
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message){
-        LOGGER.debug("进入消息处理器中");
+    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception{
         if(message.getPayloadLength()==0) return ;
-        try {
-            SendMessage content =  JsonUtil.getObjFromJson(message.getPayload(), SendMessage.class);
-            content.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-            if (content.getType().equals(Const.PRIVATE_CHAT)) {
-                handlerUserMessage(content);
+        SendMessage content =  JsonUtil.getObjFromJson(message.getPayload(), SendMessage.class);
+        content.setGmtCreate(new Timestamp(System.currentTimeMillis()));
+        if (!content.getType().equals(Const.HEART)) {
+            LOGGER.debug("接收到消息"+content.toString());
+        }
+        if (content.getType().equals(Const.HEART)) {
+            //心跳消息
+            sendMessageToUser(content.getFromId(),message);
+            //LOGGER.debug("接收到pong消息");
+            endSleep();
+            return;
+        }
+        if (content.getType().equals(Const.PRIVATE_CHAT)) {
+            //私聊
+            Integer fromId = content.getFromId();
+            Integer toId = content.getToIdOrGroupId();
+            //发送给本人
+            messageService.insert(content,Const.MARK_AS_READ,fromId);
+            sendMessageToUser(fromId,getTextMessage(content));
+            //发送给好友
+            if (USER_SESSION_MAP.get(toId) == null || !USER_SESSION_MAP.get(toId).isOpen()) {
+                cacheMessage(content,toId);
             } else {
-                handlerGroupMessage(content);
+                messageService.insert(content,Const.MARK_AS_READ,toId);
+                sendMessageToUser(toId,getTextMessage(content));
             }
-            LOGGER.debug("处理消息成功");
-        } catch (Exception e) {
-            e.printStackTrace();
-            LOGGER.debug("消息格式不对");
         }
-    }
-
-    @Override
-    protected void handleBinaryMessage(WebSocketSession session, BinaryMessage message){
-        if (message.getPayloadLength() == 0) return;
-        ByteBuffer buffer = message.getPayload();
-
-    }
-
-
-
-
-    //处理群聊消息
-    private void handlerGroupMessage(SendMessage message) {
-        LOGGER.debug("群聊消息内容："+message.toString());
-        groupMessageContentService.insert(message);
-        List<GroupToUser> list = groupToUserDao.selectByGroupId(message.getToIdOrGroupId());
-        for (GroupToUser g : list) {
-            if (USER_SESSION_MAP.get(g.getUserId()) != null) {
-                sendMessageToUser(g.getUserId(),getTextMessage(message));
-                GroupToUser groupToUser = new GroupToUser();
-                groupToUser.setGroupId(message.getToIdOrGroupId());
-                groupToUser.setUserId(g.getUserId());
-                groupToUser.setGroupMessageId(message.getToIdOrGroupId()); //最新已读消息id
-                groupToUserDao.update(groupToUser);
+        if (content.getType().equals(Const.GROUP_CHAT)) {
+            //群聊
+            groupMessageContentService.insert(content);
+            List<GroupToUser> list = groupToUserDao.selectByGroupId(content.getToIdOrGroupId());
+            for (GroupToUser g : list) {
+                if (USER_SESSION_MAP.get(g.getUserId()) != null && USER_SESSION_MAP.get(g.getUserId()).isOpen()) {
+                    sendMessageToUser(g.getUserId(),getTextMessage(content));
+                    GroupToUser groupToUser = new GroupToUser();
+                    groupToUser.setGroupId(content.getToIdOrGroupId());
+                    groupToUser.setUserId(g.getUserId());
+                    groupToUser.setGroupMessageId(content.getToIdOrGroupId()); //最新已读消息id
+                    groupToUserDao.update(groupToUser);
+                }
             }
         }
     }
 
-    //处理私聊消息
-    private void handlerUserMessage(SendMessage message) {
-        LOGGER.debug("私聊消息的内容 :"+message.toString());
-        Integer fromId = message.getFromId();
-        Integer toId = message.getToIdOrGroupId();
-        messageService.insert(message,Const.MARK_AS_READ,fromId);
-        LOGGER.debug("开始发送给自己");
-        sendMessageToUser(fromId,getTextMessage(message));  //返回主键
-        LOGGER.debug("开始发送别人");
-        if (USER_SESSION_MAP.get(toId) == null) {
-            messageService.insert(message,Const.MARK_AS_UNREAD,toId);
-        } else {
-            messageService.insert(message,Const.MARK_AS_READ,toId);
-            sendMessageToUser(toId,getTextMessage(message));
-        }
-        LOGGER.debug("发送成功");
-    }
-
-    //转换消息
-    private TextMessage getTextMessage(SendMessage message) {
-        return new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message));
-    }
-
-    //发送普通文本信息，私发
-    private void sendMessageToUser(Integer uid, TextMessage message){
+    //私发
+    private void sendMessageToUser(Integer uid, TextMessage message) {
         WebSocketSession session = USER_SESSION_MAP.get(uid);
         try {
-            if (session != null && session.isOpen())
+            if (session != null && session.isOpen()) {
                 session.sendMessage(message);
+            }
         } catch (IOException e) {
             e.printStackTrace();
-            LOGGER.debug("发送消息失败");
-
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"发送消息出错");
         }
     }
@@ -209,7 +188,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         SendMessage message = new SendMessage(Const.APPLY,JsonUtil.toJson(applyVo));
         //在线就发送消息，不在线就存入redis中
         if (USER_SESSION_MAP.get(toId) == null) {
-            redisUtil.appendObj(toId.toString(),message);
+            cacheMessage(message,toId);
         } else {
             sendMessageToUser(toId,getTextMessage(message));
         }
@@ -238,27 +217,24 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         message.setAvatar(friend.getAvatar());
         message.setName(friend.getFriendName());
         if (USER_SESSION_MAP.get(friendId) == null) {
-            messageService.insert(message,Const.MARK_AS_UNREAD,friendId);
+            cacheMessage(message,friendId);
         } else {
             sendMessageToUser(friendId,getTextMessage(message));
             messageService.insert(message,Const.MARK_AS_READ,friendId);
         }
     }
 
-    @Override
-    public void handleTransportError(WebSocketSession session, Throwable throwable){
-        LOGGER.debug("连接发生错误: "+throwable.getCause()+"--"+throwable.getMessage()+"---"+ Arrays.toString(throwable.getStackTrace()));
-        try {
-            if(session.isOpen()){
-                session.close();
-            }
-            LOGGER.debug("发生错误之后，成功关闭连接，并移除连接");
-        } catch (IOException e) {
-            LOGGER.debug("关闭的时候发生错误");
-            e.printStackTrace();
+    //设置每个用户限存两百条未读消息
+    private void cacheMessage(SendMessage message, Integer toId) {
+        String pattern = "*-"+toId+"-*";
+        Integer size = redisUtil.getKeySize(pattern);
+        if (size < Const.MAX_SIZE) {
+            String key = message.getId() + "-" + toId + "-" + message.getId();
+            redisUtil.set(key, JsonUtil.toJson(message));
+            messageService.insert(message, Const.MARK_AS_READ, toId);
+        } else {
+            messageService.insert(message,Const.MARK_AS_UNREAD,toId);
         }
-        //移除session
-        removeSession(session);
     }
 
     //移除session
@@ -266,15 +242,41 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         for(Map.Entry<Integer, WebSocketSession> entry : USER_SESSION_MAP.entrySet()){
             if(entry.getValue().equals(session)){
                 USER_SESSION_MAP.remove(entry.getKey(), session);
+                try {
+                    if (session.isOpen()) {
+                        session.close();
+                    }
+                } catch (IOException e) {
+                    LOGGER.debug("关闭的时候发生错误");
+                    e.printStackTrace();
+                }
                 //处理用户离线的标志位
                 userService.updateStatus(Const.OFFLINE,entry.getKey());
             }
         }
     }
 
+    //转换消息类型
+    private TextMessage getTextMessage(SendMessage message) {
+        return new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message));
+    }
+
     @Override
-    public boolean supportsPartialMessages() {
-        return false;
+    public void handleTransportError(WebSocketSession session, Throwable throwable){
+        //LOGGER.debug("连接发生错误: "+throwable.getCause()+"--"+throwable.getMessage()+"---"+ Arrays.toString(throwable.getStackTrace()));
+        //移除session
+        removeSession(session);
+    }
+
+    //设置心跳结束的默认值--false 设置心跳开始的默认值--true
+    private void changeHear(boolean isTrue) {
+        flag = isTrue;
+        remove = isTrue;
+    }
+    //设置中断睡眠的默认值
+    private void endSleep() {
+        remove = false;
+        thread.interrupt();
     }
 
 }

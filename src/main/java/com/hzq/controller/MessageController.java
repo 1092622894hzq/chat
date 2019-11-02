@@ -35,14 +35,15 @@ public class MessageController {
         return messageService.deleteMessageByUserIdAndFriendId(userId,friendId);
     }
 
-    @RequestMapping(value = "query", method = RequestMethod.POST)
-    public ServerResponse<List<Message>> queryMessageByUserIdAndFriendId(@RequestParam Integer id, @RequestParam Integer friendId) {
+    @RequestMapping(value = "/query/{id}/{friendId}", method = RequestMethod.GET)
+    public ServerResponse<List<SendMessage>> queryMessageByUserIdAndFriendId(@PathVariable Integer id, @PathVariable Integer friendId) {
         return messageService.queryMessageByUserIdAndFriendId(id,friendId);
     }
 
     @RequestMapping(value = "/selectUnReadSendMessage", method = RequestMethod.GET)
     public ServerResponse<List<SendMessage>> selectUnReadSendMessage(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
+
         return messageService.selectUnReadSendMessage(user.getId());
     }
 

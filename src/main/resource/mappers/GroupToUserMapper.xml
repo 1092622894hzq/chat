@@ -28,6 +28,9 @@
         and group_id = #{groupId, jdbcType = INTEGER}
 </delete>
 
+<delete id="deleteById" parameterType="java.lang.Integer">
+        delete from group_to_user where id = #{id, jdbcType = INTEGER}
+</delete>
 
 <update id="updateById" parameterType="com.hzq.domain.GroupToUser">
         update  group_to_user
@@ -67,6 +70,10 @@
         where group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
+<select id="checkGroupToUser" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        select count(1) from group_to_user
+        where user_id = #{userId, jdbcType = INTEGER} and group_id = #{groupId, jdbcType = INTEGER}
+</select>
 
 
 

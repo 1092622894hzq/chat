@@ -47,7 +47,7 @@ public class AddToServerResponseInterceptor implements ResponseBodyAdvice<Server
     public ServerResponse beforeBodyWrite(ServerResponse serverResponse, MethodParameter methodParameter, MediaType mediaType, Class<? extends HttpMessageConverter<?>> aClass, ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse) {
         LOGGER.debug("进入返回值对象处理器中，将token和sessionId返回给安卓");
         HttpServletRequest request = ((ServletServerHttpRequest)serverHttpRequest).getServletRequest();
-        HttpServletResponse response =((ServletServerHttpResponse)serverHttpResponse).getServletResponse();
+        HttpServletResponse response = ((ServletServerHttpResponse)serverHttpResponse).getServletResponse();
         //设置允许跨域访问
         response.setHeader("Access-Control-Allow-Origin","*");
         String accessToken = request.getHeader(Const.ACCESS_TOKEN);

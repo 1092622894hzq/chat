@@ -23,8 +23,12 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     @Autowired
     private GroupToUserDao groupToUserDao;
 
+
     @Override
     public ServerResponse<String> insert(GroupToUser groupToUser) {
+        if (groupToUserDao.checkGroupToUser(groupToUser.getUserId(),groupToUser.getGroupId()) > 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户已经加入群聊");
+        }
         if (groupToUserDao.insert(groupToUser) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"在群聊内添加用户失败");
         }
@@ -32,18 +36,14 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     }
 
     @Override
-    public ServerResponse<String> delete(Integer groupUserId, Integer groupId) {
-        if (groupToUserDao.delete(groupUserId,groupId) == 0) {
-            return ServerResponse.createByErrorMessage("从群聊中删除用户失败");
-        }
+    public ServerResponse<String> delete(Integer userId, Integer groupId) {
+        groupToUserDao.delete(userId,groupId);
         return ServerResponse.createBySuccess();
     }
 
     @Override
     public ServerResponse<String> deleteById(Integer id) {
-        if (groupToUserDao.deleteById(id) == 0) {
-            return ServerResponse.createByErrorMessage("从群里删除用户失败");
-        }
+        groupToUserDao.deleteById(id);
         return ServerResponse.createBySuccess();
     }
 

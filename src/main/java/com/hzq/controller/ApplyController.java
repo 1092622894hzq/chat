@@ -36,7 +36,7 @@ public class ApplyController {
     }
 
     /**
-     * 根据申请人id删除特点申请
+     * 根据申请人id删除申请
      * @param fromId 申请人id
      * @param toId 被申请人id
      * @return 返回通用对象

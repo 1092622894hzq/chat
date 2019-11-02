@@ -3,11 +3,11 @@ package com.hzq.enums;
 public enum FileTypeEnum {
 
     /*
-JPEG (jpg)，文件头：FFD8FF
-PNG (png)，文件头：89504E47
-GIF (gif)，文件头：47494638
-TIFF (tif)，文件头：49492A00
-Windows Bitmap (bmp)，文件头：424D
+    JPEG (jpg)，文件头：FFD8FF
+    PNG (png)，文件头：89504E47
+    GIF (gif)，文件头：47494638
+    TIFF (tif)，文件头：49492A00
+    Windows Bitmap (bmp)，文件头：424D
      */
 
     /**

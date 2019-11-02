@@ -5,7 +5,6 @@ import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.UserInfo;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.service.FriendService;
 import com.hzq.service.UserInfoService;
 import com.hzq.utils.RandomUtil;
 import com.hzq.utils.SendEmailUtil;
@@ -53,7 +52,7 @@ public class UserInfoServiceImpl implements UserInfoService {
     public ServerResponse<UserInfo> queryUserByName(String username) {
         UserInfo userInfo = userInfoDao.queryUserByName(username);
         if (userInfo == null) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"用户不存在");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
         }
         return ServerResponse.createBySuccess(userInfo);
     }

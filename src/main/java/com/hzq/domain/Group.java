@@ -10,14 +10,34 @@ import java.sql.Timestamp;
  * @version: 1.0
  */
 public class Group implements Serializable {
+    /*
+    群id
+     */
     private Integer id;
+    /*
+    群名字
+     */
     private String groupName;
+    /*
+    群主id
+     */
     private Integer groupAdminId;
+    /*
+    群头像
+     */
     private String groupIcon;
+    /*
+    群通知
+     */
     private String groupNotice;
+    /*
+    群公告
+     */
     private String groupIntroduction;
+    /*
+    群创建时间
+     */
     private Timestamp gmtCreate;
-    private Timestamp gmtModified;
 
     public Integer getId() {
         return id;
@@ -75,13 +95,6 @@ public class Group implements Serializable {
         this.gmtCreate = gmtCreate;
     }
 
-    public Timestamp getGmtModified() {
-        return gmtModified;
-    }
-
-    public void setGmtModified(Timestamp gmtModified) {
-        this.gmtModified = gmtModified;
-    }
 }
 
 

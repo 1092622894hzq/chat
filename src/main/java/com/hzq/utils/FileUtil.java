@@ -85,6 +85,49 @@ public class FileUtil {
     }
 
     /**
+     * 将对象序列化
+     * @param object 对象
+     * @return 返回字节流
+     */
+    public static <T> byte[] serialize(T object) {
+        ObjectOutputStream oos = null;
+        ByteArrayOutputStream baos = null;
+        try {
+            baos = new ByteArrayOutputStream();
+            oos = new ObjectOutputStream(baos);
+            oos.writeObject(object);
+            return baos.toByteArray();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } finally {
+          close(baos,oos);
+        }
+        return null;
+    }
+
+    /**
+     * 反序列化
+     * @param bytes 字节流
+     * @return 对象
+     */
+    @SuppressWarnings("unchecked")
+    public static <T> T unserialize(byte[] bytes) {
+        ByteArrayInputStream bais = null;
+        ObjectInputStream ois = null;
+        try {
+            bais = new ByteArrayInputStream(bytes);
+            ois = new ObjectInputStream(bais);
+            return (T)ois.readObject();
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            close(bais,ois);
+        }
+        return null;
+    }
+
+
+    /**
      * 关闭流
      * @param ios 要关闭的流
      */

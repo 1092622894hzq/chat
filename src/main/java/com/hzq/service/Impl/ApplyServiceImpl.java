@@ -43,10 +43,10 @@ public class ApplyServiceImpl implements ApplyService {
         //2.用户删除了好友，好友又添加用户
         //3.用户第一次添加好友，用户未处理，又发起好友申请
         if(friendDao.checkFriend(apply.getFromId(),apply.getToId()) > 0) {  //只要查出用户不是它的朋友即可
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "已经是好友");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(), "已经是好友");
         }
         if (applyDao.checkApply(apply.getFromId(),apply.getToId(),Const.APPLY_REFUSE) > 0) { //查出好友尚未处理申请
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "请耐心等待，对方还没处理申请");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(), "请耐心等待，对方还没处理申请");
         }
         if (applyDao.insert(apply) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(), "添加申请失败");
@@ -94,7 +94,6 @@ public class ApplyServiceImpl implements ApplyService {
             friendService.insertFriendBySelect(apply.getToId(),apply.getFromId());
         }
         return friendService.selectFriendByFriendId(apply.getToId(),apply.getFromId());
-
     }
 
     @Override

@@ -99,7 +99,7 @@ public class FileHandlerController {
             FileTypeEnum fileTypeEnum = Objects.requireNonNull(FileUtil.getFileType(icon.getInputStream()));
             LOGGER.debug(fileTypeEnum.getExt());
             if (!FileUtil.isPhoto(fileTypeEnum)) {
-                throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
+                throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"不是图片类型");
             }
             File f = new File(Const.FILE_PATH +"//"+id);
             if (!f.exists()) {
@@ -167,7 +167,7 @@ public class FileHandlerController {
         } catch (Exception e) {
             e.printStackTrace();
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"上传文件失败");
-    }
+        }
     }
 
 }
