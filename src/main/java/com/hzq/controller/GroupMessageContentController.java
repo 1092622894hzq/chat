@@ -1,15 +1,11 @@
 package com.hzq.controller;
 
-import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.GroupMessageContent;
 import com.hzq.service.GroupMessageContentService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

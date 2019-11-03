@@ -1,20 +1,15 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.Friend;
 import com.hzq.domain.User;
 import com.hzq.service.FriendService;
-import com.hzq.utils.JwtUil;
 import com.hzq.vo.FriendVo;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.text.SimpleDateFormat;
-import java.util.Date;
 import java.util.List;
 
 /**

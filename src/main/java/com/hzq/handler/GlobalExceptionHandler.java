@@ -1,6 +1,6 @@
 package com.hzq.handler;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import org.slf4j.Logger;

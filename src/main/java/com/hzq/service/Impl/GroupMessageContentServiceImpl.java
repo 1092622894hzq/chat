@@ -1,16 +1,18 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.service.GroupToUserService;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupMessageContentDao;
 import com.hzq.dao.GroupToUserDao;
 import com.hzq.domain.GroupMessageContent;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupMessageContentService;
-import com.hzq.service.UserService;
 import com.hzq.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,9 +28,7 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     @Autowired
     private GroupMessageContentDao messageContentDao;
     @Autowired
-    private UserService userService;
-    @Autowired
-    private GroupToUserDao groupToUserDao;
+    private GroupToUserService groupToUserService;
 
     @Override
     public ServerResponse<String> insert(SendMessage message) {
@@ -66,23 +66,45 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     }
 
     @Override
-    public ServerResponse<Map<Integer,List<GroupMessageContent>>> selectAllUnread(Integer userId) {
-        List<GroupMessageContent> messageContents = messageContentDao.selectAllUnread(userId);
+    public ServerResponse<List<SendMessage>> selectAllUnread(Integer userId) {
+        List<SendMessage> messageContents = messageContentDao.selectAllUnread(userId);
         if (messageContents == null) {
             return ServerResponse.createBySuccessMessage("查询不到未读消息");
         }
-        Map<Integer,List<GroupMessageContent>> map = userService.MessageSubgroup(messageContents,new GroupMessageContent());
-        //更新时间
-        for (Integer key : map.keySet()) {
-            //最新的未读的消息的id
-            Integer messageId = map.get(key).get(map.get(key).size()-1).getId();
-            Integer groupId = map.get(key).get(map.get(key).size()-1).getGroupId();
-            GroupToUser groupToUser = new GroupToUser();
-            groupToUser.setUserId(userId);
-            groupToUser.setGroupId(groupId);
-            groupToUser.setGroupMessageId(messageId);
-            groupToUserDao.update(groupToUser);
+        return ServerResponse.createBySuccess(messageContents);
+}
+
+    @Override
+    public ServerResponse<String> update(List<SendMessage> messageContents, Integer userId) {
+        Map<Integer,List<SendMessage>> map = MessageSubgroup(messageContents);
+        if (map != null) {
+            for (Integer key : map.keySet()) {
+                //最新的未读的消息的id
+                Integer messageId = map.get(key).get(map.get(key).size()-1).getId();
+                Integer groupId = map.get(key).get(map.get(key).size()-1).getToIdOrGroupId();
+                GroupToUser groupToUser = new GroupToUser();
+                groupToUser.setUserId(userId);
+                groupToUser.setGroupId(groupId);
+                groupToUser.setGroupMessageId(messageId);
+                groupToUserService.update(groupToUser);
+            }
         }
-        return ServerResponse.createBySuccess(map);
+        return ServerResponse.createBySuccess();
+    }
+    private Map<Integer,List<SendMessage>> MessageSubgroup(List<SendMessage> messages) {
+        if (messages == null) return null;
+        List<SendMessage> listContent;
+        Map<Integer,List<SendMessage>> map = new HashMap<>();
+        for (SendMessage message : messages) {
+            Integer key = message.getToIdOrGroupId();
+            if (map.get(key) != null) {
+                map.get(key).add(message);
+            } else {
+                listContent = new ArrayList<>();
+                listContent.add(message);
+                map.put(key,listContent);
+            }
+        }
+        return map;
     }
 }

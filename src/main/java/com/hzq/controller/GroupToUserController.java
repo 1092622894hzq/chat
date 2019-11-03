@@ -1,6 +1,7 @@
 package com.hzq.controller;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.GroupUserVo;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupToUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,12 +54,12 @@ public class GroupToUserController {
 
     /**
      * 根据该表的id来进行更新信息
-     * @param groupToUser 要更新的信息，该表的id不能为空
+     * @param groupToUser 要更新的信息，
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ServerResponse<String> update(@RequestBody GroupToUser groupToUser) {
-        return groupToUserService.updateById(groupToUser);
+        return groupToUserService.update(groupToUser);
     }
 
     /**
@@ -68,7 +69,7 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/select/{userId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<GroupToUser> selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
+    public ServerResponse<GroupUserVo> selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
         return groupToUserService.selectGroupToUser(userId,groupId);
     }
 }

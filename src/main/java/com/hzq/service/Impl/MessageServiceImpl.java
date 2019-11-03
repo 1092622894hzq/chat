@@ -1,20 +1,14 @@
 package com.hzq.service.Impl;
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.MessageDao;
-import com.hzq.domain.Message;
-import com.hzq.enums.ResponseCodeEnum;
-import com.hzq.execption.CustomGenericException;
 import com.hzq.service.MessageService;
-import com.hzq.service.UserService;
 import com.hzq.vo.SendMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.io.Serializable;
 import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue

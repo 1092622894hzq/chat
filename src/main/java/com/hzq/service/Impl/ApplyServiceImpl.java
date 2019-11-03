@@ -2,7 +2,7 @@ package com.hzq.service.Impl;
 
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.ApplyDao;
 import com.hzq.dao.FriendDao;
 import com.hzq.domain.*;

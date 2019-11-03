@@ -4,7 +4,7 @@ import com.hzq.common.Const;
 import com.hzq.enums.FileTypeEnum;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.Group;
 import com.hzq.domain.User;
 import com.hzq.domain.UserInfo;

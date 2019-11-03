@@ -1,6 +1,6 @@
 package com.hzq.service;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.GroupMessageContent;
 import com.hzq.vo.SendMessage;
 
@@ -47,8 +47,15 @@ public interface GroupMessageContentService {
     /**
      * 获取所有群未读的群聊消息
      * @param userId 用户id
-     * @return 返回群聊消息的map通用对象
+     * @return 返回群聊消息的通用对象
      */
-    ServerResponse<Map<Integer,List<GroupMessageContent>>> selectAllUnread(Integer userId);
+    ServerResponse<List<SendMessage>> selectAllUnread(Integer userId);
 
+    /**
+     * 根据未读消息，更新未读记录
+     * @param messageContents 未读消息
+     * @param userId 用户userId
+     * @return 返回通用对象
+     */
+    ServerResponse<String> update(List<SendMessage> messageContents, Integer userId);
 }

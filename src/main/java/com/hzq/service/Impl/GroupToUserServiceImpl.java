@@ -1,6 +1,7 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.GroupUserVo;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupToUserDao;
 import com.hzq.domain.GroupToUser;
 import com.hzq.enums.ResponseCodeEnum;
@@ -48,20 +49,28 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     }
 
     @Override
-    public ServerResponse<String> updateById(GroupToUser groupToUser) {
-        if(groupToUserDao.updateById(groupToUser) == 0) {
+    public ServerResponse<String> updateById(Integer id, Integer groupMessageId) {
+        if(groupToUserDao.updateById(id,groupMessageId) == 0) {
             return ServerResponse.createByErrorMessage("更新用户在群内信息失败");
         }
         return ServerResponse.createBySuccess();
     }
 
     @Override
-    public ServerResponse<GroupToUser> selectGroupToUser(Integer userId, Integer groupId) {
-        GroupToUser groupToUser = groupToUserDao.selectGroupToUser(userId,groupId);
-        if(groupToUser == null) {
+    public ServerResponse<String> update(GroupToUser groupToUser) {
+        if(groupToUserDao.update(groupToUser) == 0) {
+            return ServerResponse.createByErrorMessage("更新用户在群内信息失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<GroupUserVo> selectGroupToUser(Integer userId, Integer groupId) {
+        GroupUserVo groupUserVo = groupToUserDao.selectGroupToUser(userId,groupId);
+        if(groupUserVo == null) {
             throw CustomGenericException.CreateException(40,"查询不到用户在内的信息");
         }
-        return ServerResponse.createBySuccess(groupToUser);
+        return ServerResponse.createBySuccess(groupUserVo);
     }
 
     @Override

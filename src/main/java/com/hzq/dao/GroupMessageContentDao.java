@@ -48,6 +48,6 @@ public interface GroupMessageContentDao {
      * @param userId 用户id
      * @return 返回群聊消息集合
      */
-    List<GroupMessageContent> selectAllUnread(@Param("userId") Integer userId);
+    List<SendMessage> selectAllUnread(@Param("userId") Integer userId);
 
 }

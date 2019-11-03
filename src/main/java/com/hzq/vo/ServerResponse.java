@@ -1,4 +1,4 @@
-package com.hzq.common;
+package com.hzq.vo;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;

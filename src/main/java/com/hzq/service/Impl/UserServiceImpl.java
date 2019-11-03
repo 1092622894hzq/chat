@@ -1,13 +1,12 @@
 package com.hzq.service.Impl;
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.*;
 import com.hzq.domain.*;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
 import com.hzq.service.*;
-import com.hzq.utils.JsonUtil;
 import com.hzq.utils.JwtUil;
 import com.hzq.utils.MD5Util;
 import com.hzq.utils.RedisUtil;
@@ -88,31 +87,6 @@ public class UserServiceImpl implements UserService {
             return ServerResponse.createByErrorMessage("输入参数错误");
         }
         return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public  <T> Map<Integer,List<T>> MessageSubgroup(List<T> messages, T t) {
-        if (messages == null) return null;
-        List<T> listContent;
-        Integer key ;
-        Map<Integer,List<T>> map = new HashMap<>();
-        for (T message : messages) {
-            if (Message.class.equals(t.getClass())) {
-                key = ((Message)message).getMessageFromId();
-            } else if (ApplyVo.class.equals(t.getClass())){
-                key = ((ApplyVo)message).getFromId();
-            } else {
-                key = ((GroupMessageContent)message).getGroupId();
-            }
-            if (map.get(key) != null) {
-                map.get(key).add(message);
-            } else {
-                listContent = new ArrayList<>();
-                listContent.add(message);
-                map.put(key, listContent);
-            }
-        }
-        return map;
     }
 
     @Override

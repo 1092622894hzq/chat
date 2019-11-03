@@ -2,6 +2,7 @@ package com.hzq.dao;
 
 
 import com.hzq.domain.GroupToUser;
+import com.hzq.vo.GroupUserVo;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -37,11 +38,12 @@ public interface GroupToUserDao {
     int deleteById(@Param("id") Integer id);
 
     /**
-     * 更新用户根据id在群聊中的信息
-     * @param groupToUser 用户在群聊中的信息
+     * 更新未读消息id
+     * @param id 表中id
+     * @param groupMessageId 未读消息id
      * @return 返回修改次数
      */
-    int updateById(GroupToUser groupToUser);
+    int updateById(@Param("id") Integer id, @Param("groupMessageId") Integer groupMessageId);
 
     /**
      * 更新用户在群聊中的信息
@@ -56,7 +58,7 @@ public interface GroupToUserDao {
      * @param groupId 群id
      * @return 返回用户在群内显示的信息
      */
-    GroupToUser selectGroupToUser(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
+    GroupUserVo selectGroupToUser(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     /**
      *  根据群id查询所有群用户

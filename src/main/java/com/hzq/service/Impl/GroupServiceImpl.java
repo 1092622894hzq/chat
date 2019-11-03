@@ -1,6 +1,6 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupDao;
 import com.hzq.domain.Group;
 import com.hzq.enums.ResponseCodeEnum;

@@ -1,6 +1,6 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.FriendDao;
 import com.hzq.dao.UserDao;
 import com.hzq.domain.Friend;
@@ -50,7 +50,7 @@ public class FriendServiceImpl implements FriendService {
         friendDao.updateForDelete(friendId,id);
         //删除之前的好友申请记录,不知道是哪个发起的申请，就两种可能都删除
         //但是存在可能，用户删除好友，有添加好友，但是那边好友发现被删除，去删除好友，但是会一起删除了新的申请信息，需要判断申请状态
-        if (applyService.checkApply(friendId,id) == 0) {
+        if (applyService.checkApply(friendId,id) > 0) {
             applyService.deleteById(id, friendId);
         }
         return ServerResponse.createBySuccess();

@@ -1,6 +1,6 @@
 package com.hzq.service.Impl;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.dao.UserInfoDao;
 import com.hzq.domain.UserInfo;
 import com.hzq.enums.ResponseCodeEnum;

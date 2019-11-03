@@ -1,8 +1,7 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
-import com.hzq.domain.Message;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.User;
 import com.hzq.service.MessageService;
 import com.hzq.vo.SendMessage;

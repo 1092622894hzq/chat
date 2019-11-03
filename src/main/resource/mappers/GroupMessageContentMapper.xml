@@ -45,10 +45,25 @@
 
 </select>
 
-<select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create
+
+    <resultMap id="SendMessageMap" type="com.hzq.vo.SendMessage">
+        <id column="id" jdbcType="INTEGER" property="id" />
+        <result column="gm_content" jdbcType="VARCHAR" property="gmContent" />
+        <result column="gm_type" jdbcType="INTEGER" property="gmType"/>
+        <result column="gm_from_id" jdbcType="INTEGER" property="gmFromId"/>
+        <result column="group_id" jdbcType="INTEGER" property="toIdOrGroupId"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="nickname" jdbcType="VARCHAR" property="name"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+    </resultMap>
+
+
+<select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="SendMessageMap">
+    select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create,ui.nickname,ui.avatar
     from group_message_content gmc left join group_to_user gtu
     on (gtu.group_id = gmc.group_id  and gmc.id > gtu.group_message_id)
+    left join user_info ui
+    on ui.user_id = gtu.user_id
     where gtu.user_id = #{userId, jdbcType = INTEGER}
 </select>
 

@@ -1,6 +1,7 @@
 package com.hzq.service;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.GroupUserVo;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.GroupToUser;
 
 import java.util.List;
@@ -36,11 +37,19 @@ public interface GroupToUserService {
     ServerResponse<String> deleteById(Integer id );
 
     /**
-     * 更新用户在群聊中显示的信息
+     * 更新用户在群聊中未读消息id 根据id
+     * @param id 表中id
+     * @param groupMessageId 未读消息id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> updateById(Integer id, Integer groupMessageId);
+
+    /**
+     * 更新用户在群聊中显示的信息 根据用户id和群id
      * @param groupToUser 用户的在群聊显示的信息
      * @return 返回通用对象
      */
-    ServerResponse<String> updateById(GroupToUser groupToUser);
+    ServerResponse<String> update(GroupToUser groupToUser);
 
     /**
      * 根据群id和用户id查找用户在群信息
@@ -48,7 +57,7 @@ public interface GroupToUserService {
      * @param groupId 群id
      * @return 返回包含用户在群信息的通用对象
      */
-    ServerResponse<GroupToUser> selectGroupToUser(Integer userId, Integer groupId);
+    ServerResponse<GroupUserVo> selectGroupToUser(Integer userId, Integer groupId);
 
     /**
      * 根据群id找出所有群用户

@@ -1,6 +1,6 @@
 package com.hzq.controller;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.SecretSecurity;
 import com.hzq.service.SecretSecurityService;
 import org.springframework.beans.factory.annotation.Autowired;

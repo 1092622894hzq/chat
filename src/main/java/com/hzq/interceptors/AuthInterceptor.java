@@ -34,7 +34,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			}
 			//验证token
 			String token = request.getHeader("accessToken");
-			//LOGGER.debug("token: "+token);
 			if (null == token || !JwtUil.verify(token)) {
 				throw  CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"用户的token无效");
 			}
@@ -43,7 +42,6 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 
 	//计算访问路径
 	private String getPath(HttpServletRequest request) {
-		//LOGGER.debug("到达权限拦截器");
 		String requestUri = request.getRequestURI();  //得到项目名开始的路径 /test/test.jsp
 		if(requestUri.startsWith(request.getContextPath())){ //项目名 /test
 			requestUri = requestUri.substring(request.getContextPath().length()); //得到 /test.jsp

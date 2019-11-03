@@ -32,16 +32,9 @@
         delete from group_to_user where id = #{id, jdbcType = INTEGER}
 </delete>
 
-<update id="updateById" parameterType="com.hzq.domain.GroupToUser">
+<update id="updateById" parameterType="java.lang.Integer">
         update  group_to_user
-        <set>
-            <if test="groupNickname != null">
-                group_nickname = #{groupNickname, jdbcType = VARCHAR},
-            </if>
-             <if test="groupMessageId != null">
-                group_message_id = #{groupMessageId, jdbcType = INTEGER},
-            </if>
-        </set>
+        set group_message_id = #{groupMessageId, jdbcType = INTEGER}
         where id = #{id, jdbcType = INTEGER}
 </update>
 
@@ -59,12 +52,6 @@
         and user_id = #{userId, jdbcType = INTEGER}
 </update>
 
-<select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-        select * from group_to_user
-        where user_id = #{userId, jdbcType = INTEGER}
-        and  group_id = #{groupId, jdbcType = INTEGER}
-</select>
-
 <select id="selectByGroupId" parameterType="java.lang.Integer" resultMap="BaseResultMap">
         select * from group_to_user
         where group_id = #{groupId, jdbcType = INTEGER}
@@ -75,8 +62,29 @@
         where user_id = #{userId, jdbcType = INTEGER} and group_id = #{groupId, jdbcType = INTEGER}
 </select>
 
+    <resultMap id="GroupUserVoMap" type="com.hzq.vo.GroupUserVo">
+        <result column="user_id" jdbcType="INTEGER" property="userId" />
+        <result column="group_id" jdbcType="INTEGER" property="groupId" />
+        <result column="group_nickname" jdbcType="VARCHAR" property="groupNickname"/>
+        <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
+        <result column="nickname" jdbcType="VARCHAR" property="nickname"/>
+        <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
+        <result column="sex" jdbcType="INTEGER" property="sex"/>
+        <result column="email" jdbcType="VARCHAR" property="email"/>
+        <result column="sign" jdbcType="VARCHAR" property="sign"/>
+        <result column="username" jdbcType="VARCHAR" property="username"/>
+    </resultMap>
 
-
+<select id="selectGroupToUser" parameterType="java.lang.Integer" resultMap="GroupUserVoMap">
+        select gtu.user_id,gtu.group_id,gtu.group_nickname,gtu.gmt_create,ui.nickname
+        ,ui.avatar,ui.sex,ui.email,ui.sign,u.username
+        from group_to_user gtu left join user_info ui
+        on ui.user_id = gtu.user_id
+        left join user u
+        on u.id = ui.user_id
+        where gtu.user_id = #{userId, jdbcType = INTEGER}
+        and  gtu.group_id = #{groupId, jdbcType = INTEGER}
+</select>
 
 </mapper>
 

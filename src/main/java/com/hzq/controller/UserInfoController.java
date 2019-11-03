@@ -1,7 +1,7 @@
 package com.hzq.controller;
 
 import com.hzq.common.Const;
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.User;
 import com.hzq.domain.UserInfo;
 import com.hzq.service.UserInfoService;

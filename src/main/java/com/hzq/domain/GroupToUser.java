@@ -92,6 +92,15 @@ public class GroupToUser implements Serializable {
     public void setGmtModified(Timestamp gmtModified) {
         this.gmtModified = gmtModified;
     }
+
+    public GroupToUser(){}
+
+    public GroupToUser(Integer userId,Integer groupId,Integer groupMessageId){
+        this.userId = userId;
+        this.groupId = groupId;
+        this.groupMessageId = groupMessageId;
+    }
+
 }
 
 

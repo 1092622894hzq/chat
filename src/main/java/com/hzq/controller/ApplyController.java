@@ -1,6 +1,6 @@
 package com.hzq.controller;
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.Apply;
 import com.hzq.service.ApplyService;
 import com.hzq.vo.ApplyVo;

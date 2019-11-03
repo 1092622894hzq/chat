@@ -1,7 +1,7 @@
 package com.hzq.service;
 
 
-import com.hzq.common.ServerResponse;
+import com.hzq.vo.ServerResponse;
 import com.hzq.domain.Group;
 
 import javax.servlet.http.HttpSession;
