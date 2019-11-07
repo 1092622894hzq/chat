@@ -1,8 +1,8 @@
 package com.hzq.service.Impl;
 
+import com.hzq.service.UserService;
 import com.hzq.vo.ServerResponse;
 import com.hzq.dao.FriendDao;
-import com.hzq.dao.UserDao;
 import com.hzq.domain.Friend;
 import com.hzq.enums.ResponseCodeEnum;
 import com.hzq.execption.CustomGenericException;
@@ -23,14 +23,15 @@ import java.util.List;
  */
 @Service("friendService")
 public class FriendServiceImpl implements FriendService {
+
+    @Autowired
+    private ApplyService applyService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private FriendDao friendDao;
     @Autowired
     private ChatWebSocketHandler chat;
-    @Autowired
-    private ApplyService applyService;
-    @Autowired
-    private UserDao userDao;
 
     @Override
     public ServerResponse<String> update(Friend friend) {
@@ -41,18 +42,35 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    public ServerResponse<String> updateAllFriend(Integer userId) {
+        if (friendDao.updateAllFriend(userId) == 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新好友被删除的标志位失败");
+        }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
     public ServerResponse<String> delete(Integer id, Integer friendId) {
         if (id.equals(friendId)) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不能删除自己");
+            return ServerResponse.createByErrorMessage("用户不能删除自己");
         }
         friendDao.delete(id,friendId);
         //更新被好友删除的标志位,可能会更新失败，但是没关系
-        friendDao.updateForDelete(friendId,id);
+        friendDao.updateForDelete(id,friendId);
         //删除之前的好友申请记录,不知道是哪个发起的申请，就两种可能都删除
         //但是存在可能，用户删除好友，有添加好友，但是那边好友发现被删除，去删除好友，但是会一起删除了新的申请信息，需要判断申请状态
         if (applyService.checkApply(friendId,id) > 0) {
             applyService.deleteById(id, friendId);
         }
+        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<String> deleteTwo(Integer userId, Integer friendId) {
+        if (userId.equals(friendId)) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不能删除自己");
+        }
+        friendDao.deleteTwo(userId,friendId);
         return ServerResponse.createBySuccess();
     }
 
@@ -84,9 +102,14 @@ public class FriendServiceImpl implements FriendService {
     }
 
     @Override
+    public int checkFriend(Integer userId, Integer friendId) {
+        return friendDao.checkFriend(userId,friendId);
+    }
+
+    @Override
     public ServerResponse<String> insertFriendBySelect(Integer userId, Integer friendId) {
         //判断用户是否存在
-        if (userDao.checkUserId(userId) == 0) {
+        if (userService.checkUserId(userId) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"所要添加的用户不存在");
         }
         //判断是否为好友

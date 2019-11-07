@@ -5,8 +5,6 @@ import com.hzq.vo.Result;
 import com.hzq.domain.User;
 
 import javax.servlet.http.HttpSession;
-import java.util.List;
-import java.util.Map;
 
 /**
  * @Auther: blue
@@ -56,6 +54,13 @@ public interface UserService {
     ServerResponse<User> selectByUsername(String username);
 
     /**
+     * 根据用户id查询用户
+     * @param id 用户id
+     * @return 返回用户对象
+     */
+    ServerResponse<User> selectById(Integer id);
+
+    /**
      * 更新用户密码
      * @param newPassword 新密码
      * @param oldPassword 旧密码
@@ -78,6 +83,13 @@ public interface UserService {
      * @return 返回通用对象
      */
     ServerResponse<String> deleteUserById(Integer id);
+
+    /**
+     * 根据用户id查询用户是否存在
+     * @param id 用户id
+     * @return 返回查询到的数据条数
+     */
+    int checkUserId(Integer id);
 }
 
 

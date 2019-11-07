@@ -26,17 +26,22 @@ public interface FriendDao {
      * 更新被好友删除的标志位
      * @param userId 用户id
      * @param friendId 好友id
+     */
+    void updateForDelete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+
+    /**
+     * 更新所有好友为删除状态
+     * @param userId 用户id
      * @return 返回修改次数
      */
-    int updateForDelete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+    int updateAllFriend(@Param("userId") Integer userId);
 
     /**
      * 根据用户id和好友昵称删除好友
      * @param userId 用户主表id
      * @param friendId 好友id
-     * @return 返回修改次数
      */
-    int delete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
+    void delete(@Param("userId") Integer userId, @Param("friendId") Integer friendId);
 
     /**
      * 同时删除用户和好友在好友表的关系

@@ -22,12 +22,26 @@ public interface FriendService {
     ServerResponse<String> update(Friend friend);
 
     /**
+     * 更新所有好友被删除的标志位
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
+    ServerResponse<String> updateAllFriend(Integer userId);
+
+    /**
      * 删除好友
      * @param userId 用户id
      * @param friendId 好友id
      * @return 返回通用对象
      */
     ServerResponse<String> delete(Integer userId, Integer friendId);
+
+    /**
+     * 同时删除用户和好友在好友表的关系
+     * @param userId 用户id
+     * @param friendId 好友id
+     */
+    ServerResponse<String> deleteTwo(Integer userId, Integer friendId);
 
     /**
      * 根据用户id和准好友id来查询好友信息，并完成好友的插入
@@ -59,5 +73,13 @@ public interface FriendService {
      * @return 返回对象信息
      */
     ServerResponse<FriendVo> selectFriendByFriendId(Integer userId, Integer friendId);
+
+    /**
+     * 根据用户id和好友id查询好友
+     * @param userId 用户id
+     * @param friendId 好友id
+     * @return 返回次数
+     */
+    int checkFriend(Integer userId, Integer friendId);
 
 }

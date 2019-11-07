@@ -122,7 +122,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     }
 
     @Override
-    protected void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
+    protected  void handleTextMessage(WebSocketSession session, TextMessage message) throws Exception {
         if (message.getPayloadLength() == 0) return;
         SendMessage content = JsonUtil.getObjFromJson(message.getPayload(), SendMessage.class);
         content.setGmtCreate(new Timestamp(System.currentTimeMillis()));
@@ -132,10 +132,9 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         //心跳消息
         if (content.getType().equals(Const.HEART)) {
             sendMessageToUser(content.getFromId(), message);
-            HEART_MAP.get(session).setRemove(false);
-            THREAD_MAP.get(session).interrupt();
-            return;
         }
+        HEART_MAP.get(session).setRemove(false);
+        THREAD_MAP.get(session).interrupt();
         //私聊
         if (content.getType().equals(Const.PRIVATE_CHAT)) {
             Integer fromId = content.getFromId();
@@ -158,7 +157,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
             for (GroupToUser g : list) {
                 if (USER_SESSION_MAP.get(g.getUserId()) != null ) {
                     sendMessageToUser(g.getUserId(),getTextMessage(content));
-                    GroupToUser groupToUser = new GroupToUser(g.getUserId(),content.getToIdOrGroupId(),content.getToIdOrGroupId());
+                    GroupToUser groupToUser = new GroupToUser(g.getUserId(),content.getToIdOrGroupId(),content.getId());
                     groupToUserService.update(groupToUser);
                 } else {
                     cacheMessage(content,g.getUserId());
@@ -246,7 +245,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         }
         if (size < Const.MAX_SIZE && message.getType().equals(Const.GROUP_CHAT)) {
             redisUtil.set(key, JsonUtil.toJson(message));
-            GroupToUser groupToUser = new GroupToUser(toId,message.getToIdOrGroupId(),message.getToIdOrGroupId());
+            GroupToUser groupToUser = new GroupToUser(toId,message.getToIdOrGroupId(),message.getId());
             groupToUserService.update(groupToUser);
         }
     }
@@ -271,7 +270,8 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
 
     //转换消息类型
     private TextMessage getTextMessage(SendMessage message) {
-        return new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message));
+        return new TextMessage(JsonUtil.toJson(message));
+        //return new TextMessage(new GsonBuilder().setDateFormat(Const.TIME_FORMAT).create().toJson(message));
     }
 
     @Override

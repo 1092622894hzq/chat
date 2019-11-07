@@ -54,11 +54,6 @@
 
     <!-- 配置拦截器  -->
     <mvc:interceptors>
-        <!-- 用户是否已登录拦截器 -->
-        <mvc:interceptor>
-            <mvc:mapping path="/user/login"/>
-            <bean class="com.hzq.interceptors.LoginInterceptor" />
-        </mvc:interceptor>
         <!-- 用户权限拦截器 -->
         <mvc:interceptor>
             <mvc:mapping path="/**" />

@@ -1,7 +1,6 @@
 package com.hzq.utils;
 
 import com.alibaba.fastjson.JSON;
-import com.google.gson.Gson;
 
 import java.lang.reflect.Type;
 

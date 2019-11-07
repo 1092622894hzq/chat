@@ -95,6 +95,14 @@ public class Group implements Serializable {
         this.gmtCreate = gmtCreate;
     }
 
+    public Group(){
+    }
+
+    public Group(Integer id,Integer groupAdminId){
+        this.id = id;
+        this.groupAdminId = groupAdminId;
+    }
+
 }
 
 

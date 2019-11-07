@@ -16,13 +16,13 @@
         id,gm_content,gm_type,gm_from_id,group_id,gmt_create
     </sql>
 
-<insert id="insert" parameterType="com.hzq.vo.SendMessage">
+<insert id="insert" parameterType="com.hzq.vo.SendMessage" useGeneratedKeys="true" keyProperty="msg.id">
     insert into group_message_content (
         gm_content, gm_type, gm_from_id, group_id
     )
     values (
-        #{message, jdbcType = VARCHAR}, #{messageType, jdbcType = INTEGER}, #{fromId, jdbcType = INTEGER},
-        #{toIdOrGroupId, jdbcType = INTEGER}
+        #{msg.message, jdbcType = VARCHAR}, #{msg.messageType, jdbcType = INTEGER}, #{msg.fromId, jdbcType = INTEGER},
+        #{msg.toIdOrGroupId, jdbcType = INTEGER}
     )
 </insert>
 
@@ -48,15 +48,14 @@
 
     <resultMap id="SendMessageMap" type="com.hzq.vo.SendMessage">
         <id column="id" jdbcType="INTEGER" property="id" />
-        <result column="gm_content" jdbcType="VARCHAR" property="gmContent" />
-        <result column="gm_type" jdbcType="INTEGER" property="gmType"/>
-        <result column="gm_from_id" jdbcType="INTEGER" property="gmFromId"/>
+        <result column="gm_content" jdbcType="VARCHAR" property="message" />
+        <result column="gm_type" jdbcType="INTEGER" property="messageType"/>
+        <result column="gm_from_id" jdbcType="INTEGER" property="fromId"/>
         <result column="group_id" jdbcType="INTEGER" property="toIdOrGroupId"/>
         <result column="gmt_create" jdbcType="TIMESTAMP" property="gmtCreate"/>
         <result column="nickname" jdbcType="VARCHAR" property="name"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
-
 
 <select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="SendMessageMap">
     select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create,ui.nickname,ui.avatar

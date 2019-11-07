@@ -19,14 +19,6 @@ public interface UserInfoDao {
     int insert(UserInfo userInfo);
 
     /**
-     * 根据用户id删除用户个人信息
-     * where的条件：用户主表的id
-     * @param userId 用户id
-     * @return 返回修改次数
-     */
-    int deleteUserInfoByPrimaryId(@Param("userId") Integer userId);
-
-    /**
      * 修改用户个人信息
      * where的条件：用户主表的id
      * @param userInfo 修改的个人信息
@@ -53,7 +45,7 @@ public interface UserInfoDao {
      * @param email 邮箱
      * @return 返回查询到的条数
      */
-    int checkEmail(@Param("com/hzq/email") String email);
+    int checkEmail(@Param("email") String email);
 
     /**
      * 根据用户id获取用户邮箱

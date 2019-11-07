@@ -1,5 +1,7 @@
 package com.hzq.service.Impl;
 
+import com.hzq.domain.Group;
+import com.hzq.service.GroupService;
 import com.hzq.vo.GroupUserVo;
 import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupToUserDao;
@@ -23,21 +25,37 @@ public class GroupToUserServiceImpl implements GroupToUserService {
 
     @Autowired
     private GroupToUserDao groupToUserDao;
+    @Autowired
+    private GroupService groupService;
 
 
     @Override
-    public ServerResponse<String> insert(GroupToUser groupToUser) {
-        if (groupToUserDao.checkGroupToUser(groupToUser.getUserId(),groupToUser.getGroupId()) > 0) {
+    public void insert(Integer userId, Integer groupId) {
+        if (groupToUserDao.checkGroupToUser(userId,groupId) > 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户已经加入群聊");
         }
-        if (groupToUserDao.insert(groupToUser) == 0) {
+        if (groupToUserDao.insert(userId,groupId) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"在群聊内添加用户失败");
         }
-        return ServerResponse.createBySuccess();
     }
 
     @Override
     public ServerResponse<String> delete(Integer userId, Integer groupId) {
+        Integer groupAdminId = groupService.select(groupId).getData().getGroupAdminId();
+        if (userId.equals(groupAdminId)) {
+            List<GroupToUser> groupToUsers = groupToUserDao.selectByGroupId(groupId);
+            if (groupToUsers.size() == 1) {
+                groupService.delete(groupId);
+            } else {
+                Integer id = groupToUsers.get(0).getUserId();
+                if (!id.equals(userId)) {
+                    groupService.update(new Group(groupId,id));
+                } else {
+                    id = groupToUsers.get(1).getUserId();
+                    groupService.update(new Group(groupId,id));
+                }
+            }
+        }
         groupToUserDao.delete(userId,groupId);
         return ServerResponse.createBySuccess();
     }
@@ -57,11 +75,10 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     }
 
     @Override
-    public ServerResponse<String> update(GroupToUser groupToUser) {
+    public void update(GroupToUser groupToUser) {
         if(groupToUserDao.update(groupToUser) == 0) {
-            return ServerResponse.createByErrorMessage("更新用户在群内信息失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户在群内信息失败");
         }
-        return ServerResponse.createBySuccess();
     }
 
     @Override
@@ -80,6 +97,15 @@ public class GroupToUserServiceImpl implements GroupToUserService {
             throw CustomGenericException.CreateException(40,"查询群用户出错");
         }
         return ServerResponse.createBySuccess(groupToUsers);
+    }
+
+    @Override
+    public ServerResponse<List<GroupUserVo>> select(Integer groupId) {
+        List<GroupUserVo> groupUserVos = groupToUserDao.select(groupId);
+        if (groupUserVos == null) {
+            throw CustomGenericException.CreateException(40,"查询群用户个人信息出错");
+        }
+        return ServerResponse.createBySuccess(groupUserVos);
     }
 
 }

@@ -19,14 +19,6 @@ public interface UserInfoService {
     ServerResponse<String> insert(UserInfo userInfo);
 
     /**
-     * 根据用户id删除用户个人信息
-     * where的条件：主表id
-     * @param userId 用户主表id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> deleteUserInfoByPrimaryId(Integer userId);
-
-    /**
      * 根据用户id更新用户个人信息
      * where的条件：主表id
      * @param userInfo 要更新的个人信息
@@ -55,5 +47,12 @@ public interface UserInfoService {
      * @return 返回通用对象
      */
     ServerResponse<String> findPasswordByUserId(Integer userId);
+
+    /**
+     * 查询邮箱是否存在
+     * @param email 邮箱
+     * @return 返回查询到的条数
+     */
+    int checkEmail(String email);
 
 }

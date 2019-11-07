@@ -2,11 +2,11 @@ package com.hzq.controller;
 
 import com.hzq.common.Const;
 import com.hzq.vo.ServerResponse;
-import com.hzq.utils.RedisUtil;
 import com.hzq.vo.Result;
 import com.hzq.domain.User;
 import com.hzq.service.UserService;
 import com.hzq.utils.JwtUil;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -27,8 +27,7 @@ public class UserController {
 
     @Autowired
     private UserService userService;
-    @Autowired
-    private RedisUtil redisUtil;
+
     /**
      * 注册账号
      * @param user 注册的信息
@@ -51,10 +50,9 @@ public class UserController {
         String password = map.get(Const.PASSWORD);
         ServerResponse<Result> response = userService.login(username,password);
         if (response.isSuccess()) {
-            String accessToken = JwtUil.sign(username, response.getData().getUser().getId());
             session.setAttribute(Const.CURRENT_USER,response.getData().getUser());
-            //设置session不失效
             session.setMaxInactiveInterval(-1);
+            String accessToken = JwtUil.sign(username,response.getData().getUser().getId());
             resp.setHeader("Access-Control-Allow-Origin","*");
             response.setAccessToken(accessToken);
             response.setSessionId("JSESSIONID="+session.getId());
@@ -64,7 +62,7 @@ public class UserController {
     }
 
     /**
-     * 更新主表的信息
+     * 更新密码
      * @param map 存放新密码和旧密码
      * @return 返回通用对象
      */
@@ -77,6 +75,33 @@ public class UserController {
     }
 
     /**
+     * 更新状态
+     * @param status 状态
+     * @param id 用户id
+     * @return 返回通用对象
+     */
+    @RequestMapping( value = "/updateStatus/{id}/{status}", method = RequestMethod.GET)
+    public ServerResponse<User> updateStatus(@PathVariable Integer status, @PathVariable Integer id) {
+        userService.updateStatus(status,id);
+        ServerResponse<User> response = userService.selectById(id);
+        response.getData().setPassword(StringUtils.EMPTY);
+        return response;
+    }
+
+    /**
+     * 查询用户主表信息
+     * @param username 用户名
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/select/{username}", method = RequestMethod.GET)
+    public ServerResponse<User> select(@PathVariable String username) {
+        ServerResponse<User> response = userService.selectByUsername(username);
+        response.getData().setPassword(StringUtils.EMPTY);
+        return response;
+    }
+
+
+    /**
      * 退出登录
      * @param session 一次会话
      * @param id 用户id
@@ -85,7 +110,6 @@ public class UserController {
     @RequestMapping(value = "/logout/{id}", method = RequestMethod.GET)
     public ServerResponse<String> logout(@PathVariable Integer id, HttpSession session){
         ServerResponse<String> response = userService.updateStatus(Const.OFFLINE,id);
-        session.removeAttribute(Const.CURRENT_USER);
         session.invalidate();
         return response;
     }
@@ -108,8 +132,12 @@ public class UserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{id}")
-    public ServerResponse<String> deleteUserById(@PathVariable Integer id) {
-        return userService.deleteUserById(id);
+    public ServerResponse<String> deleteUserById(@PathVariable Integer id, HttpSession session) {
+        ServerResponse<String> response =  userService.deleteUserById(id);
+        if (response.isSuccess()) {
+            session.invalidate();
+        }
+        return response;
     }
 
 }

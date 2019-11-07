@@ -1,5 +1,6 @@
 package com.hzq.service.Impl;
 
+import com.hzq.common.Const;
 import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupDao;
 import com.hzq.domain.Group;
@@ -9,7 +10,7 @@ import com.hzq.service.GroupService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import javax.servlet.http.HttpSession;
+
 import java.util.List;
 
 /**
@@ -25,28 +26,26 @@ public class GroupServiceImpl implements GroupService {
     private GroupDao groupDao;
 
     @Override
-    public ServerResponse<String> insert(Group group, HttpSession session) {
+    public void insert(Group group) {
         if (groupDao.insert(group) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"创建群聊失败");
         }
-        //群主的由触发器自动设定
-        return ServerResponse.createBySuccess();
     }
 
     @Override
-    public ServerResponse<String> delete(Integer id) {
-        if (groupDao.delete(id) == 0) {
-            return ServerResponse.createByErrorMessage("删除群聊失败");
-        }
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public ServerResponse<String> update(Group group) {
+    public void update(Group group) {
         if (groupDao.update(group) == 0) {
-            return ServerResponse.createByErrorMessage("更新群聊失败");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新群聊失败");
         }
-        return ServerResponse.createBySuccess();
+    }
+
+    @Override
+    public ServerResponse<Group> select(Integer id) {
+        Group group = groupDao.selectGroup(id);
+        if (group == null) {
+            return ServerResponse.createByErrorMessage("根据群id查询不到群信息");
+        }
+        return ServerResponse.createBySuccess(group);
     }
 
     @Override
@@ -59,11 +58,11 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ServerResponse<Group> select(Integer id) {
-        Group group = groupDao.selectGroup(id);
-        if (group == null) {
-            return ServerResponse.createByErrorMessage("根据群id查询不到群信息");
+    public ServerResponse<String> delete(Integer id) {
+        if (groupDao.delete(id) == 0) {
+            return ServerResponse.createByErrorMessage("删除群聊失败");
         }
-        return ServerResponse.createBySuccess(group);
+        return ServerResponse.createBySuccess();
     }
+
 }

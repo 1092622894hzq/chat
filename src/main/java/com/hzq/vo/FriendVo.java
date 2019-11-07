@@ -1,5 +1,7 @@
 package com.hzq.vo;
 
+import java.sql.Timestamp;
+
 /**
  * @Auther: blue
  * @Date: 2019/10/18
@@ -32,6 +34,14 @@ public class FriendVo {
     好友的账号名
      */
     private String username;
+    /*
+    好友的状态
+     */
+    private Integer status;
+    /*
+    好友登录时间
+     */
+    private Timestamp loginTime;
 
     /*
    申请人的性别 性别 1 表示男 0 表示女
@@ -81,6 +91,7 @@ public class FriendVo {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
     public Integer getIsDelete() {
         return isDelete;
     }
@@ -95,6 +106,22 @@ public class FriendVo {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public Integer getStatus() {
+        return status;
+    }
+
+    public void setStatus(Integer status) {
+        this.status = status;
+    }
+
+    public Timestamp getLoginTime() {
+        return loginTime;
+    }
+
+    public void setLoginTime(Timestamp loginTime) {
+        this.loginTime = loginTime;
     }
 
     public String getSign() {

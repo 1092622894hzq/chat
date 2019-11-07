@@ -32,12 +32,6 @@ public class UserInfoServiceImpl implements UserInfoService {
     }
 
     @Override
-    public ServerResponse<String> deleteUserInfoByPrimaryId(Integer userId) {
-        userInfoDao.deleteUserInfoByPrimaryId(userId);
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
     public ServerResponse<String> update(UserInfo userInfo) {
         if (userInfo.getEmail() != null && userInfoDao.checkEmail(userInfo.getEmail()) > 0) {
             return ServerResponse.createByErrorMessage("邮箱已经被注册，请重新输入新邮箱");
@@ -78,6 +72,11 @@ public class UserInfoServiceImpl implements UserInfoService {
         String content = "验证码： "+number;
         SendEmailUtil.sendEmail(email,subject,content);
         return ServerResponse.createBySuccess(number);
+    }
+
+    @Override
+    public int checkEmail(String email) {
+        return userInfoDao.checkEmail(email);
     }
 
 

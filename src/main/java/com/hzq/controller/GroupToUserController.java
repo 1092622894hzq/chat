@@ -7,6 +7,8 @@ import com.hzq.service.GroupToUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 /**
  * @Auther: blue
  * @Date: 2019/10/6
@@ -22,13 +24,15 @@ public class GroupToUserController {
 
     /**
      * 添加用户进入群聊
-     * 必须参数 userId, groupId, groupNickname
-     * @param groupToUser 用户在群聊中显示的相关信息
+     * 必须参数 userId, groupId
+     * @param userId 用户id
+     * @param groupId 群id
      * @return 返回通用结果
      */
-    @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody GroupToUser groupToUser) {
-        return groupToUserService.insert(groupToUser);
+    @RequestMapping(value = "/insert/{userId}/{groupId}", method = RequestMethod.GET)
+    public ServerResponse<List<GroupUserVo>> insert(@PathVariable Integer userId, @PathVariable Integer groupId) {
+         groupToUserService.insert(userId,groupId);
+         return groupToUserService.select(groupId);
     }
 
     /**
@@ -43,23 +47,14 @@ public class GroupToUserController {
     }
 
     /**
-     * 根据id将用户从群聊中移除
-     * @param id 表的id
-     * @return 返回通用对象
-     */
-    @RequestMapping(value = "/deleteById/{id}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteById(@PathVariable Integer id){
-        return groupToUserService.deleteById(id);
-    }
-
-    /**
      * 根据该表的id来进行更新信息
      * @param groupToUser 要更新的信息，
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<String> update(@RequestBody GroupToUser groupToUser) {
-        return groupToUserService.update(groupToUser);
+    public ServerResponse<GroupUserVo> update(@RequestBody GroupToUser groupToUser) {
+        groupToUserService.update(groupToUser);
+        return groupToUserService.selectGroupToUser(groupToUser.getUserId(),groupToUser.getGroupId());
     }
 
     /**
@@ -71,5 +66,15 @@ public class GroupToUserController {
     @RequestMapping(value = "/select/{userId}/{groupId}", method = RequestMethod.GET)
     public ServerResponse<GroupUserVo> selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
         return groupToUserService.selectGroupToUser(userId,groupId);
+    }
+
+    /**
+     * 根据群id查询用户信息
+     * @param groupId 群id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/select/{groupId}", method = RequestMethod.GET)
+    public ServerResponse<List<GroupUserVo>> select(@PathVariable Integer groupId) {
+        return groupToUserService.select(groupId);
     }
 }

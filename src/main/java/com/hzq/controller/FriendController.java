@@ -31,8 +31,9 @@ public class FriendController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<String> update(@RequestBody Friend friend) {
-        return friendService.update(friend);
+    public ServerResponse<FriendVo> update(@RequestBody Friend friend) {
+        friendService.update(friend);
+        return friendService.selectFriendByFriendId(friend.getUserId(),friend.getFriendId());
     }
 
     /**

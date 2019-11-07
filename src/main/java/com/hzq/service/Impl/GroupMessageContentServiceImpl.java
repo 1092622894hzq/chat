@@ -26,9 +26,9 @@ import java.util.Map;
 public class GroupMessageContentServiceImpl implements GroupMessageContentService {
 
     @Autowired
-    private GroupMessageContentDao messageContentDao;
-    @Autowired
     private GroupToUserService groupToUserService;
+    @Autowired
+    private GroupMessageContentDao messageContentDao;
 
     @Override
     public ServerResponse<String> insert(SendMessage message) {

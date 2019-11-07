@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @Auther: blue
  * @Date: 2019/10/2
- * @Description: com.hzq.controller
+ * @Description: 好友申请
  * @version: 1.0
  */
 @RestController
@@ -42,8 +42,8 @@ public class ApplyController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/deleteById/{fromId}/{toId}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteById(@PathVariable Integer fromId, @PathVariable Integer toId, HttpSession session) {
-        return applyService.delete(fromId,toId,session);
+    public ServerResponse<String> deleteById(@PathVariable Integer fromId, @PathVariable Integer toId) {
+        return applyService.deleteById(fromId,toId);
     }
 
 

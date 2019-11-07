@@ -16,10 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.servlet.http.HttpSession;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import static org.apache.commons.lang3.StringUtils.isNotBlank;
 /**
@@ -31,9 +28,7 @@ import static org.apache.commons.lang3.StringUtils.isNotBlank;
 @Service("userService")
 public class UserServiceImpl implements UserService {
     @Autowired
-    private UserDao userDao;
-    @Autowired
-    private UserInfoDao userInfoDao;
+    private UserInfoService userInfoService;
     @Autowired
     private FriendService friendService;
     @Autowired
@@ -41,10 +36,13 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private GroupService groupService;
     @Autowired
+    private UserDao userDao;
+    @Autowired
     private RedisUtil redisUtil;
 
     @Override
     public ServerResponse<String> register(User user) {
+        //验证格式
         ServerResponse<String> validResponse = checkValid(user.getUsername(), Const.USERNAME);
         if (!validResponse.isSuccess()) {
             return validResponse;
@@ -60,14 +58,20 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<Result> login(String username, String password) {
+        //验证格式
         if (userDao.checkUsername(username) == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
         User user = userDao.selectByUsername(username);
+        if (Const.ONLINE.equals(user.getStatus())) {
+            return ServerResponse.createByErrorMessage("用户已经登陆了");
+        }
         if (!MD5Util.verify(password,user.getPassword())) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
-        updateStatus(Const.ONLINE,user.getId());
+        if (userDao.updateStatus(Const.ONLINE,user.getId()) == 0) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户状态失败");
+        }
         user.setPassword(StringUtils.EMPTY);
         Result result = getAllInfo(user);
         return ServerResponse.createBySuccess("成功",result);
@@ -80,7 +84,7 @@ public class UserServiceImpl implements UserService {
             if (Const.USERNAME.equals(type) && userDao.checkUsername(str) > 0) {
                 return ServerResponse.createByErrorMessage("账号已存在,请重新输入");
             }
-            if (Const.EMAIL.equals(type) && userInfoDao.checkEmail(str) > 0) {
+            if (Const.EMAIL.equals(type) && userInfoService.checkEmail(str) > 0) {
                 return ServerResponse.createByErrorMessage("邮箱已存在,请重新输入");
             }
         } else {
@@ -99,7 +103,17 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public ServerResponse<User> selectById(Integer id) {
+        User user = userDao.selectById(id);
+        if (user == null) {
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
+        }
+        return ServerResponse.createBySuccess(user);
+    }
+
+    @Override
     public ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id) {
+        //验证格式
         User user = userDao.selectById(id);
         newPassword = MD5Util.generate(newPassword);
         boolean isTrue = MD5Util.verify(oldPassword,user.getPassword());
@@ -107,7 +121,7 @@ public class UserServiceImpl implements UserService {
         if (isTrue && b) {
             return ServerResponse.createBySuccess();
         }
-        throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更改密码时，原密码错误");
+        return ServerResponse.createByErrorMessage("更改密码时，原密码错误");
     }
 
     @Override
@@ -121,17 +135,14 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<String> refreshToken(String username, Integer id, HttpSession session) {
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        if (user == null || !user.getId().equals(id)) {
+        if (user == null || !user.getId().equals(id) || !user.getUsername().equals(username)) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户尚未登录");
         }
-        if (user.getId().equals(id) && user.getUsername().equals(username)) {
-            String accessToken = JwtUil.sign(username, id);
-            ServerResponse<String> response = ServerResponse.createBySuccess();
-            response.setAccessToken(accessToken);
-            response.setSessionId(session.getId());
-            return response;
-        }
-        return ServerResponse.createByErrorMessage("刷新token失败");
+        String accessToken = JwtUil.sign(username, id);
+        ServerResponse<String> response = ServerResponse.createBySuccess();
+        response.setAccessToken(accessToken);
+        response.setSessionId(session.getId());
+        return response;
     }
 
 
@@ -142,18 +153,26 @@ public class UserServiceImpl implements UserService {
         //3. 删除用户个人信息---有外键关联，自动删除
         //4. 删除私聊消息---有外键关联，自动删除
         //5. 删除用户和群聊关系---有外键关联，自动删除
-        //6. 删除redis跟用户相关的存储数据
-        redisUtil.remove(id.toString());
-        //7. 删除用户
+        //6. 更新被所有好友删除的标志位
+        friendService.updateAllFriend(id);
+        //7. 删除redis跟用户相关的存储数据
+        String pattern = "*-"+id.toString()+"-*";
+        redisUtil.remove(pattern);
+        //8. 删除用户
         userDao.deleteUserById(id);
         return ServerResponse.createBySuccess();
     }
 
+    @Override
+    public int checkUserId(Integer id) {
+        return userDao.checkUserId(id);
+    }
 
-    public Result getAllInfo(User user) {
+
+    private Result getAllInfo(User user) {
         Result result = new Result();
         result.setUser(user);
-        UserInfo userInfo = userInfoDao.queryUserByName(user.getUsername());
+        UserInfo userInfo = userInfoService.queryUserByName(user.getUsername()).getData();
         result.setUserInfo(userInfo);
         List<FriendVo> friends = friendService.selectAll(user.getId()).getData();
         result.setFriends(friends);

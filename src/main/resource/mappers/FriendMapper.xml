@@ -51,12 +51,12 @@
 </update>
 
 <update id="updateForDelete" parameterType="java.lang.Integer">
-    update friend set is_delete = #{friendId, jdbcType = INTEGER}
-    <where>
-        friend_id = #{friendId, jdbcType = INTEGER}
-        and
-        user_id = #{userId, jdbcType = INTEGER}
-    </where>
+    update friend set is_delete = #{userId, jdbcType = INTEGER}
+    where friend_id = #{userId, jdbcType = INTEGER} and user_id = #{friendId, jdbcType = INTEGER}
+</update>
+
+<update id="updateAllFriend" parameterType="java.lang.Integer">
+    update friend set is_delete = #{userId, jdbcType = INTEGER} where friend_id = #{userId, jdbcType = INTEGER}
 </update>
 
 <delete id="delete" parameterType="java.lang.Integer">
@@ -88,6 +88,8 @@
         <result column="friend_id" jdbcType="INTEGER" property="friendId"/>
         <result column="is_delete" jdbcType="INTEGER" property="isDelete" />
         <result column="username" jdbcType="VARCHAR" property="username" />
+        <result column="status" jdbcType="INTEGER" property="status"/>
+        <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
         <result column="nickname" jdbcType="VARCHAR" property="nickname" />
         <result column="sign" jdbcType="VARCHAR" property="sign"/>
         <result column="avatar" jdbcType="VARCHAR" property="avatar" />
@@ -95,7 +97,7 @@
     </resultMap>
 
 <select id="selectAll" parameterType="java.lang.Integer" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
+    select <include refid="Base_Column_List" /> ,u.username,u.status,u.login_time, ui.sex, ui.nickname, ui.sign, ui.avatar
     from friend f left join user u
     on f.friend_id = u.id
     left join user_info ui
@@ -104,7 +106,7 @@
 </select>
 
 <select id="selectFriendByFriendName" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
+    select <include refid="Base_Column_List" /> ,u.username,u.status,u.login_time, ui.sex, ui.nickname, ui.sign, ui.avatar
     from friend f left join user u
     on f.friend_id = u.id
     left join user_info ui
@@ -117,7 +119,7 @@
 </select>
 
 <select id="selectFriendByFriendId" resultMap="FriendVoMap">
-    select <include refid="Base_Column_List" /> ,u.username, ui.sex, ui.nickname, ui.sign, ui.avatar
+    select <include refid="Base_Column_List" /> ,u.username,u.status,u.login_time, ui.sex, ui.nickname, ui.sign, ui.avatar
     from friend f left join user u
     on f.friend_id = u.id
     left join user_info ui on ui.user_id = u.id

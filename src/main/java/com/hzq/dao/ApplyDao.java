@@ -43,18 +43,8 @@ public interface ApplyDao {
      * 根据申请的两个id删除两条申请
      * @param fromId 申请人id
      * @param toId 被申请人id
-     * @return 返回修改次数
      */
-    int deleteById(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
-
-    /**
-     * 删除特定申请
-     * @param fromId 申请人id
-     * @param toId 被申请人id
-     * @param userId 用户id
-     * @return 返回修改次数
-     */
-    int delete(@Param("fromId") Integer fromId, @Param("toId") Integer toId, @Param("userId") Integer userId);
+    void deleteById(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
 
     /**
      * 根据用户id删除所有好友申请

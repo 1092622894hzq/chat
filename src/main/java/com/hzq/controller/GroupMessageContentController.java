@@ -11,7 +11,7 @@ import java.util.List;
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.controller
+ * @Description: 群消息
  * @version: 1.0
  */
 @RestController

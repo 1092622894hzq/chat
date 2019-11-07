@@ -4,6 +4,7 @@ package com.hzq.dao;
 import com.hzq.domain.GroupToUser;
 import com.hzq.vo.GroupUserVo;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import java.util.List;
 
@@ -17,25 +18,24 @@ public interface GroupToUserDao {
 
     /**
      * 添加用户进入群聊
-     * @param groupToUser 用户在群聊中显示的信息
+     * @param userId 用户id
+     * @param groupId 群聊id
      * @return 返回修改次数
      */
-    int insert(GroupToUser groupToUser);
+    int insert(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     /**
      * 从群聊中删除用户
      * @param userId 用户id
      * @param groupId 群聊id
-     * @return 返回修改次数
      */
-    int delete(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
+    void delete(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     /**
      * 根据表的id删除用户
      * @param id 表的id
-     * @return 返回修改次数
      */
-    int deleteById(@Param("id") Integer id);
+    void deleteById(@Param("id") Integer id);
 
     /**
      * 更新未读消息id
@@ -66,6 +66,13 @@ public interface GroupToUserDao {
      * @return 返回所有群用户的集合
      */
     List<GroupToUser> selectByGroupId(@Param("groupId") Integer groupId);
+
+    /**
+     *  根据群id查询所有群用户和个人信息
+     * @param groupId 群id
+     * @return 返回所有群用户的集合
+     */
+    List<GroupUserVo> select(@Param("groupId") Integer groupId);
 
     /**
      * 根据用户id和群id查询用户是否存在

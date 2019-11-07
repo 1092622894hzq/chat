@@ -48,7 +48,7 @@ public class FileHandlerController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updateAvatar", method = RequestMethod.POST)
-    public ServerResponse<String> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
+    public ServerResponse<UserInfo> updateAvatar(@RequestPart("avatar")MultipartFile avatar, HttpSession session){
         User user = (User) session.getAttribute(Const.CURRENT_USER);
         String fileName = System.currentTimeMillis()+avatar.getOriginalFilename();
         try {
@@ -80,9 +80,8 @@ public class FileHandlerController {
         UserInfo userInfo = new UserInfo();
         userInfo.setUserId(user.getId());
         userInfo.setAvatar(Const.IMAGE_PATH+user.getId()+"//"+fileName);
-        ServerResponse<String> response = userInfoService.update(userInfo);
-        response.setData(Const.IMAGE_PATH+user.getId()+"//"+fileName);
-        return response;
+        userInfoService.update(userInfo);
+        return userInfoService.queryUserById(user.getId());
     }
 
     /**
@@ -92,7 +91,7 @@ public class FileHandlerController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updateIcon/{id}", method = RequestMethod.POST)
-    public ServerResponse<String> updateIcon(@RequestPart("icon") MultipartFile icon, @PathVariable Integer id){
+    public ServerResponse<Group> updateIcon(@RequestPart("icon") MultipartFile icon, @PathVariable Integer id){
         String fileName = System.currentTimeMillis()+icon.getOriginalFilename();
         //输入文件类型
         try {
@@ -122,9 +121,8 @@ public class FileHandlerController {
         Group group = new Group();
         group.setGroupIcon(Const.IMAGE_PATH+id+"//"+fileName);
         group.setId(id);
-        ServerResponse<String> response = groupService.update(group);
-        response.setData((Const.IMAGE_PATH+id+"//"+fileName));
-        return response;
+        groupService.update(group);
+        return groupService.select(id);
     }
 
     /**

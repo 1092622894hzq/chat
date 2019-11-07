@@ -29,13 +29,25 @@ public class GroupController {
      *  必须的参数：groupName,groupNotice,groupIntroduction
      *  后台给的：,groupAdminId
      * @param group 群信息
-     * @param session 一次会话
      * @return 返回通用对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody Group group, HttpSession session) {
-        return groupService.insert(group,session);
+    public ServerResponse<Group> insert(@RequestBody Group group) {
+        groupService.insert(group);
+        return groupService.select(group.getId());
     }
+
+    /**
+     * 更新群聊信息
+     * @param group 要更新的群聊消息，必须包含群id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ServerResponse<Group> update(@RequestBody Group group) {
+        groupService.update(group);
+        return groupService.select(group.getId());
+    }
+
 
     /**
      * 删除群聊
@@ -45,16 +57,6 @@ public class GroupController {
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
     public ServerResponse<String> delete(@PathVariable Integer id) {
         return groupService.delete(id);
-    }
-
-    /**
-     * 更新群聊信息
-     * @param group 要更新的群聊消息，必须包含群id
-     * @return 返回通用对象
-     */
-    @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<String> update(@RequestBody Group group) {
-        return groupService.update(group);
     }
 
     /**

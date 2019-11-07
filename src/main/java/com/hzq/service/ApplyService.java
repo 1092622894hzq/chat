@@ -24,14 +24,6 @@ public interface ApplyService {
     ServerResponse<String> insert(Apply apply);
 
     /**
-     * 删除特定申请
-     * @param fromId 申请人id
-     * @param toId 被申请人id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> delete(Integer fromId, Integer toId, HttpSession session);
-
-    /**
      * 根据申请的id删除申请
      * @param fromId 申请人id
      * @param toId 被申请人id

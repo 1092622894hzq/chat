@@ -16,10 +16,10 @@ public interface GroupMessageContentDao {
 
     /**
      * 存储群聊消息
-     * @param message 群聊消息
+     * @param msg 群聊消息
      * @return 返回修改的次数
      */
-    int insert(SendMessage message);
+    int insert(@Param("msg") SendMessage msg);
 
     /**
      * 查询群聊所有的消息

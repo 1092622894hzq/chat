@@ -42,7 +42,6 @@ public class MessageController {
     @RequestMapping(value = "/selectUnReadSendMessage", method = RequestMethod.GET)
     public ServerResponse<List<SendMessage>> selectUnReadSendMessage(HttpSession session) {
         User user = (User)session.getAttribute(Const.CURRENT_USER);
-
         return messageService.selectUnReadSendMessage(user.getId());
     }
 

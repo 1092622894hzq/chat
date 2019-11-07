@@ -18,10 +18,8 @@ public interface GroupService {
     /**
      * 创建群聊，同时将群主的信息插入到群聊成员对应的表中
      * @param group 群的信息
-     * @param session 一次会话
-     * @return 返回通用对象
      */
-    ServerResponse<String> insert(Group group, HttpSession session);
+    void insert(Group group);
 
     /**
      * 根据群id删除群
@@ -33,9 +31,8 @@ public interface GroupService {
     /**
      * 更新群聊信息
      * @param group 群的相关信息
-     * @return 返回通用对象
      */
-    ServerResponse<String> update(Group group);
+    void update(Group group);
 
     /**
      * 根距用户id查询所有群

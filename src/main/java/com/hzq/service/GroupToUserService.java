@@ -16,10 +16,10 @@ public interface GroupToUserService {
 
     /**
      * 将用户加入群聊中
-     * @param groupToUser 用户在群聊中显示的信息
-     * @return 返回通用对象
+     * @param userId  用户id
+     * @param groupId 群id
      */
-    ServerResponse<String> insert(GroupToUser groupToUser);
+    void insert(Integer userId, Integer groupId);
 
     /**
      * 将用户从群聊中删除
@@ -47,9 +47,8 @@ public interface GroupToUserService {
     /**
      * 更新用户在群聊中显示的信息 根据用户id和群id
      * @param groupToUser 用户的在群聊显示的信息
-     * @return 返回通用对象
      */
-    ServerResponse<String> update(GroupToUser groupToUser);
+    void update(GroupToUser groupToUser);
 
     /**
      * 根据群id和用户id查找用户在群信息
@@ -65,6 +64,13 @@ public interface GroupToUserService {
      * @return 返回所有群用户的集合
      */
     ServerResponse<List<GroupToUser>> selectByGroupId(Integer groupId);
+
+    /**
+     * 根据群id找出所有群用户和个人信息
+     * @param groupId 群id
+     * @return 返回所有群用户的集合
+     */
+    ServerResponse<List<GroupUserVo>> select(Integer groupId);
 
 
 }

@@ -31,7 +31,6 @@ public class GlobalExceptionHandler {
     @ResponseBody
     public ServerResponse<String> allExceptionHandler(CustomGenericException e){
         LOGGER.error("到达统一CustomGenericException异常处理方法");
-        e.printStackTrace();
         LOGGER.error(e.getErrMsg(),e);
         return ServerResponse.createByException(e);
     }

@@ -10,6 +10,10 @@ import java.sql.Timestamp;
  */
 public class GroupUserVo {
     /*
+    用户在群成员表的id
+     */
+    private Integer id;
+    /*
     用户主表的id  groupToUser接口
      */
     private Integer userId;
@@ -49,6 +53,14 @@ public class GroupUserVo {
     用户账号   user接口
      */
     private String username;
+
+    public Integer getId() {
+        return id;
+    }
+
+    public void setId(Integer id) {
+        this.id = id;
+    }
 
     public Integer getUserId() {
         return userId;
