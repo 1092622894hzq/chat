@@ -3,7 +3,6 @@ package com.hzq.service.Impl;
 import com.hzq.service.GroupToUserService;
 import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupMessageContentDao;
-import com.hzq.dao.GroupToUserDao;
 import com.hzq.domain.GroupMessageContent;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupMessageContentService;
@@ -39,8 +38,8 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     }
 
     @Override
-    public ServerResponse<List<GroupMessageContent>> selectAll(Integer id) {
-        List<GroupMessageContent> groupMessageContents = messageContentDao.selectAll(id);
+    public ServerResponse<List<SendMessage>> selectAll(Integer groupId,Integer userId) {
+        List<SendMessage> groupMessageContents = messageContentDao.selectAll(groupId,userId);
         if (groupMessageContents == null) {
             return ServerResponse.createByErrorMessage("没有查询到群聊记录");
         }
@@ -48,8 +47,8 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     }
 
     @Override
-    public ServerResponse<String> delete(Integer id) {
-        if (messageContentDao.delete(id) == 0) {
+    public ServerResponse<String> delete(Integer id,Integer groupId,Integer userId) {
+        if (messageContentDao.insertToDelete(id,groupId,userId) == 0) {
             return ServerResponse.createByErrorMessage("删除群聊失败");
         }
         return ServerResponse.createBySuccess();
@@ -69,7 +68,7 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     public ServerResponse<List<SendMessage>> selectAllUnread(Integer userId) {
         List<SendMessage> messageContents = messageContentDao.selectAllUnread(userId);
         if (messageContents == null) {
-            return ServerResponse.createBySuccessMessage("查询不到未读消息");
+            return ServerResponse.createByErrorMessage("查询不到未读消息");
         }
         return ServerResponse.createBySuccess(messageContents);
 }

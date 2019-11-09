@@ -26,15 +26,7 @@
     )
 </insert>
 
-<select id="selectAll" parameterType="java.lang.Integer" resultMap="BaseResultMap">
-    select <include refid="Base_Column_List" /> from group_message_content
-    where group_id = #{groupId, jdbcType = INTEGER}
-</select>
 
-<delete id="delete" parameterType="java.lang.Integer">
-    delete from group_message_content
-    where group_id = #{groupId, jdbcType = INTEGER}
-</delete>
 
 <select id="selectUnread" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create
@@ -57,6 +49,19 @@
         <result column="avatar" jdbcType="VARCHAR" property="avatar"/>
     </resultMap>
 
+<select id="selectAll" parameterType="java.lang.Integer" resultMap="SendMessageMap">
+       select gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create,ui.nickname,ui.avatar
+        from group_message_content gmc
+        left join group_to_user gtu
+        on gtu.group_id = gmc.group_id
+        left join user_info ui
+        on ui.user_id = gtu.user_id
+        left join group_message_delete gmd
+        on  gmc.group_id = gmd.group_id and gmc.id != gmd.group_message_id
+        where gmc.group_id = #{groupId, jdbcType = INTEGER} and gmd.user_id = #{userId, jdbcType = INTEGER} group by gmc.id;
+</select>
+
+
 <select id="selectAllUnread" parameterType="java.lang.Integer" resultMap="SendMessageMap">
     select  gmc.id,gmc.gm_content,gmc.gm_type,gmc.gm_from_id,gmc.group_id,gmc.gmt_create,ui.nickname,ui.avatar
     from group_message_content gmc left join group_to_user gtu
@@ -67,6 +72,18 @@
 </select>
 
 
+    <resultMap id="GroupMessageDeleteMap" type="com.hzq.domain.GroupMessageDelete">
+        <result column="group_id" jdbcType="INTEGER" property="groupId"/>
+        <result column="user_id" jdbcType="INTEGER" property="userId"/>
+        <result column="group_message_id" jdbcType="INTEGER" property="groupMessageId"/>
+    </resultMap>
+
+    <insert id="insertToDelete" parameterType="java.lang.Integer">
+    insert into group_message_delete (group_id,user_id,group_message_id)
+    values (
+        #{groupId, jdbcType = INTEGER}, #{userId, jdbcType = INTEGER}, #{groupMessageId, jdbcType = INTEGER}
+    )
+</insert>
 
 
 </mapper>

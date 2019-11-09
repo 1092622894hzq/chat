@@ -13,13 +13,17 @@ public class Const {
      */
     public static final String ACCESS_TOKEN = "accessToken";
     /*
-    表示刷新token
-     */
-    public static final String REFRESH_TOKEN = "refreshToken";
-    /*
     表示当前用户
      */
     public static final String CURRENT_USER = "currentUser";
+    /*
+    表示当前心跳
+     */
+    public static final String CURRENT_HEART = "currentHeart";
+    /*
+    表示当前线程
+     */
+    public static final String CURRENT_THREAD = "currentThread";
     /*
     表示邮箱
      */
@@ -32,10 +36,6 @@ public class Const {
     表示删除
      */
     public static final Integer DELETE = -1;
-    /*
-    表示默认分组
-     */
-    public static final Integer DEFAULT_GROUP = 0;
     /*
     表示将置零
      */
@@ -56,10 +56,6 @@ public class Const {
     表示默认头像
      */
     public static final String DEFAULT_AVATAR = "http://116.62.12.63:8080/images/default.png";
-    /*
-    表示当前用户id
-     */
-    public static final String CURRENT_CONNECT_ID = "uid";
     /*
     最大临时存储未读消息数
      */
@@ -124,6 +120,18 @@ public class Const {
     表示申请
      */
     public static final Integer APPLY = 2;
+    /*
+    表示群聊新加入成员的通知
+     */
+    public static final Integer GROUP_ADD_MEMBER = 3;
+    /*
+    表示群聊用户有人退出的通知
+     */
+    public static final Integer GROUP_DELETE_MEMBER = 4;
+    /*
+    表示强制用户退出的通知
+     */
+    public static final Integer WITHDRAW = 5;
     /*
     表示消息已读
      */

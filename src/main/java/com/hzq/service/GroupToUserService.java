@@ -18,8 +18,9 @@ public interface GroupToUserService {
      * 将用户加入群聊中
      * @param userId  用户id
      * @param groupId 群id
+     * @return 返回通用对象
      */
-    void insert(Integer userId, Integer groupId);
+    ServerResponse insert(Integer userId, Integer groupId);
 
     /**
      * 将用户从群聊中删除
@@ -28,21 +29,6 @@ public interface GroupToUserService {
      * @return 返回通用对象
      */
     ServerResponse<String> delete(Integer userId, Integer groupId);
-
-    /**
-     * 根据表的id删除用户
-     * @param id 表的id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> deleteById(Integer id );
-
-    /**
-     * 更新用户在群聊中未读消息id 根据id
-     * @param id 表中id
-     * @param groupMessageId 未读消息id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> updateById(Integer id, Integer groupMessageId);
 
     /**
      * 更新用户在群聊中显示的信息 根据用户id和群id

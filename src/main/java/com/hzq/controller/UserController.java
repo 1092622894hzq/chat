@@ -45,7 +45,7 @@ public class UserController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/login", method = RequestMethod.POST)
-    public ServerResponse<Result> login(@RequestBody Map<String,String> map, HttpSession session, HttpServletResponse resp){
+    public ServerResponse login(@RequestBody Map<String,String> map, HttpSession session, HttpServletResponse resp){
         String username = map.get(Const.USERNAME);
         String password = map.get(Const.PASSWORD);
         ServerResponse<Result> response = userService.login(username,password);
@@ -67,11 +67,22 @@ public class UserController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updatePassword", method = RequestMethod.POST)
-    public ServerResponse<String> updatePassword(@RequestBody Map<String,String> map, HttpSession session) {
+    public ServerResponse updatePassword(@RequestBody Map<String,String> map, HttpSession session) {
         String newPassword = map.get(Const.NEW_PASSWORD);
         String oldPassword = map.get(Const.OLD_PASSWORD);
         Integer id = ((User)session.getAttribute(Const.CURRENT_USER)).getId();
         return userService.updatePassword(newPassword,oldPassword,id);
+    }
+
+    /**
+     * 更新通过密保问题后修改的密码
+     * @param password 密码
+     * @param id 用户id
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/update/{password}/{id}", method = RequestMethod.GET)
+    public ServerResponse update(@PathVariable String password, @PathVariable Integer id) {
+        return userService.update(password,id);
     }
 
     /**
@@ -81,10 +92,11 @@ public class UserController {
      * @return 返回通用对象
      */
     @RequestMapping( value = "/updateStatus/{id}/{status}", method = RequestMethod.GET)
-    public ServerResponse<User> updateStatus(@PathVariable Integer status, @PathVariable Integer id) {
+    public ServerResponse<User> updateStatus(@PathVariable Integer status, @PathVariable Integer id,HttpSession session) {
         userService.updateStatus(status,id);
         ServerResponse<User> response = userService.selectById(id);
         response.getData().setPassword(StringUtils.EMPTY);
+        session.setAttribute(Const.CURRENT_USER,response.getData());
         return response;
     }
 
@@ -138,6 +150,16 @@ public class UserController {
             session.invalidate();
         }
         return response;
+    }
+
+    /**
+     * 检验用户是否存在
+     * @param username 用户名
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/check/{username}", method = RequestMethod.GET)
+    public ServerResponse<String> checkUsername(@PathVariable String username) {
+        return userService.checkUsername(username);
     }
 
 }

@@ -31,4 +31,11 @@ public interface SecretSecurityService {
      * @return 返回通用对象
      */
     ServerResponse<String> update(SecretSecurity security);
+
+    /**
+     * 验证密保问题和答案
+     * @param security 密保
+     * @return 返回通用对象
+     */
+    ServerResponse<String> verify(SecretSecurity security);
 }

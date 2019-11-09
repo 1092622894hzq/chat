@@ -31,7 +31,7 @@ public interface MessageService {
     void update(List<SendMessage> messageList);
 
     /**
-     * 根据消息删除消息
+     * 根据消息id删除消息
      * @param id 消息id
      * @return 返回通用对象
      */

@@ -14,7 +14,7 @@ import java.util.List;
 /**
  * @Auther: blue
  * @Date: 2019/10/3
- * @Description: com.hzq.controller
+ * @Description: 群
  * @version: 1.0
  */
 @RestController
@@ -26,8 +26,7 @@ public class GroupController {
 
     /**
      * 创建群聊
-     *  必须的参数：groupName,groupNotice,groupIntroduction
-     *  后台给的：,groupAdminId
+     *  必给：,groupAdminId
      * @param group 群信息
      * @return 返回通用对象
      */

@@ -17,7 +17,7 @@ public class VerifyUtil {
      * @param email 邮箱
      * @return true合法 false不合法
      */
-    public boolean isEmail(String email){
+    public static boolean isEmail(String email){
         if (null == email || "".equals(email))
             return false;
         Pattern p =  Pattern.compile("\\w+([-+.]\\w+)*@\\w+([-.]\\w+)*\\.\\w+([-.]\\w+)*");
@@ -30,7 +30,7 @@ public class VerifyUtil {
      * @param username 账号
      * @return  true合法 false不合法
      */
-    public boolean isStandardFormUsername(String username) {
+    public static boolean isStandardFormUsername(String username) {
         if (null == username || "".equals(username))
             return false;
         Pattern p = Pattern.compile("^[\\u4e00-\\u9fa5_a-zA-Z0-9]{3,9}$");
@@ -43,7 +43,7 @@ public class VerifyUtil {
      * @param password 密码
      * @return true合法 false不合法
      */
-  public boolean isStandardFormPassword(String password) {
+  public static boolean isStandardFormPassword(String password) {
         if (null == password || "".equals(password))
             return false;
         Pattern p = Pattern.compile("^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z_]{6,9}$");

@@ -43,7 +43,7 @@ public class GroupServiceImpl implements GroupService {
     public ServerResponse<Group> select(Integer id) {
         Group group = groupDao.selectGroup(id);
         if (group == null) {
-            return ServerResponse.createByErrorMessage("根据群id查询不到群信息");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"根据群id查询不到群信息");
         }
         return ServerResponse.createBySuccess(group);
     }

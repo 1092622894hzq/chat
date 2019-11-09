@@ -10,7 +10,7 @@ import java.io.Serializable;
 /**
  * @Auther: blue
  * @Date: 2019/9/16
- * @Description: com.hzq.controller
+ * @Description: 通用对象
  * @version: 1.0
  */
 @JsonSerialize(include =  JsonSerialize.Inclusion.NON_NULL)

@@ -30,14 +30,6 @@ public interface UserService {
     ServerResponse<Result> login(String username, String password);
 
     /**
-     * 检查用户名和邮箱是否存在
-     * @param str 检查的用户名或者邮箱
-     * @param type 类型
-     * @return 返回通用对象
-     */
-    ServerResponse<String> checkValid(String str, String type);
-
-    /**
      * 根据用户名和用户id刷新token
      * @param session 一次会话
      * @param username 用户名
@@ -70,6 +62,14 @@ public interface UserService {
     ServerResponse<String> updatePassword(String newPassword, String oldPassword, Integer id);
 
     /**
+     * 更新密码
+     * @param password 密码
+     * @param id 用户id
+     * @return 返回通用结果
+     */
+    ServerResponse<String> update(String password,Integer id);
+
+    /**
      * 更新用户状态
      * @param status 状态
      * @param id 用户id
@@ -90,6 +90,13 @@ public interface UserService {
      * @return 返回查询到的数据条数
      */
     int checkUserId(Integer id);
+
+    /**
+     * 根据用户名查询用户是否存在
+     * @param username 用户名
+     * @return 返回通用对象
+     */
+    ServerResponse<String> checkUsername(String username);
 }
 
 

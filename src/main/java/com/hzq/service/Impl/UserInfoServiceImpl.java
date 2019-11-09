@@ -33,6 +33,7 @@ public class UserInfoServiceImpl implements UserInfoService {
 
     @Override
     public ServerResponse<String> update(UserInfo userInfo) {
+        //验证邮箱格式
         if (userInfo.getEmail() != null && userInfoDao.checkEmail(userInfo.getEmail()) > 0) {
             return ServerResponse.createByErrorMessage("邮箱已经被注册，请重新输入新邮箱");
         }

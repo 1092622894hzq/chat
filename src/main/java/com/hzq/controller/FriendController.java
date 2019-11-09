@@ -15,7 +15,7 @@ import java.util.List;
 /**
  * @Auther: blue
  * @Date: 2019/9/30
- * @Description: com.hzq.controller
+ * @Description: 好友
  * @version: 1.0
  */
 @RequestMapping("/friend")

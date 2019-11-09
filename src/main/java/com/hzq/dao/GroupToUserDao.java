@@ -32,20 +32,6 @@ public interface GroupToUserDao {
     void delete(@Param("userId") Integer userId, @Param("groupId") Integer groupId);
 
     /**
-     * 根据表的id删除用户
-     * @param id 表的id
-     */
-    void deleteById(@Param("id") Integer id);
-
-    /**
-     * 更新未读消息id
-     * @param id 表中id
-     * @param groupMessageId 未读消息id
-     * @return 返回修改次数
-     */
-    int updateById(@Param("id") Integer id, @Param("groupMessageId") Integer groupMessageId);
-
-    /**
      * 更新用户在群聊中的信息
      * @param groupToUser 用户在群聊中的信息
      * @return 返回修改次数

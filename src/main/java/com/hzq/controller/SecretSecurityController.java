@@ -19,19 +19,45 @@ public class SecretSecurityController {
     @Autowired
     private SecretSecurityService secretSecurityService;
 
+
+    /**
+     * 添加密保
+     * @param security 密保
+     * @return 返回通用对象
+     */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<String> insert(@RequestBody SecretSecurity security) {
+    public ServerResponse insert(@RequestBody SecretSecurity security) {
         return secretSecurityService.insert(security);
     }
 
+    /**
+     * 查询密保
+     * @param userId 用户id
+     * @return 返回通用对象
+     */
     @RequestMapping(value = "/select/{userId}", method = RequestMethod.GET)
-    public ServerResponse<SecretSecurity> select(@PathVariable Integer userId) {
+    public ServerResponse select(@PathVariable Integer userId) {
         return secretSecurityService.select(userId);
     }
 
+    /**
+     * 更新密保
+     * @param security 密保
+     * @return 返回通用对象
+     */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<String> update(@RequestBody SecretSecurity security) {
+    public ServerResponse update(@RequestBody SecretSecurity security) {
         return secretSecurityService.update(security);
+    }
+
+    /**
+     * 验证密保答案
+     * @param security 密保答案
+     * @return 返回通用对象
+     */
+    @RequestMapping(value = "/verify", method = RequestMethod.POST)
+    public ServerResponse verify(@RequestBody SecretSecurity security) {
+        return secretSecurityService.verify(security);
     }
 
 }

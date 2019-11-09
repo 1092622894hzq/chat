@@ -1,6 +1,8 @@
 package com.hzq.service.Impl;
 
+import com.hzq.common.Const;
 import com.hzq.domain.Group;
+import com.hzq.handler.ChatWebSocketHandler;
 import com.hzq.service.GroupService;
 import com.hzq.vo.GroupUserVo;
 import com.hzq.vo.ServerResponse;
@@ -24,19 +26,23 @@ import java.util.List;
 public class GroupToUserServiceImpl implements GroupToUserService {
 
     @Autowired
+    private GroupService groupService;
+    @Autowired
     private GroupToUserDao groupToUserDao;
     @Autowired
-    private GroupService groupService;
+    private ChatWebSocketHandler chat;
 
 
     @Override
-    public void insert(Integer userId, Integer groupId) {
+    public ServerResponse insert(Integer userId, Integer groupId) {
         if (groupToUserDao.checkGroupToUser(userId,groupId) > 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户已经加入群聊");
+            return ServerResponse.createByErrorMessage("用户已经加入群聊");
         }
         if (groupToUserDao.insert(userId,groupId) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"在群聊内添加用户失败");
         }
+        chat.systemAdviceGroupMember(groupId,userId,Const.GROUP_ADD_MEMBER);
+        return ServerResponse.createBySuccess();
     }
 
     @Override
@@ -46,6 +52,7 @@ public class GroupToUserServiceImpl implements GroupToUserService {
             List<GroupToUser> groupToUsers = groupToUserDao.selectByGroupId(groupId);
             if (groupToUsers.size() == 1) {
                 groupService.delete(groupId);
+                return ServerResponse.createBySuccess();
             } else {
                 Integer id = groupToUsers.get(0).getUserId();
                 if (!id.equals(userId)) {
@@ -54,25 +61,13 @@ public class GroupToUserServiceImpl implements GroupToUserService {
                     id = groupToUsers.get(1).getUserId();
                     groupService.update(new Group(groupId,id));
                 }
+                groupToUserDao.delete(userId,groupId);
             }
         }
-        groupToUserDao.delete(userId,groupId);
+        chat.systemAdviceGroupMember(groupId,userId, Const.GROUP_DELETE_MEMBER);
         return ServerResponse.createBySuccess();
     }
 
-    @Override
-    public ServerResponse<String> deleteById(Integer id) {
-        groupToUserDao.deleteById(id);
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public ServerResponse<String> updateById(Integer id, Integer groupMessageId) {
-        if(groupToUserDao.updateById(id,groupMessageId) == 0) {
-            return ServerResponse.createByErrorMessage("更新用户在群内信息失败");
-        }
-        return ServerResponse.createBySuccess();
-    }
 
     @Override
     public void update(GroupToUser groupToUser) {
@@ -94,7 +89,7 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     public ServerResponse<List<GroupToUser>> selectByGroupId(Integer groupId) {
         List<GroupToUser> groupToUsers = groupToUserDao.selectByGroupId(groupId);
         if (groupToUsers == null) {
-            throw CustomGenericException.CreateException(40,"查询群用户出错");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"查询群用户出错");
         }
         return ServerResponse.createBySuccess(groupToUsers);
     }

@@ -2,16 +2,20 @@ package com.hzq.interceptors;
 
 import com.hzq.common.Const;
 import com.hzq.domain.User;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.hzq.handler.ChatWebSocketHandler;
+import com.hzq.service.UserService;
+import com.hzq.vo.SendMessage;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.server.ServerHttpRequest;
 import org.springframework.http.server.ServerHttpResponse;
 import org.springframework.http.server.ServletServerHttpRequest;
 import org.springframework.web.socket.WebSocketHandler;
+import org.springframework.web.socket.WebSocketSession;
 import org.springframework.web.socket.server.HandshakeInterceptor;
 
 import javax.servlet.http.HttpSession;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * @Auther: blue
@@ -21,19 +25,26 @@ import java.util.Map;
  */
 public class ChatHandShakeInterceptor implements HandshakeInterceptor {
 
-    private static final Logger LOGGER = LoggerFactory.getLogger(ChatHandShakeInterceptor.class);
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private ChatWebSocketHandler chat;
 
     public boolean beforeHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Map<String, Object> map) throws Exception {
-        LOGGER.debug("握手连接前");
         ServletServerHttpRequest servletRequest = (ServletServerHttpRequest) serverHttpRequest;
         HttpSession session = servletRequest.getServletRequest().getSession(false);
         User user = (User) session.getAttribute(Const.CURRENT_USER);
-        LOGGER.debug("Websocket:用户[ID:" + user.getId() + "]已经建立连接");
-        map.put(Const.CURRENT_CONNECT_ID, user.getId());
+        ConcurrentHashMap<Integer, WebSocketSession> sessionMap = chat.getUserSessionMap();
+        // 确保得到最新的数据
+        user = userService.selectById(user.getId()).getData();
+        map.put(Const.CURRENT_USER, user);
+        if (sessionMap.get(user.getId()) != null) {
+            SendMessage message = new SendMessage(Const.WITHDRAW,null);
+            chat.sendMessageToUser(user.getId(),message);
+        }
         return true;
     }
 
     public void afterHandshake(ServerHttpRequest serverHttpRequest, ServerHttpResponse serverHttpResponse, WebSocketHandler webSocketHandler, Exception e) {
-       LOGGER.debug("握手完成后");
     }
 }

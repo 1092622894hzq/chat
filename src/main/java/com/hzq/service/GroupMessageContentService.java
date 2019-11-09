@@ -25,16 +25,19 @@ public interface GroupMessageContentService {
     /**
      * 查询群聊所有的消息
      * @param groupId 群的id
+     * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<List<GroupMessageContent>> selectAll(Integer groupId);
+    ServerResponse<List<SendMessage>> selectAll(Integer groupId, Integer userId);
 
     /**
      * 删除群聊消息
+     * @param id 消息id
      * @param groupId 群的id
+     * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<String> delete(Integer groupId);
+    ServerResponse<String> delete(Integer id, Integer groupId, Integer userId);
 
     /**
      * 获取未读的群聊消息

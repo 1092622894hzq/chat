@@ -1,13 +1,11 @@
 package com.hzq.controller;
 
-import com.hzq.vo.GroupUserVo;
 import com.hzq.vo.ServerResponse;
 import com.hzq.domain.GroupToUser;
 import com.hzq.service.GroupToUserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 /**
  * @Auther: blue
@@ -30,9 +28,12 @@ public class GroupToUserController {
      * @return 返回通用结果
      */
     @RequestMapping(value = "/insert/{userId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<List<GroupUserVo>> insert(@PathVariable Integer userId, @PathVariable Integer groupId) {
-         groupToUserService.insert(userId,groupId);
-         return groupToUserService.select(groupId);
+    public ServerResponse insert(@PathVariable Integer userId, @PathVariable Integer groupId) {
+         ServerResponse response = groupToUserService.insert(userId,groupId);
+         if (response.isSuccess()) {
+             return groupToUserService.select(groupId);
+         }
+         return response;
     }
 
     /**
@@ -42,7 +43,7 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{userId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<String> delete(@PathVariable Integer userId, @PathVariable Integer groupId) {
+    public ServerResponse delete(@PathVariable Integer userId, @PathVariable Integer groupId) {
         return groupToUserService.delete(userId,groupId);
     }
 
@@ -52,7 +53,7 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<GroupUserVo> update(@RequestBody GroupToUser groupToUser) {
+    public ServerResponse update(@RequestBody GroupToUser groupToUser) {
         groupToUserService.update(groupToUser);
         return groupToUserService.selectGroupToUser(groupToUser.getUserId(),groupToUser.getGroupId());
     }
@@ -64,7 +65,7 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/select/{userId}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<GroupUserVo> selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
+    public ServerResponse selectGroupToUser(@PathVariable Integer userId, @PathVariable Integer groupId) {
         return groupToUserService.selectGroupToUser(userId,groupId);
     }
 
@@ -74,7 +75,7 @@ public class GroupToUserController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/select/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<List<GroupUserVo>> select(@PathVariable Integer groupId) {
+    public ServerResponse select(@PathVariable Integer groupId) {
         return groupToUserService.select(groupId);
     }
 }

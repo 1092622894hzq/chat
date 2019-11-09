@@ -27,16 +27,6 @@
         and group_id = #{groupId, jdbcType = INTEGER}
 </delete>
 
-<delete id="deleteById" parameterType="java.lang.Integer">
-        delete from group_to_user where id = #{id, jdbcType = INTEGER}
-</delete>
-
-<update id="updateById" parameterType="java.lang.Integer">
-        update  group_to_user
-        set group_message_id = #{groupMessageId, jdbcType = INTEGER}
-        where id = #{id, jdbcType = INTEGER}
-</update>
-
 <update id="update" parameterType="com.hzq.domain.GroupToUser">
         update group_to_user
         <set>

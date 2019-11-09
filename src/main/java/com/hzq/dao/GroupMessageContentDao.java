@@ -22,18 +22,21 @@ public interface GroupMessageContentDao {
     int insert(@Param("msg") SendMessage msg);
 
     /**
-     * 查询群聊所有的消息
-     * @param groupId 群的id
-     * @return 返回群聊消息的集合
+     * 添加删除消息的id
+     * @param groupId 群id
+     * @param userId 用户id
+     * @param groupMessageId 消息id
+     * @return 修改次数
      */
-    List<GroupMessageContent> selectAll(@Param("groupId") Integer groupId);
+    int insertToDelete(@Param("groupId") Integer groupId, @Param("userId") Integer userId, @Param("groupMessageId") Integer groupMessageId);
 
     /**
-     * 删除群聊消息
+     * 查询群聊所有的消息
      * @param groupId 群的id
-     * @return 返回修改次数
+     * @param userId 用户id
+     * @return 返回群聊消息的集合
      */
-    int delete(@Param("groupId") Integer groupId);
+    List<SendMessage> selectAll(@Param("groupId") Integer groupId, @Param("userId") Integer userId);
 
     /**
      * 获取指定群未读的群聊消息

@@ -23,7 +23,14 @@ public interface SecretSecurityDao {
      * @param userId 用户id
      * @return 返回对象
      */
-    SecretSecurity select(@Param("userId") Integer userId);
+    SecretSecurity selectByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询密保问题和答案
+     * @param username 用户名
+     * @return 返回对象
+     */
+    SecretSecurity selectByUsername(@Param("username") String username);
 
     /**
      * 更新密保问题和答案
@@ -33,9 +40,10 @@ public interface SecretSecurityDao {
     int update(SecretSecurity security);
 
     /**
-     * 查询设置了密保问题没
+     * 查询设置了密保问题存在
      * @param userId 用户id
      * @return 返回修该次数
      */
-    int check(@Param("userId") Integer userId);
+    int checkById(@Param("userId") Integer userId);
+
 }
