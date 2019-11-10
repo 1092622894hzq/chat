@@ -45,13 +45,13 @@ public class UserInfoController {
         return userInfoService.queryUserByName(username);
     }
 
-    /**
-     * 找回密码
-     * @param id 用户id
-     * @return 返回通用对象    -----暂未完成
-     */
-    @RequestMapping(value = "/findPassword/{id}", method = RequestMethod.GET)
-    public ServerResponse<String> findPasswordByUserId(@PathVariable Integer id) {
-        return userInfoService.findPasswordByUserId(id);
-    }
+//    /**
+//     * 找回密码
+//     * @param id 用户id
+//     * @return 返回通用对象
+//     */
+//    @RequestMapping(value = "/findPassword/{id}", method = RequestMethod.GET)
+//    public ServerResponse<String> findPasswordByUserId(@PathVariable Integer id) {
+//        return userInfoService.findPasswordByUserId(id);
+//    }
 }

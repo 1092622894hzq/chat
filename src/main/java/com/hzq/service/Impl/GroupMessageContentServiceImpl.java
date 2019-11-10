@@ -30,7 +30,7 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     private GroupMessageContentDao messageContentDao;
 
     @Override
-    public ServerResponse<String> insert(SendMessage message) {
+    public ServerResponse insert(SendMessage message) {
         if (messageContentDao.insert(message) == 0) {
             return ServerResponse.createByErrorMessage("存放群聊消息失败");
         }
@@ -47,9 +47,9 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
     }
 
     @Override
-    public ServerResponse<String> delete(Integer id,Integer groupId,Integer userId) {
+    public ServerResponse delete(Integer id,Integer groupId,Integer userId) {
         if (messageContentDao.insertToDelete(id,groupId,userId) == 0) {
-            return ServerResponse.createByErrorMessage("删除群聊失败");
+            return ServerResponse.createByErrorMessage("删除群聊消息失败");
         }
         return ServerResponse.createBySuccess();
     }
@@ -60,7 +60,6 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
         if (messageContents == null) {
             return ServerResponse.createBySuccessMessage("查询不到未读消息");
         }
-        //更新时间
         return ServerResponse.createBySuccess(messageContents);
     }
 
@@ -74,7 +73,7 @@ public class GroupMessageContentServiceImpl implements GroupMessageContentServic
 }
 
     @Override
-    public ServerResponse<String> update(List<SendMessage> messageContents, Integer userId) {
+    public ServerResponse update(List<SendMessage> messageContents, Integer userId) {
         Map<Integer,List<SendMessage>> map = MessageSubgroup(messageContents);
         if (map != null) {
             for (Integer key : map.keySet()) {

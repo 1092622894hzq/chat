@@ -31,9 +31,12 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/insert", method = RequestMethod.POST)
-    public ServerResponse<Group> insert(@RequestBody Group group) {
-        groupService.insert(group);
-        return groupService.select(group.getId());
+    public ServerResponse insert(@RequestBody Group group) {
+        ServerResponse response = groupService.insert(group);
+        if (response.isSuccess()) {
+            return groupService.select(group.getId());
+        }
+        return response;
     }
 
     /**
@@ -42,9 +45,12 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
-    public ServerResponse<Group> update(@RequestBody Group group) {
-        groupService.update(group);
-        return groupService.select(group.getId());
+    public ServerResponse update(@RequestBody Group group) {
+        ServerResponse response = groupService.update(group);
+        if (response.isSuccess()) {
+            return groupService.select(group.getId());
+        }
+      return response;
     }
 
 
@@ -54,7 +60,7 @@ public class GroupController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.GET)
-    public ServerResponse<String> delete(@PathVariable Integer id) {
+    public ServerResponse delete(@PathVariable Integer id) {
         return groupService.delete(id);
     }
 

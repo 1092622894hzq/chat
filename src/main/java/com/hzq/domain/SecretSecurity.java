@@ -67,4 +67,15 @@ public class SecretSecurity {
     public void setUserId(Integer userId) {
         this.userId = userId;
     }
+
+    @Override
+    public String toString() {
+        return "SecretSecurity{" +
+                "question1='" + question1 + '\'' +
+                ", answer1='" + answer1 + '\'' +
+                ", question2='" + question2 + '\'' +
+                ", answer2='" + answer2 + '\'' +
+                ", userId=" + userId +
+                '}';
+    }
 }

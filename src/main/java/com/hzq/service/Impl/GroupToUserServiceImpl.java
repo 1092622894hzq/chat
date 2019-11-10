@@ -46,7 +46,7 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     }
 
     @Override
-    public ServerResponse<String> delete(Integer userId, Integer groupId) {
+    public ServerResponse delete(Integer userId, Integer groupId) {
         Integer groupAdminId = groupService.select(groupId).getData().getGroupAdminId();
         if (userId.equals(groupAdminId)) {
             List<GroupToUser> groupToUsers = groupToUserDao.selectByGroupId(groupId);
@@ -61,19 +61,20 @@ public class GroupToUserServiceImpl implements GroupToUserService {
                     id = groupToUsers.get(1).getUserId();
                     groupService.update(new Group(groupId,id));
                 }
-                groupToUserDao.delete(userId,groupId);
             }
         }
-        chat.systemAdviceGroupMember(groupId,userId, Const.GROUP_DELETE_MEMBER);
+        groupToUserDao.delete(userId,groupId);
+        chat.systemAdviceGroupMember(groupId,userId,Const.GROUP_DELETE_MEMBER);
         return ServerResponse.createBySuccess();
     }
 
 
     @Override
-    public void update(GroupToUser groupToUser) {
+    public ServerResponse update(GroupToUser groupToUser) {
         if(groupToUserDao.update(groupToUser) == 0) {
-            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新用户在群内信息失败");
+            return ServerResponse.createByErrorMessage("更新用户在群内信息失败");
         }
+        return ServerResponse.createBySuccess();
     }
 
     @Override
@@ -98,7 +99,7 @@ public class GroupToUserServiceImpl implements GroupToUserService {
     public ServerResponse<List<GroupUserVo>> select(Integer groupId) {
         List<GroupUserVo> groupUserVos = groupToUserDao.select(groupId);
         if (groupUserVos == null) {
-            throw CustomGenericException.CreateException(40,"查询群用户个人信息出错");
+            throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"查询群用户个人信息出错");
         }
         return ServerResponse.createBySuccess(groupUserVos);
     }

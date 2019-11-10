@@ -19,11 +19,18 @@ public interface SecretSecurityDao {
     int insert(SecretSecurity security);
 
     /**
-     * 查询密保问题和答案
+     * 查询密保问题
      * @param userId 用户id
      * @return 返回对象
      */
     SecretSecurity selectByUserId(@Param("userId") Integer userId);
+
+    /**
+     * 查询密保问题和答案
+     * @param userId 用户id
+     * @return 返回对象
+     */
+    SecretSecurity select(@Param("userId") Integer userId);
 
     /**
      * 查询密保问题和答案

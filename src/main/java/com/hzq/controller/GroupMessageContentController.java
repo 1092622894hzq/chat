@@ -43,7 +43,7 @@ public class GroupMessageContentController {
      * @return 返回通用对象
      */
     @RequestMapping(value = "/delete/{id}/{groupId}", method = RequestMethod.GET)
-    public ServerResponse<String> delete(@PathVariable Integer id, @PathVariable Integer groupId, HttpSession session) {
+    public ServerResponse delete(@PathVariable Integer id, @PathVariable Integer groupId, HttpSession session) {
         Integer userId = ((User)session.getAttribute(Const.CURRENT_USER)).getId();
         return messageContentService.delete(id,groupId,userId);
     }

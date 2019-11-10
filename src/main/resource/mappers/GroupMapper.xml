@@ -20,7 +20,7 @@
          g.id, g.group_name, g.group_admin_id, g.group_icon, g.group_notice, g.group_introduction, g.gmt_create
     </sql>
 
-<insert id="insert" parameterType="java.lang.Integer"  useGeneratedKeys="true" keyProperty="id">
+<insert id="insert" parameterType="com.hzq.domain.Group"  useGeneratedKeys="true" keyProperty="id">
     insert into `group` (group_admin_id)
     values (#{groupAdminId, jdbcType = INTEGER})
 </insert>

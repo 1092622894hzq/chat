@@ -9,6 +9,7 @@
         <result column="password" jdbcType="VARCHAR" property="password" />
         <result column="status" jdbcType="INTEGER" property="status"/>
         <result column="login_time" jdbcType="TIMESTAMP" property="loginTime"/>
+        <result column="is_security" jdbcType="INTEGER" property="isSecurity"/>
     </resultMap>
 
 <insert id="insert" parameterType="com.hzq.domain.User"  useGeneratedKeys="true" keyProperty="id">

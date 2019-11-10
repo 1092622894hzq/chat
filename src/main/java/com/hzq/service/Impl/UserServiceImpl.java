@@ -45,12 +45,12 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<String> register(User user) {
         //验证格式
-//        if (!VerifyUtil.isStandardFormUsername(user.getUsername())) {
-//            return ServerResponse.createByErrorMessage("用户名格式不对");
-//        }
-//        if (!VerifyUtil.isStandardFormPassword(user.getPassword())) {
-//            return ServerResponse.createByErrorMessage("密码格式不对");
-//        }
+        if (!VerifyUtil.isStandardFormUsername(user.getUsername())) {
+            return ServerResponse.createByErrorMessage("用户名格式不对");
+        }
+        if (!VerifyUtil.isStandardFormPassword(user.getPassword())) {
+            return ServerResponse.createByErrorMessage("密码格式不对");
+        }
         if (userDao.checkUsername(user.getUsername()) > 0) {
             return ServerResponse.createByErrorMessage("用户名已经存在");
         }
@@ -66,19 +66,16 @@ public class UserServiceImpl implements UserService {
     @Override
     public ServerResponse<Result> login(String username, String password) {
         //验证格式
-//        if (!VerifyUtil.isStandardFormUsername(username)) {
-//            return ServerResponse.createByErrorMessage("用户名格式不对");
-//        }
-//        if (!VerifyUtil.isStandardFormPassword(password)) {
-//            return ServerResponse.createByErrorMessage("密码格式不对");
-//        }
+        if (!VerifyUtil.isStandardFormUsername(username)) {
+            return ServerResponse.createByErrorMessage("用户名格式不对");
+        }
+        if (!VerifyUtil.isStandardFormPassword(password)) {
+            return ServerResponse.createByErrorMessage("密码格式不对");
+        }
         if (userDao.checkUsername(username) == 0) {
             return ServerResponse.createByErrorMessage("用户名不存在");
         }
         User user = userDao.selectByUsername(username);
-        if (Const.ONLINE.equals(user.getStatus())) {
-            return ServerResponse.createByErrorMessage("用户已经登陆了");
-        }
         if (!MD5Util.verify(password,user.getPassword())) {
             return ServerResponse.createByErrorMessage("密码错误");
         }
@@ -92,9 +89,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<User> selectByUsername(String username) {
-//        if (!VerifyUtil.isStandardFormUsername(username)) {
-//            return ServerResponse.createByErrorMessage("账号格式不对");
-//        }
+        if (!VerifyUtil.isStandardFormUsername(username)) {
+            return ServerResponse.createByErrorMessage("账号格式不对");
+        }
         User user = userDao.selectByUsername(username);
         if (user == null) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"用户不存在");
@@ -122,6 +119,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<String> update(String password, Integer id) {
+        System.out.println("密码 "+password+"    id "+id);
         if(!VerifyUtil.isStandardFormPassword(password)) {
             return ServerResponse.createByErrorMessage("密码格式不对");
         }
@@ -186,9 +184,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public ServerResponse<String> checkUsername(String username) {
-//        if (VerifyUtil.isStandardFormUsername(username)) {
-//            return ServerResponse.createByErrorMessage("用户名格式不对");
-//        }
+        if (VerifyUtil.isStandardFormUsername(username)) {
+            return ServerResponse.createByErrorMessage("用户名格式不对");
+        }
         if (userDao.checkUsername(username) > 0) {
             return ServerResponse.createBySuccess();
         }

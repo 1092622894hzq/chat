@@ -1,6 +1,7 @@
 package com.hzq.service.Impl;
 
 import com.hzq.common.Const;
+import com.hzq.service.GroupToUserService;
 import com.hzq.vo.ServerResponse;
 import com.hzq.dao.GroupDao;
 import com.hzq.domain.Group;
@@ -23,20 +24,25 @@ import java.util.List;
 public class GroupServiceImpl implements GroupService {
 
     @Autowired
+    private GroupToUserService groupToUserService;
+    @Autowired
     private GroupDao groupDao;
 
     @Override
-    public void insert(Group group) {
+    public ServerResponse insert(Group group) {
         if (groupDao.insert(group) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"创建群聊失败");
         }
+        System.out.println("主键--"+group.getId());
+        return groupToUserService.insert(group.getGroupAdminId(),group.getId());
     }
 
     @Override
-    public void update(Group group) {
+    public ServerResponse update(Group group) {
         if (groupDao.update(group) == 0) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.ERROR.getCode(),"更新群聊失败");
         }
+        return ServerResponse.createBySuccess();
     }
 
     @Override
@@ -58,7 +64,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public ServerResponse<String> delete(Integer id) {
+    public ServerResponse delete(Integer id) {
         if (groupDao.delete(id) == 0) {
             return ServerResponse.createByErrorMessage("删除群聊失败");
         }

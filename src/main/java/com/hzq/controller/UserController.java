@@ -76,13 +76,12 @@ public class UserController {
 
     /**
      * 更新通过密保问题后修改的密码
-     * @param password 密码
-     * @param id 用户id
+     * @param user 密码和id
      * @return 返回通用对象
      */
-    @RequestMapping(value = "/update/{password}/{id}", method = RequestMethod.GET)
-    public ServerResponse update(@PathVariable String password, @PathVariable Integer id) {
-        return userService.update(password,id);
+    @RequestMapping(value = "/update", method = RequestMethod.POST)
+    public ServerResponse update(@RequestBody User user) {
+        return userService.update(user.getPassword(),user.getId());
     }
 
     /**

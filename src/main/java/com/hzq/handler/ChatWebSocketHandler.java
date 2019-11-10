@@ -70,7 +70,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         Integer uid = user.getId();
         USER_SESSION_MAP.put(uid, session);
         //处理用户在线的标志位
-        if (user.getStatus().equals(Const.OFFLINE)) {
+        if (!user.getStatus().equals(Const.INVISIBLE)) {
             userService.updateStatus(Const.ONLINE, uid);
         } else {
             userService.updateStatus(Const.INVISIBLE,uid);
@@ -202,8 +202,9 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
     public void systemAdviceFriend(Integer friendId, Integer userId) {
         //告诉安卓，好友添加成功
         SendMessage message = new SendMessage();
-        message.setMessage("我们已经是朋友了，可以开始聊天了");
-        message.setType(Const.PRIVATE_CHAT);
+        FriendVo friendVo = friendService.selectFriendByFriendId(friendId,userId).getData();
+        message.setMessage(JsonUtil.toJson(friendVo));
+        message.setType(Const.FRIEND_ADD);
         message.setMessageType(Const.TEXT);
         message.setGmtCreate(new Timestamp(System.currentTimeMillis()));
         message.setFromId(friendId);
@@ -214,7 +215,7 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         //发送给自己
         sendMessageToUser(userId,message);
         //发送给好友
-        message.setMessage("我通过了你的朋友验证请求，现在我们可以开始聊天了");
+        message.setMessage(JsonUtil.toJson(friend));
         message.setFromId(userId);
         message.setToIdOrGroupId(friendId);
         friend = friendService.selectFriendByFriendId(friendId, userId).getData();
@@ -238,11 +239,15 @@ public class ChatWebSocketHandler extends AbstractWebSocketHandler implements We
         message.setType(type);
         message.setMessageType(Const.TEXT);
         message.setGmtCreate(new Timestamp(System.currentTimeMillis()));
-        message.setFromId(userId);
         message.setToIdOrGroupId(groupId);
         message.setName(userInfo.getNickname());
         message.setAvatar(userInfo.getAvatar());
         List<GroupToUser> list = groupToUserService.selectByGroupId(groupId).getData();
+        for (GroupToUser g : list) {
+            if (g.getUserId().equals(userId)) {
+                message.setFromId(g.getId());
+            }
+        }
         for (GroupToUser g : list) {
             if (USER_SESSION_MAP.get(g.getUserId()) != null ) {
                 sendMessageToUser(g.getUserId(),message);

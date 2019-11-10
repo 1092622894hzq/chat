@@ -20,7 +20,7 @@ public interface GroupMessageContentService {
      * @param message 群聊消息
      * @return 返回通用对象
      */
-    ServerResponse<String> insert(SendMessage message);
+    ServerResponse insert(SendMessage message);
 
     /**
      * 查询群聊所有的消息
@@ -37,7 +37,7 @@ public interface GroupMessageContentService {
      * @param userId 用户id
      * @return 返回通用对象
      */
-    ServerResponse<String> delete(Integer id, Integer groupId, Integer userId);
+    ServerResponse delete(Integer id, Integer groupId, Integer userId);
 
     /**
      * 获取未读的群聊消息
@@ -60,5 +60,5 @@ public interface GroupMessageContentService {
      * @param userId 用户userId
      * @return 返回通用对象
      */
-    ServerResponse<String> update(List<SendMessage> messageContents, Integer userId);
+    ServerResponse update(List<SendMessage> messageContents, Integer userId);
 }

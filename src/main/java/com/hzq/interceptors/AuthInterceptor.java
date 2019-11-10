@@ -41,6 +41,9 @@ public class AuthInterceptor extends HandlerInterceptorAdapter {
 			if(username != null && ("//user/select/"+username).equals(requestUri)) { //忘记密码要查询
 				return true;
 			}
+			if ("//user/update".equals(requestUri)) { //通过密保之后，修改密码可以放行
+				return true;
+			}
 			//判断是否已经登录，强制退出
 			if ("//user/login".equals(requestUri)) {
 				LOGGER.debug("用户名："+username);

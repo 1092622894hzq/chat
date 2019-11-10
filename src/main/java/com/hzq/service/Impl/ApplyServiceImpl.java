@@ -51,14 +51,8 @@ public class ApplyServiceImpl implements ApplyService {
     }
 
     @Override
-    public ServerResponse<String> deleteById(Integer fromId, Integer toId) {
-        applyDao.deleteById(fromId,toId);
-        return ServerResponse.createBySuccess();
-    }
-
-    @Override
-    public ServerResponse<String> deleteByUserId(Integer userId) {
-        applyDao.deleteByUserId(userId);
+    public ServerResponse<String> delete(Integer fromId, Integer toId) {
+        applyDao.delete(fromId,toId);
         return ServerResponse.createBySuccess();
     }
 
@@ -100,8 +94,4 @@ public class ApplyServiceImpl implements ApplyService {
         return ServerResponse.createBySuccess(applyVo);
     }
 
-    @Override
-    public int checkApply(Integer fromId, Integer toId) {
-        return applyDao.checkApply(fromId,toId,Const.APPLY_UNTREATED);
-    }
 }

@@ -133,6 +133,10 @@ public class Const {
      */
     public static final Integer WITHDRAW = 5;
     /*
+    表示用户添加好友成功
+     */
+    public static final Integer FRIEND_ADD = 6;
+    /*
     表示消息已读
      */
     public static final Integer MARK_AS_READ = 1;

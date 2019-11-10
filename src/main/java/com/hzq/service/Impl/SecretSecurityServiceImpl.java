@@ -51,7 +51,7 @@ public class SecretSecurityServiceImpl implements SecretSecurityService {
 
     @Override
     public ServerResponse<String> verify(SecretSecurity security) {
-        SecretSecurity s = secretSecurityDao.selectByUserId(security.getUserId());
+        SecretSecurity s = secretSecurityDao.select(security.getUserId());
         if (s == null) {
             throw CustomGenericException.CreateException(ResponseCodeEnum.USER_ERROR.getCode(),"该用户没设定密保问题");
         }

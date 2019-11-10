@@ -30,6 +30,10 @@ public class User implements Serializable {
     用户登录时的时间(用户在线和隐身时就是输入账号密码时的时间，下线就是退出时的时间)
      */
     private Timestamp loginTime;
+    /*
+    0 表示为设定密保 1 表示设定密保
+     */
+    private Integer isSecurity;
 
     public Integer getId() {
         return id;
@@ -69,6 +73,14 @@ public class User implements Serializable {
 
     public void setLoginTime(Timestamp loginTime) {
         this.loginTime = loginTime;
+    }
+
+    public Integer getIsSecurity() {
+        return isSecurity;
+    }
+
+    public void setIsSecurity(Integer isSecurity) {
+        this.isSecurity = isSecurity;
     }
 
     @Override

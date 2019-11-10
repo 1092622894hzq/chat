@@ -42,18 +42,7 @@ public class ApplyController {
      */
     @RequestMapping(value = "/deleteById/{fromId}/{toId}", method = RequestMethod.GET)
     public ServerResponse<String> deleteById(@PathVariable Integer fromId, @PathVariable Integer toId) {
-        return applyService.deleteById(fromId,toId);
-    }
-
-
-    /**
-     * 根据用户id删除所有好友申请
-     * @param userId 用户id
-     * @return 返回通用对象
-     */
-    @RequestMapping(value = "/deleteByUserId/{userId}", method = RequestMethod.GET)
-    public ServerResponse<String> deleteByUserId(@PathVariable Integer userId) {
-        return applyService.deleteByUserId(userId);
+        return applyService.delete(fromId,toId);
     }
 
     /**

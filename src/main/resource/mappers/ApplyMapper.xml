@@ -35,14 +35,10 @@
     where from_id = #{fromId,jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER};
 </update>
 
-<delete id="deleteById" parameterType="java.lang.Integer">
+<delete id="delete" parameterType="java.lang.Integer">
     delete from apply
     where (from_id = #{fromId, jdbcType = INTEGER} and to_id = #{toId, jdbcType = INTEGER})
     or (from_id = #{toId, jdbcType = INTEGER} and to_id = #{fromId, jdbcType = INTEGER})
-</delete>
-
-<delete id="deleteByUserId" parameterType="java.lang.Integer">
-    delete from apply where from_id = #{userId, jdbcType = INTEGER} or to_id = #{userId, jdbcType = INTEGER}
 </delete>
 
     <resultMap id="ApplyVoMap" type="com.hzq.vo.ApplyVo">

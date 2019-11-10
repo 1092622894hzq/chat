@@ -29,14 +29,7 @@ public interface ApplyService {
      * @param toId 被申请人id
      * @return 返回通用对象
      */
-    ServerResponse<String> deleteById(Integer fromId , Integer toId);
-
-    /**
-     * 根据用户id删除所有跟用户相关的好友申请
-     * @param userId 用户id
-     * @return 返回通用对象
-     */
-    ServerResponse<String> deleteByUserId(Integer userId);
+    ServerResponse<String> delete(Integer fromId , Integer toId);
 
     /**
      * 根据申请人id和被申请人id来更新申请状态
@@ -60,11 +53,4 @@ public interface ApplyService {
      */
     ServerResponse<ApplyVo> select(Integer fromId, Integer toId);
 
-    /**
-     * 根据申请人id和被申请人id查询申请人信息
-     * @param fromId 申请人id
-     * @param toId 被申请人id
-     * @return 返回个数
-     */
-    int checkApply(Integer fromId, Integer toId);
 }

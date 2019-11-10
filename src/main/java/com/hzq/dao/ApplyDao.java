@@ -44,13 +44,7 @@ public interface ApplyDao {
      * @param fromId 申请人id
      * @param toId 被申请人id
      */
-    void deleteById(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
-
-    /**
-     * 根据用户id删除所有好友申请
-     * @param useId 用户id
-     */
-    void deleteByUserId(@Param("userId") Integer useId);
+    void delete(@Param("fromId") Integer fromId, @Param("toId") Integer toId);
 
     /**
      * 根据用户id查询所有用户

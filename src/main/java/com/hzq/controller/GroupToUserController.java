@@ -54,8 +54,11 @@ public class GroupToUserController {
      */
     @RequestMapping(value = "/update", method = RequestMethod.POST)
     public ServerResponse update(@RequestBody GroupToUser groupToUser) {
-        groupToUserService.update(groupToUser);
-        return groupToUserService.selectGroupToUser(groupToUser.getUserId(),groupToUser.getGroupId());
+        ServerResponse response = groupToUserService.update(groupToUser);
+        if (response.isSuccess()) {
+            return groupToUserService.selectGroupToUser(groupToUser.getUserId(), groupToUser.getGroupId());
+        }
+        return response;
     }
 
     /**

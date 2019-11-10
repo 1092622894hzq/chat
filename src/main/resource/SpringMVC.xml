@@ -61,6 +61,8 @@
             <mvc:exclude-mapping path="/images/**" />
             <mvc:exclude-mapping path="/js/**" />
             <mvc:exclude-mapping path="/user/register" />
+            <mvc:exclude-mapping path="/security/select/**" />
+            <mvc:exclude-mapping path="/security/verify" />
             <mvc:exclude-mapping path="/user/refreshToken/**" />
             <bean class="com.hzq.interceptors.AuthInterceptor"/>
         </mvc:interceptor>

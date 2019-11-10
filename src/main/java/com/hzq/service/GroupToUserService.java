@@ -28,13 +28,14 @@ public interface GroupToUserService {
      * @param groupId  群聊id
      * @return 返回通用对象
      */
-    ServerResponse<String> delete(Integer userId, Integer groupId);
+    ServerResponse delete(Integer userId, Integer groupId);
 
     /**
      * 更新用户在群聊中显示的信息 根据用户id和群id
      * @param groupToUser 用户的在群聊显示的信息
+     * @return 返回通用对象
      */
-    void update(GroupToUser groupToUser);
+    ServerResponse update(GroupToUser groupToUser);
 
     /**
      * 根据群id和用户id查找用户在群信息

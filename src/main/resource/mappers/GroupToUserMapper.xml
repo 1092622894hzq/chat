@@ -13,7 +13,7 @@
         <result column="gmt_modified" jdbcType="TIMESTAMP" property="gmtModified"/>
     </resultMap>
 
-<insert id="insert" parameterType="java.lang.Integer">
+<insert id="insert" parameterType="java.lang.Integer" >
     insert into group_to_user (user_id, group_id, group_nickname)
     values (
     #{userId, jdbcType = INTEGER}, #{groupId, jdbcType = INTEGER},
